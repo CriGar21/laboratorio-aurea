@@ -1,1179 +1,487 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resultados Online — Áurea Laboratorio Bioquímico</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      :root {
-        --verde: #445925;
-        --verde-med: #9bab8f;
-        --verde-claro: #dee8d2;
-        --crema: #f2f2f2;
-        --arena: #f2dea2;
-        --arena-med: #ebe7d0;
-        --marron: #4d301f;
-        --marron-med: #bc6849;
-        --blanco: #ffffff;
-        --texto: #2a2a2a;
-        --texto-suave: #6b6b6b;
-        --header-h: 76px;
-        --error: #c0392b;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        font-family: "DM Sans", sans-serif;
-        background: var(--crema);
-        color: var(--texto);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      /* ---- HEADER ---- */
-      header {
-        height: var(--header-h);
-        background: var(--blanco);
-        border-bottom: 1px solid #e0ddd5;
-        display: flex;
-        align-items: center;
-        padding: 0 2rem;
-        gap: 1rem;
-        flex-shrink: 0;
-      }
-
-      .logo-area {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        text-decoration: none;
-      }
-
-      .logo-circulo {
-        width: 46px;
-        height: 46px;
-        border-radius: 50%;
-        border: 1.5px solid var(--verde-claro);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .logo-circulo svg {
-        width: 34px;
-        height: 34px;
-      }
-
-      .logo-nombre {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.45rem;
-        font-weight: 600;
-        color: var(--verde);
-        letter-spacing: 0.06em;
-        display: block;
-        line-height: 1;
-      }
-
-      .logo-sub {
-        font-size: 0.58rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--verde-med);
-        display: block;
-      }
-
-      .nav-volver {
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        text-decoration: none;
-        font-size: 0.85rem;
-        color: var(--texto-suave);
-        padding: 0.4rem 0.9rem;
-        border-radius: 6px;
-        transition:
-          color 0.2s,
-          background 0.2s;
-      }
-
-      .nav-volver:hover {
-        color: var(--verde);
-        background: var(--verde-claro);
-      }
-      .nav-volver svg {
-        width: 15px;
-        height: 15px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2.2;
-      }
-
-      /* ---- LAYOUT PRINCIPAL ---- */
-      .pagina {
-        flex: 1;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        min-height: calc(100vh - var(--header-h));
-      }
-
-      /* Panel izquierdo — instrucciones */
-      .panel-info {
-        background: var(--verde);
-        padding: 4rem 3rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 2rem;
-      }
-
-      .panel-info-tag {
-        font-size: 0.68rem;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.5);
-        font-weight: 500;
-      }
-
-      .panel-info h2 {
-        font-family: "Cormorant Garamond", serif;
-        font-size: clamp(1.8rem, 3vw, 2.6rem);
-        font-weight: 600;
-        color: var(--blanco);
-        line-height: 1.2;
-      }
-
-      .panel-info h2 em {
-        font-style: italic;
-        color: var(--arena);
-      }
-
-      .panel-info p {
-        font-size: 0.92rem;
-        color: rgba(255, 255, 255, 0.72);
-        line-height: 1.7;
-        max-width: 380px;
-      }
-
-      /* Tarjetas de instrucciones */
-      .instrucciones {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .instruccion {
-        display: flex;
-        gap: 1rem;
-        align-items: flex-start;
-      }
-
-      .inst-num {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.12);
-        color: var(--blanco);
-        font-size: 0.78rem;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-
-      .inst-txt h4 {
-        font-size: 0.88rem;
-        font-weight: 500;
-        color: var(--blanco);
-        margin-bottom: 0.15rem;
-      }
-
-      .inst-txt p {
-        font-size: 0.79rem;
-        color: rgba(255, 255, 255, 0.6);
-        line-height: 1.4;
-        max-width: none;
-      }
-
-      /* Separador */
-      .panel-sep {
-        width: 40px;
-        height: 1px;
-        background: rgba(255, 255, 255, 0.2);
-      }
-
-      /* Aviso de privacidad */
-      .privacidad {
-        display: flex;
-        gap: 0.7rem;
-        align-items: flex-start;
-        background: rgba(255, 255, 255, 0.07);
-        border-radius: 12px;
-        padding: 1rem;
-      }
-
-      .privacidad svg {
-        width: 18px;
-        height: 18px;
-        stroke: var(--arena);
-        fill: none;
-        stroke-width: 1.8;
-        flex-shrink: 0;
-        margin-top: 2px;
-      }
-
-      .privacidad p {
-        font-size: 0.79rem;
-        color: rgba(255, 255, 255, 0.6);
-        max-width: none;
-      }
-
-      /* Panel derecho — login */
-      .panel-login {
-        background: var(--crema);
-        padding: 4rem 3rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .login-card {
-        background: var(--blanco);
-        border-radius: 20px;
-        border: 1px solid #e4e0d6;
-        padding: 2.5rem 2rem;
-        max-width: 420px;
-        width: 100%;
-        margin: 0 auto;
-      }
-
-      .login-card h3 {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--verde);
-        margin-bottom: 0.3rem;
-      }
-
-      .login-card .sub {
-        font-size: 0.84rem;
-        color: var(--texto-suave);
-        margin-bottom: 2rem;
-      }
-
-      /* Tabs: Paciente / Médico */
-      .tabs {
-        display: flex;
-        border: 1.5px solid #e4e0d6;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-bottom: 1.8rem;
-      }
-
-      .tab {
-        flex: 1;
-        padding: 0.65rem;
-        text-align: center;
-        font-size: 0.85rem;
-        font-weight: 500;
-        cursor: pointer;
-        background: none;
-        border: none;
-        font-family: "DM Sans", sans-serif;
-        color: var(--texto-suave);
-        transition:
-          background 0.2s,
-          color 0.2s;
-      }
-
-      .tab.activo {
-        background: var(--verde);
-        color: var(--blanco);
-      }
-
-      /* Campos */
-      .campo {
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-        margin-bottom: 1.1rem;
-      }
-
-      .campo label {
-        font-size: 0.78rem;
-        font-weight: 500;
-        color: var(--texto);
-        letter-spacing: 0.03em;
-      }
-
-      .campo label span {
-        color: var(--marron-med);
-      }
-
-      .input-wrap {
-        position: relative;
-      }
-
-      .input-wrap svg {
-        position: absolute;
-        left: 0.85rem;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 16px;
-        height: 16px;
-        stroke: var(--verde-med);
-        fill: none;
-        stroke-width: 1.8;
-        pointer-events: none;
-      }
-
-      .campo input {
-        width: 100%;
-        border: 1.5px solid #ddd8c8;
-        border-radius: 10px;
-        padding: 0.65rem 0.9rem 0.65rem 2.4rem;
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.9rem;
-        color: var(--texto);
-        background: var(--crema);
-        outline: none;
-        transition:
-          border-color 0.2s,
-          background 0.2s;
-      }
-
-      .campo input:focus {
-        border-color: var(--verde);
-        background: var(--blanco);
-      }
-
-      .campo input.invalido {
-        border-color: var(--error);
-      }
-
-      .campo .error-msg {
-        font-size: 0.73rem;
-        color: var(--error);
-        display: none;
-      }
-
-      .campo.con-error .error-msg {
-        display: block;
-      }
-
-      /* Toggle contraseña */
-      .toggle-pass {
-        position: absolute;
-        right: 0.85rem;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        display: flex;
-        align-items: center;
-      }
-
-      .toggle-pass svg {
-        position: static;
-        transform: none;
-        width: 16px;
-        height: 16px;
-        stroke: var(--texto-suave);
-        fill: none;
-        stroke-width: 1.8;
-      }
-
-      /* Ayuda de acceso */
-      .ayuda-link {
-        font-size: 0.78rem;
-        color: var(--verde-med);
-        text-decoration: none;
-        display: block;
-        text-align: right;
-        margin-top: -0.6rem;
-        margin-bottom: 1rem;
-        transition: color 0.2s;
-      }
-
-      .ayuda-link:hover {
-        color: var(--verde);
-      }
-
-      /* Botón ingresar */
-      .btn-ingresar {
-        width: 100%;
-        background: var(--verde);
-        color: var(--blanco);
-        border: none;
-        border-radius: 30px;
-        padding: 0.85rem;
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.95rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition:
-          background 0.2s,
-          transform 0.15s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-      }
-
-      .btn-ingresar:hover {
-        background: #354a1c;
-        transform: translateY(-1px);
-      }
-      .btn-ingresar svg {
-        width: 15px;
-        height: 15px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2;
-      }
-
-      /* Separador "o" */
-      .o-sep {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin: 1.4rem 0;
-        color: var(--texto-suave);
-        font-size: 0.78rem;
-      }
-
-      .o-sep::before,
-      .o-sep::after {
-        content: "";
-        flex: 1;
-        height: 1px;
-        background: #e4e0d6;
-      }
-
-      /* Botón WhatsApp alternativo */
-      .btn-wa-alt {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.6rem;
-        background: #e8f7ee;
-        color: #1a8a4a;
-        border: 1.5px solid #b2e0c4;
-        border-radius: 30px;
-        padding: 0.8rem;
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.88rem;
-        font-weight: 500;
-        text-decoration: none;
-        cursor: pointer;
-        transition: background 0.2s;
-      }
-
-      .btn-wa-alt:hover {
-        background: #d0f0e0;
-      }
-      .btn-wa-alt svg {
-        width: 18px;
-        height: 18px;
-        fill: #25d366;
-      }
-
-      /* Mensaje de error de login */
-      .login-error {
-        display: none;
-        background: #fdf0ef;
-        border: 1px solid #f5c6c3;
-        border-radius: 10px;
-        padding: 0.75rem 1rem;
-        font-size: 0.83rem;
-        color: var(--error);
-        margin-bottom: 1rem;
-        line-height: 1.5;
-      }
-
-      .login-error.visible {
-        display: block;
-      }
-
-      /* Pantalla de resultados (simulada) */
-      .resultados-panel {
-        display: none;
-      }
-
-      .resultados-panel.visible {
-        display: block;
-      }
-
-      .bienvenida {
-        margin-bottom: 1.5rem;
-      }
-
-      .bienvenida h4 {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: var(--verde);
-      }
-
-      .bienvenida p {
-        font-size: 0.83rem;
-        color: var(--texto-suave);
-      }
-
-      .resultado-item {
-        border: 1px solid #e4e0d6;
-        border-radius: 12px;
-        padding: 1rem 1.1rem;
-        margin-bottom: 0.7rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        background: var(--crema);
-      }
-
-      .res-info h5 {
-        font-size: 0.88rem;
-        font-weight: 500;
-        margin-bottom: 0.15rem;
-      }
-
-      .res-info p {
-        font-size: 0.76rem;
-        color: var(--texto-suave);
-      }
-
-      .res-badge {
-        font-size: 0.72rem;
-        padding: 0.2rem 0.65rem;
-        border-radius: 20px;
-        font-weight: 500;
-        white-space: nowrap;
-      }
-
-      .res-badge.listo {
-        background: #eaf7ef;
-        color: #1a8a4a;
-      }
-      .res-badge.proceso {
-        background: #fff8e8;
-        color: #7a5500;
-      }
-
-      .btn-descargar {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        background: var(--verde);
-        color: var(--blanco);
-        padding: 0.45rem 1rem;
-        border-radius: 20px;
-        text-decoration: none;
-        font-size: 0.78rem;
-        font-weight: 500;
-        white-space: nowrap;
-        border: none;
-        cursor: pointer;
-        transition: background 0.2s;
-      }
-
-      .btn-descargar:hover {
-        background: #354a1c;
-      }
-      .btn-descargar svg {
-        width: 13px;
-        height: 13px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2;
-      }
-
-      .aviso-demo {
-        background: #fff8e8;
-        border-left: 3px solid #e8a500;
-        border-radius: 0 10px 10px 0;
-        padding: 0.75rem 1rem;
-        font-size: 0.8rem;
-        color: #7a5500;
-        margin-top: 1rem;
-        line-height: 1.5;
-      }
-
-      .btn-cerrar {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        background: none;
-        border: 1.5px solid #ddd8c8;
-        border-radius: 20px;
-        padding: 0.45rem 1rem;
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.8rem;
-        color: var(--texto-suave);
-        cursor: pointer;
-        margin-top: 1rem;
-        transition:
-          border-color 0.2s,
-          color 0.2s;
-      }
-
-      .btn-cerrar:hover {
-        border-color: var(--verde-med);
-        color: var(--verde);
-      }
-
-      /* WhatsApp flotante */
-      .wa-flotante {
-        position: fixed;
-        bottom: 1.5rem;
-        right: 1.5rem;
-        width: 50px;
-        height: 50px;
-        background: #25d366;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-        z-index: 999;
-        text-decoration: none;
-        transition: transform 0.2s;
-      }
-
-      .wa-flotante:hover {
-        transform: scale(1.1);
-      }
-      .wa-flotante svg {
-        width: 26px;
-        height: 26px;
-        fill: var(--blanco);
-      }
-
-      /* Responsive */
-      @media (max-width: 860px) {
-        .pagina {
-          grid-template-columns: 1fr;
-        }
-        .panel-info {
-          padding: 3rem 2rem;
-          order: 2;
-        }
-        .panel-login {
-          padding: 3rem 1.5rem;
-          order: 1;
-        }
-      }
-
-      @media (max-width: 500px) {
-        .panel-login {
-          padding: 2rem 1rem;
-        }
-        .login-card {
-          padding: 1.8rem 1.2rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- HEADER -->
-    <header>
-      <a href="index.html" class="logo-area">
-        <div class="logo-circulo">
-          <svg viewBox="0 0 100 100" fill="none">
-            <path
-              d="M 15 78 L 15 42 A 38 38 0 0 1 53 4 L 85 4 L 85 78 Z"
-              stroke="#445925"
-              stroke-width="4"
-              fill="none"
-              stroke-linejoin="round"
-            />
-            <rect
-              x="53"
-              y="42"
-              width="32"
-              height="36"
-              stroke="#445925"
-              stroke-width="3.5"
-              fill="none"
-            />
-            <rect
-              x="53"
-              y="61"
-              width="17"
-              height="17"
-              stroke="#445925"
-              stroke-width="3"
-              fill="none"
-            />
-            <path
-              d="M 53 78 A 36 36 0 0 0 15 42"
-              stroke="#445925"
-              stroke-width="3.5"
-              fill="none"
-            />
-            <path
-              d="M 53 61 A 19 19 0 0 0 85 42"
-              stroke="#445925"
-              stroke-width="3"
-              fill="none"
-            />
-            <path
-              d="M 70 61 A 9 9 0 0 0 70 78"
-              stroke="#9BAB8F"
-              stroke-width="2.5"
-              fill="none"
-            />
-            <circle cx="70" cy="69" r="2.5" fill="#9BAB8F" />
-          </svg>
-        </div>
-        <div>
-          <span class="logo-nombre">ÁUREA</span>
-          <span class="logo-sub">Laboratorio Bioquímico</span>
-        </div>
-      </a>
-      <a href="index.html" class="nav-volver">
-        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" /></svg>
-        Volver al inicio
-      </a>
-    </header>
-
-    <!-- LAYOUT PRINCIPAL -->
-    <div class="pagina">
-      <!-- PANEL IZQUIERDO: instrucciones -->
-      <div class="panel-info">
-        <div>
-          <p class="panel-info-tag">Área de pacientes</p>
-          <h2>Tus resultados,<br /><em>seguros y rápidos.</em></h2>
-        </div>
-
-        <p>
-          Accedé a tus análisis clínicos de forma segura en cualquier momento,
-          desde cualquier dispositivo.
-        </p>
-
-        <div class="instrucciones">
-          <div class="instruccion">
-            <div class="inst-num">1</div>
-            <div class="inst-txt">
-              <h4>Ingresá tu DNI</h4>
-              <p>
-                Sin puntos ni guiones. Es el mismo que presentaste en el
-                laboratorio.
-              </p>
-            </div>
-          </div>
-          <div class="instruccion">
-            <div class="inst-num">2</div>
-            <div class="inst-txt">
-              <h4>Ingresá tu código de muestra</h4>
-              <p>
-                Lo encontrás en el comprobante o en el mensaje que te enviamos
-                por WhatsApp.
-              </p>
-            </div>
-          </div>
-          <div class="instruccion">
-            <div class="inst-num">3</div>
-            <div class="inst-txt">
-              <h4>Accedé a tus resultados</h4>
-              <p>
-                Podés verlos en pantalla o descargarlos en PDF para compartirlos
-                con tu médico.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel-sep"></div>
-
-        <div class="privacidad">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          </svg>
-          <p>
-            Tus resultados son
-            <strong style="color: rgba(255, 255, 255, 0.85)"
-              >estrictamente confidenciales</strong
-            >. Solo vos podés acceder a ellos con tus datos personales.
-          </p>
-        </div>
-      </div>
-
-      <!-- PANEL DERECHO: login -->
-      <div class="panel-login">
-        <div class="login-card">
-          <h3>Acceder a resultados</h3>
-          <p class="sub">Ingresá tus datos para ver tus análisis.</p>
-
-          <!-- Tabs -->
-          <div class="tabs">
-            <button class="tab activo" onclick="cambiarTab(this, 'paciente')">
-              Soy paciente
-            </button>
-            <button class="tab" onclick="cambiarTab(this, 'medico')">
-              Soy médico / solicitante
-            </button>
-          </div>
-
-          <!-- Formulario de login -->
-          <div id="formLogin">
-            <div class="login-error" id="loginError">
-              DNI o código incorrecto. Revisá los datos e intentá de nuevo.<br />
-              Si el problema persiste, contactanos por WhatsApp.
-            </div>
-
-            <!-- Campo DNI -->
-            <div class="campo" id="campoDNI">
-              <label>DNI del paciente <span>*</span></label>
-              <div class="input-wrap">
-                <svg viewBox="0 0 24 24">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                  <line x1="2" y1="10" x2="22" y2="10" />
-                </svg>
-                <input
-                  type="text"
-                  id="inputDNI"
-                  placeholder="Ej: 35678901"
-                  maxlength="8"
-                  inputmode="numeric"
-                />
-              </div>
-              <span class="error-msg"
-                >Ingresá un DNI válido (sin puntos ni guiones).</span
-              >
-            </div>
-
-            <!-- Campo código (paciente) -->
-            <div class="campo" id="campoCodigo">
-              <label id="labelCodigo">Código de muestra <span>*</span></label>
-              <div class="input-wrap">
-                <svg viewBox="0 0 24 24">
-                  <path
-                    d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
-                  />
-                  <polyline points="14 2 14 8 20 8" />
-                  <line x1="16" y1="13" x2="8" y2="13" />
-                </svg>
-                <input
-                  type="text"
-                  id="inputCodigo"
-                  placeholder="Ej: A-20241105-001"
-                  style="padding-right: 2.8rem"
-                />
-                <button
-                  class="toggle-pass"
-                  onclick="toggleCodigo()"
-                  title="Mostrar/ocultar"
-                >
-                  <svg id="iconoOjo" viewBox="0 0 24 24">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                </button>
-              </div>
-              <span class="error-msg">Ingresá el código que recibiste.</span>
-            </div>
-
-            <!-- Ayuda -->
-            <a href="#" class="ayuda-link" onclick="mostrarAyuda(event)">
-              ¿No tenés tu código? ¿Olvidaste tus datos?
-            </a>
-
-            <!-- Botón ingresar -->
-            <button class="btn-ingresar" onclick="intentarLogin()">
-              <svg viewBox="0 0 24 24">
-                <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
-                <polyline points="10 17 15 12 10 7" />
-                <line x1="15" y1="12" x2="3" y2="12" />
-              </svg>
-              Ingresar
-            </button>
-
-            <div class="o-sep">o</div>
-
-            <!-- Alternativa WhatsApp -->
-            <a
-              href="https://wa.me/5491100000000?text=Hola%2C%20quiero%20consultar%20mis%20resultados%20de%20análisis."
-              target="_blank"
-              class="btn-wa-alt"
-            >
-              <svg viewBox="0 0 24 24">
-                <path
-                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
-                />
-              </svg>
-              Consultar resultados por WhatsApp
-            </a>
-          </div>
-          <!-- /formLogin -->
-
-          <!-- Panel de resultados (simulado para demo) -->
-          <div class="resultados-panel" id="resultadosPanel">
-            <div class="bienvenida">
-              <h4 id="nombrePaciente">Bienvenido/a</h4>
-              <p id="fechaConsulta"></p>
-            </div>
-
-            <!-- Resultados de ejemplo -->
-            <div class="resultado-item">
-              <div class="res-info">
-                <h5>Hemograma completo</h5>
-                <p>Fecha: <span id="fechaRes1"></span></p>
-              </div>
-              <span class="res-badge listo">Disponible</span>
-              <button class="btn-descargar" onclick="descargarDemo()">
-                <svg viewBox="0 0 24 24">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-                PDF
-              </button>
-            </div>
-
-            <div class="resultado-item">
-              <div class="res-info">
-                <h5>Glucosa + Perfil lipídico</h5>
-                <p>Fecha: <span id="fechaRes2"></span></p>
-              </div>
-              <span class="res-badge listo">Disponible</span>
-              <button class="btn-descargar" onclick="descargarDemo()">
-                <svg viewBox="0 0 24 24">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-                PDF
-              </button>
-            </div>
-
-            <div class="resultado-item">
-              <div class="res-info">
-                <h5>TSH + T4 libre</h5>
-                <p>Fecha: <span id="fechaRes3"></span></p>
-              </div>
-              <span class="res-badge proceso">En proceso</span>
-              <button
-                class="btn-descargar"
-                disabled
-                style="
-                  opacity: 0.4;
-                  cursor: not-allowed;
-                  background: var(--verde-med);
-                "
-              >
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
-                </svg>
-                Pronto
-              </button>
-            </div>
-
-            <div class="aviso-demo">
-              ⚠ <strong>Nota:</strong> Esta es una vista de demostración. Los
-              resultados reales se integrarán con el sistema del laboratorio.
-              Por ahora, los resultados se envían también por WhatsApp.
-            </div>
-
-            <button class="btn-cerrar" onclick="cerrarSesion()">
-              <svg
-                style="width: 13px; height: 13px"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
-                <polyline points="16 17 21 12 16 7" />
-                <line x1="21" y1="12" x2="9" y2="12" />
-              </svg>
-              Cerrar sesión
-            </button>
-          </div>
-          <!-- /resultadosPanel -->
-        </div>
-        <!-- /login-card -->
-      </div>
-      <!-- /panel-login -->
-    </div>
-    <!-- /pagina -->
-
-    <!-- WhatsApp flotante -->
-    <a href="https://wa.me/5491100000000" target="_blank" class="wa-flotante">
-      <svg viewBox="0 0 24 24">
-        <path
-          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
-        />
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resultados Online — Áurea Laboratorio Bioquímico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --verde:#445925; --verde-med:#9BAB8F; --verde-claro:#DEE8D2;
+      --crema:#F2F2F2; --arena:#F2DEA2; --arena-med:#EBE7D0;
+      --marron:#4D301F; --marron-med:#BC6849;
+      --blanco:#ffffff; --texto:#2a2a2a; --texto-suave:#6b6b6b;
+      --nav-h:72px; --error:#c0392b; --ok:#27ae60;
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:'DM Sans',sans-serif; color:var(--texto); background:var(--crema); min-height:100vh; display:flex; flex-direction:column; }
+
+    /* HEADER */
+    header { height:var(--nav-h); background:var(--blanco); border-bottom:1px solid #e0ddd5; display:flex; align-items:center; padding:0 2rem; gap:1rem; flex-shrink:0; }
+    .logo-area { display:flex; align-items:center; gap:0.75rem; text-decoration:none; }
+    .logo-circulo { width:44px; height:44px; border-radius:50%; background:var(--verde-claro); display:flex; align-items:center; justify-content:center; }
+    .logo-circulo svg { width:32px; height:32px; }
+    .logo-nombre { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:var(--verde); letter-spacing:0.06em; display:block; line-height:1; }
+    .logo-sub { font-size:0.56rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--verde-med); display:block; }
+    .nav-volver { margin-left:auto; display:flex; align-items:center; gap:0.4rem; font-size:0.84rem; color:var(--texto-suave); padding:0.4rem 0.85rem; border-radius:6px; text-decoration:none; transition:color 0.2s,background 0.2s; white-space:nowrap; }
+    .nav-volver:hover { color:var(--verde); background:var(--verde-claro); }
+    .nav-volver svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.2; }
+
+    /* LAYOUT */
+    .pagina { flex:1; display:grid; grid-template-columns:400px 1fr; min-height:calc(100vh - var(--nav-h)); }
+
+    /* PANEL IZQUIERDO — LOGIN */
+    .panel-login { background:var(--blanco); border-right:1px solid #e4e0d6; padding:3rem 2.5rem; display:flex; flex-direction:column; justify-content:center; }
+
+    .login-ico { width:60px; height:60px; border-radius:50%; background:var(--verde-claro); display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem; }
+    .login-ico svg { width:40px; height:40px; }
+
+    .login-titulo { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:600; color:var(--verde); margin-bottom:0.4rem; line-height:1.1; }
+    .login-sub { font-size:0.88rem; color:var(--texto-suave); margin-bottom:2rem; line-height:1.6; }
+
+    .campo { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.2rem; }
+    .campo label { font-size:0.78rem; font-weight:500; color:var(--texto); letter-spacing:0.03em; }
+
+    .input-wrap { position:relative; }
+    .input-wrap svg { position:absolute; left:1rem; top:50%; transform:translateY(-50%); width:18px; height:18px; stroke:var(--verde-med); fill:none; stroke-width:1.8; pointer-events:none; }
+
+    .dni-input {
+      width:100%; border:2px solid #ddd8c8; border-radius:12px;
+      padding:0.85rem 1rem 0.85rem 2.8rem;
+      font-family:'DM Sans',sans-serif; font-size:1.1rem;
+      letter-spacing:0.06em; color:var(--texto);
+      background:var(--crema); outline:none;
+      transition:border-color 0.2s, background 0.2s;
+    }
+    .dni-input:focus { border-color:var(--verde); background:var(--blanco); }
+    .dni-input.invalido { border-color:var(--error); }
+    .err-msg { font-size:0.73rem; color:var(--error); display:none; }
+    .campo.con-error .err-msg { display:block; }
+
+    .btn-ingresar { width:100%; background:var(--verde); color:var(--blanco); border:none; border-radius:12px; padding:0.95rem; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:500; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.5rem; transition:background 0.2s, transform 0.15s; margin-top:0.3rem; }
+    .btn-ingresar:hover { background:#354a1c; transform:translateY(-1px); }
+    .btn-ingresar svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; }
+
+    .login-error { display:none; background:#fdf0ef; border:1px solid #f5c6c3; border-radius:10px; padding:0.85rem 1rem; font-size:0.83rem; color:var(--error); margin-bottom:1rem; line-height:1.5; }
+    .login-error.visible { display:block; }
+
+    .o-sep { display:flex; align-items:center; gap:0.75rem; margin:1.4rem 0; color:var(--texto-suave); font-size:0.78rem; }
+    .o-sep::before,.o-sep::after { content:''; flex:1; height:1px; background:#e4e0d6; }
+
+    .btn-wa { width:100%; display:flex; align-items:center; justify-content:center; gap:0.6rem; background:#e8f7ee; color:#1a8a4a; border:1.5px solid #b2e0c4; border-radius:12px; padding:0.85rem; font-family:'DM Sans',sans-serif; font-size:0.88rem; font-weight:500; text-decoration:none; transition:background 0.2s; }
+    .btn-wa:hover { background:#d0f0e0; }
+    .btn-wa svg { width:18px; height:18px; fill:#25D366; }
+
+    .priv { margin-top:2rem; padding-top:1.5rem; border-top:1px solid #eee; display:flex; gap:0.6rem; align-items:flex-start; }
+    .priv svg { width:14px; height:14px; stroke:var(--verde-med); fill:none; stroke-width:1.8; flex-shrink:0; margin-top:2px; }
+    .priv p { font-size:0.74rem; color:var(--texto-suave); line-height:1.5; }
+
+    /* PANEL DERECHO */
+    .panel-derecho { background:var(--crema); padding:2.5rem; overflow-y:auto; }
+
+    /* Bienvenida */
+    .bienvenida { display:flex; flex-direction:column; justify-content:center; min-height:100%; max-width:560px; }
+    .bienvenida.oculto { display:none; }
+
+    .bienvenida-h { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:600; color:var(--verde); margin-bottom:0.5rem; }
+    .bienvenida-p { font-size:0.9rem; color:var(--texto-suave); margin-bottom:2rem; }
+
+    .info-cards { display:flex; flex-direction:column; gap:0.9rem; }
+    .info-card { background:var(--blanco); border-radius:14px; border:1px solid #e4e0d6; padding:1.2rem 1.4rem; display:flex; gap:1rem; align-items:flex-start; }
+    .ic-ico { width:38px; height:38px; border-radius:9px; background:var(--verde-claro); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ic-ico svg { width:19px; height:19px; stroke:var(--verde); fill:none; stroke-width:1.7; }
+    .ic-txt h4 { font-size:0.88rem; font-weight:500; margin-bottom:0.15rem; }
+    .ic-txt p { font-size:0.8rem; color:var(--texto-suave); line-height:1.5; }
+
+    /* PANEL RESULTADOS */
+    .res-panel { display:none; }
+    .res-panel.visible { display:block; }
+
+    /* Header paciente */
+    .pac-header { background:var(--verde); border-radius:18px; padding:1.6rem 2rem; margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap; }
+    .pac-nombre { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:600; color:var(--blanco); line-height:1.1; }
+    .pac-meta { font-size:0.76rem; color:rgba(255,255,255,0.58); margin-top:0.3rem; }
+    .btn-salir { display:inline-flex; align-items:center; gap:0.4rem; background:rgba(255,255,255,0.12); color:var(--blanco); border:1px solid rgba(255,255,255,0.22); border-radius:20px; padding:0.4rem 0.9rem; font-family:'DM Sans',sans-serif; font-size:0.76rem; cursor:pointer; transition:background 0.2s; white-space:nowrap; }
+    .btn-salir:hover { background:rgba(255,255,255,0.22); }
+    .btn-salir svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; }
+
+    /* Leyenda */
+    .leyenda { display:flex; gap:1.2rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+    .ley-item { display:flex; align-items:center; gap:0.4rem; font-size:0.74rem; color:var(--texto-suave); }
+    .ley-punto { width:8px; height:8px; border-radius:50%; }
+
+    /* Resultado card */
+    .res-card { background:var(--blanco); border-radius:16px; border:1px solid #e4e0d6; padding:1.5rem; margin-bottom:1rem; transition:box-shadow 0.2s; }
+    .res-card:hover { box-shadow:0 4px 20px rgba(68,89,37,0.08); }
+
+    .res-top { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:1.1rem; flex-wrap:wrap; }
+    .res-nombre { font-family:'Cormorant Garamond',serif; font-size:1.25rem; font-weight:600; color:var(--verde); }
+    .res-fecha { font-size:0.75rem; color:var(--texto-suave); margin-top:0.15rem; }
+
+    /* Badges */
+    .badge { display:inline-flex; align-items:center; gap:0.35rem; font-size:0.72rem; font-weight:500; padding:0.25rem 0.75rem; border-radius:20px; white-space:nowrap; }
+    .badge svg { width:11px; height:11px; stroke:currentColor; fill:none; stroke-width:2.5; }
+    .badge.listo { background:#eaf7ef; color:#1a6e3a; }
+    .badge.proceso { background:#fff8e8; color:#7a5500; }
+
+    /* Tabla de valores */
+    .valores-tabla { background:var(--crema); border-radius:10px; overflow:hidden; margin-bottom:1.1rem; }
+    .val-fila { display:grid; grid-template-columns:1fr auto auto; gap:1rem; padding:0.6rem 1rem; border-bottom:1px solid #e8e4d8; align-items:center; font-size:0.85rem; }
+    .val-fila:last-child { border-bottom:none; }
+    .val-nombre { color:var(--texto-suave); }
+    .val-valor { font-weight:500; text-align:right; display:flex; align-items:center; gap:0.35rem; justify-content:flex-end; }
+    .val-ref { font-size:0.73rem; color:var(--texto-suave); text-align:right; }
+    .ind { display:inline-block; width:7px; height:7px; border-radius:50%; }
+    .ind.alto { background:#c0392b; }
+    .ind.bajo { background:#2980b9; }
+    .ind.normal { background:var(--ok); }
+    .val-valor.alto { color:#c0392b; }
+    .val-valor.bajo { color:#2980b9; }
+    .val-valor.normal { color:var(--ok); }
+
+    /* En proceso placeholder */
+    .en-proceso-msg { background:var(--crema); border-radius:10px; padding:1.2rem; text-align:center; color:var(--texto-suave); font-size:0.85rem; margin-bottom:1.1rem; }
+    .en-proceso-msg svg { width:28px; height:28px; stroke:var(--verde-claro); fill:none; stroke-width:1.5; display:block; margin:0 auto 0.5rem; }
+
+    /* Nota médica */
+    .res-nota { background:#f0f7ff; border-left:3px solid #3498db; border-radius:0 9px 9px 0; padding:0.7rem 0.9rem; font-size:0.81rem; color:#1a4a6e; line-height:1.55; margin-bottom:1.1rem; }
+
+    /* Acciones */
+    .res-acciones { display:flex; gap:0.6rem; flex-wrap:wrap; }
+    .btn-pdf { display:inline-flex; align-items:center; gap:0.4rem; background:var(--verde); color:var(--blanco); padding:0.5rem 1.1rem; border-radius:20px; font-size:0.8rem; font-weight:500; text-decoration:none; transition:background 0.2s; border:none; cursor:pointer; }
+    .btn-pdf:hover { background:#354a1c; }
+    .btn-pdf svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; }
+    .btn-wa-res { display:inline-flex; align-items:center; gap:0.4rem; background:#25D366; color:var(--blanco); padding:0.5rem 1.1rem; border-radius:20px; font-size:0.8rem; font-weight:500; text-decoration:none; transition:background 0.2s; }
+    .btn-wa-res:hover { background:#1ebe5d; }
+    .btn-wa-res svg { width:14px; height:14px; fill:var(--blanco); }
+    .btn-gris { display:inline-flex; align-items:center; gap:0.4rem; background:var(--crema); color:var(--texto-suave); padding:0.5rem 1.1rem; border-radius:20px; font-size:0.8rem; border:1px solid #ddd8c8; cursor:default; }
+    .btn-gris svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; }
+
+    /* Sin resultados */
+    .sin-res { background:var(--blanco); border-radius:16px; border:1px solid #e4e0d6; padding:3rem 2rem; text-align:center; }
+    .sin-res svg { width:42px; height:42px; stroke:var(--verde-claro); fill:none; stroke-width:1.4; display:block; margin:0 auto 1rem; }
+    .sin-res p { font-size:0.86rem; color:var(--texto-suave); margin-bottom:0.3rem; }
+
+    /* WA flotante */
+    .wa-flotante { position:fixed; bottom:1.8rem; right:1.8rem; width:52px; height:52px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,0,0,0.2); z-index:999; text-decoration:none; transition:transform 0.2s; }
+    .wa-flotante:hover { transform:scale(1.1); }
+    .wa-flotante svg { width:27px; height:27px; fill:var(--blanco); }
+
+    @media(max-width:900px) {
+      .pagina { grid-template-columns:1fr; }
+      .panel-login { border-right:none; border-bottom:1px solid #e4e0d6; padding:2rem 1.5rem; }
+      .panel-derecho { padding:2rem 1.5rem; }
+      .bienvenida { min-height:auto; }
+    }
+    @media(max-width:500px) {
+      header { padding:0 1rem; }
+      .panel-login,.panel-derecho { padding:1.5rem 1rem; }
+      .pac-header { padding:1.2rem; }
+      .res-acciones { flex-direction:column; }
+      .btn-pdf,.btn-wa-res,.btn-gris { justify-content:center; }
+      .val-fila { grid-template-columns:1fr auto; }
+      .val-ref { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="logo-area">
+    <div class="logo-circulo">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M 15 78 L 15 42 A 38 38 0 0 1 53 4 L 85 4 L 85 78 Z" stroke="#445925" stroke-width="4.5" fill="none" stroke-linejoin="round"/>
+        <rect x="53" y="42" width="32" height="36" stroke="#445925" stroke-width="4" fill="none"/>
+        <rect x="53" y="61" width="17" height="17" stroke="#445925" stroke-width="3.5" fill="none"/>
+        <path d="M 53 78 A 36 36 0 0 0 15 42" stroke="#445925" stroke-width="4" fill="none"/>
+        <path d="M 53 61 A 19 19 0 0 0 85 42" stroke="#445925" stroke-width="3.5" fill="none"/>
+        <path d="M 70 61 A 9 9 0 0 0 70 78" stroke="#9BAB8F" stroke-width="3" fill="none"/>
+        <circle cx="70" cy="69" r="3" fill="#9BAB8F"/>
       </svg>
+    </div>
+    <div>
+      <span class="logo-nombre">ÁUREA</span>
+      <span class="logo-sub">Laboratorio Bioquímico</span>
+    </div>
+  </a>
+  <a href="index.html" class="nav-volver">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Volver al inicio
+  </a>
+</header>
+
+<!-- LAYOUT -->
+<div class="pagina">
+
+  <!-- LOGIN -->
+  <div class="panel-login">
+
+    <div class="login-ico">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M 15 78 L 15 42 A 38 38 0 0 1 53 4 L 85 4 L 85 78 Z" stroke="#445925" stroke-width="4.5" fill="none" stroke-linejoin="round"/>
+        <rect x="53" y="42" width="32" height="36" stroke="#445925" stroke-width="4" fill="none"/>
+        <rect x="53" y="61" width="17" height="17" stroke="#445925" stroke-width="3.5" fill="none"/>
+        <path d="M 53 78 A 36 36 0 0 0 15 42" stroke="#445925" stroke-width="4" fill="none"/>
+        <path d="M 53 61 A 19 19 0 0 0 85 42" stroke="#445925" stroke-width="3.5" fill="none"/>
+        <path d="M 70 61 A 9 9 0 0 0 70 78" stroke="#9BAB8F" stroke-width="3" fill="none"/>
+        <circle cx="70" cy="69" r="3" fill="#9BAB8F"/>
+      </svg>
+    </div>
+
+    <h2 class="login-titulo">Ver mis<br/>resultados</h2>
+    <p class="login-sub">Ingresá tu DNI para acceder a tus análisis clínicos de forma segura.</p>
+
+    <div class="login-error" id="loginError">
+      No encontramos resultados para ese DNI.<br/>
+      <small>Si te acabás de hacer el análisis, puede estar en proceso. Escribinos por WhatsApp.</small>
+    </div>
+
+    <div class="campo" id="campoDNI">
+      <label>Número de DNI (sin puntos)</label>
+      <div class="input-wrap">
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <input type="text" class="dni-input" id="inputDNI"
+               placeholder="Ej: 35678901"
+               maxlength="8" inputmode="numeric"
+               oninput="this.value=this.value.replace(/\D/,'')"
+               onkeydown="if(event.key==='Enter')intentarLogin()"/>
+      </div>
+      <span class="err-msg">Ingresá un DNI válido (6 a 8 dígitos, sin puntos).</span>
+    </div>
+
+    <button class="btn-ingresar" onclick="intentarLogin()">
+      <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Ingresar
+    </button>
+
+    <div class="o-sep">o</div>
+
+    <a href="https://wa.me/5491100000000?text=Hola%2C+quiero+consultar+mis+resultados." target="_blank" class="btn-wa">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Consultar por WhatsApp
     </a>
 
-    <script>
-      // ---- TABS ----
-      function cambiarTab(btn, tipo) {
-        document
-          .querySelectorAll(".tab")
-          .forEach((t) => t.classList.remove("activo"));
-        btn.classList.add("activo");
+    <div class="priv">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <p>Tus resultados son estrictamente confidenciales. Solo vos podés acceder con tu DNI.</p>
+    </div>
 
-        if (tipo === "medico") {
-          document.getElementById("labelCodigo").innerHTML =
-            "Matrícula profesional <span>*</span>";
-          document.getElementById("inputCodigo").placeholder = "Ej: 12345-SP";
-        } else {
-          document.getElementById("labelCodigo").innerHTML =
-            "Código de muestra <span>*</span>";
-          document.getElementById("inputCodigo").placeholder =
-            "Ej: A-20241105-001";
-        }
+  </div><!-- /panel-login -->
 
-        // Limpiar
-        document.getElementById("loginError").classList.remove("visible");
-        document.getElementById("inputDNI").value = "";
-        document.getElementById("inputCodigo").value = "";
-      }
+  <!-- PANEL DERECHO -->
+  <div class="panel-derecho">
 
-      // ---- MOSTRAR/OCULTAR CÓDIGO ----
-      let codigoVisible = false;
+    <!-- Bienvenida -->
+    <div class="bienvenida" id="bienvenida">
+      <p class="bienvenida-h">Resultados online</p>
+      <p class="bienvenida-p">Ingresá tu DNI a la izquierda para acceder a tus análisis clínicos.</p>
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="ic-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="ic-txt"><h4>Disponibles el mismo día</h4><p>Los análisis de rutina suelen estar listos el mismo día o al día siguiente de la extracción.</p></div>
+        </div>
+        <div class="info-card">
+          <div class="ic-ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="ic-txt"><h4>Descarga en PDF</h4><p>Cuando el resultado lo permite, podés descargarlo en PDF para compartirlo con tu médico.</p></div>
+        </div>
+        <div class="info-card">
+          <div class="ic-ico"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
+          <div class="ic-txt"><h4>Valores con referencia</h4><p>Cada valor muestra si está dentro del rango normal, elevado o bajo para tu orientación.</p></div>
+        </div>
+        <div class="info-card">
+          <div class="ic-ico" style="background:#e8f7ee;"><svg viewBox="0 0 24 24" stroke="#25D366"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07"/></svg></div>
+          <div class="ic-txt"><h4>¿No encontrás tus resultados?</h4><p>Escribinos por WhatsApp y te ayudamos enseguida.</p></div>
+        </div>
+      </div>
+    </div>
 
-      function toggleCodigo() {
-        codigoVisible = !codigoVisible;
-        const input = document.getElementById("inputCodigo");
-        input.type = codigoVisible ? "text" : "password";
-      }
+    <!-- Panel resultados -->
+    <div class="res-panel" id="resPanel">
 
-      // ---- AYUDA ----
-      function mostrarAyuda(e) {
-        e.preventDefault();
-        alert(
-          "Para recuperar tu código de muestra, comunicate con nosotros por WhatsApp o llamanos al (xxx) xxx-xxxx.\n\nTambién podés presentarte personalmente en el laboratorio con tu DNI.",
-        );
-      }
+      <div class="pac-header">
+        <div>
+          <div class="pac-nombre" id="pacNombre">—</div>
+          <div class="pac-meta" id="pacMeta">—</div>
+        </div>
+        <button class="btn-salir" onclick="cerrarSesion()">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Cerrar sesión
+        </button>
+      </div>
 
-      // ---- LOGIN ----
-      // Credenciales demo para mostrar la funcionalidad
-      // En producción esto se conecta al backend del laboratorio
-      const DEMO_USUARIOS = [
-        { dni: "12345678", codigo: "DEMO-001", nombre: "María García" },
-        { dni: "87654321", codigo: "DEMO-002", nombre: "Carlos Rodríguez" },
-      ];
+      <div class="leyenda">
+        <div class="ley-item"><div class="ley-punto" style="background:var(--ok);"></div>Valor normal</div>
+        <div class="ley-item"><div class="ley-punto" style="background:#c0392b;"></div>Valor elevado</div>
+        <div class="ley-item"><div class="ley-punto" style="background:#2980b9;"></div>Valor bajo</div>
+      </div>
 
-      function intentarLogin() {
-        const dni = document.getElementById("inputDNI").value.trim();
-        const codigo = document
-          .getElementById("inputCodigo")
-          .value.trim()
-          .toUpperCase();
-        const error = document.getElementById("loginError");
+      <div id="listaRes"></div>
 
-        // Validaciones básicas
-        if (!dni || isNaN(dni) || dni.length < 6) {
-          document.getElementById("campoDNI").classList.add("con-error");
-          document.getElementById("inputDNI").classList.add("invalido");
-          return;
-        }
+    </div>
 
-        document.getElementById("campoDNI").classList.remove("con-error");
-        document.getElementById("inputDNI").classList.remove("invalido");
+  </div><!-- /panel-derecho -->
 
-        if (!codigo) {
-          document.getElementById("campoCodigo").classList.add("con-error");
-          document.getElementById("inputCodigo").classList.add("invalido");
-          return;
-        }
+</div><!-- /pagina -->
 
-        document.getElementById("campoCodigo").classList.remove("con-error");
-        document.getElementById("inputCodigo").classList.remove("invalido");
+<!-- WhatsApp flotante -->
+<a href="https://wa.me/5491100000000" target="_blank" class="wa-flotante">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
 
-        // Buscar usuario demo
-        const usuario = DEMO_USUARIOS.find(
-          (u) => u.dni === dni && u.codigo === codigo,
-        );
+<script>
+// Ícono WhatsApp SVG inline para botones
+const WA_SVG = `<svg viewBox="0 0 24 24" width="14" height="14"><path fill="white" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
 
-        if (usuario) {
-          error.classList.remove("visible");
-          mostrarResultados(usuario.nombre);
-        } else {
-          error.classList.add("visible");
-        }
-      }
+// ── Obtener pacientes desde localStorage (cargados por admin.html)
+function getPacientes() {
+  try { return JSON.parse(localStorage.getItem('aurea_pacientes') || '{}'); }
+  catch { return {}; }
+}
 
-      // ---- MOSTRAR RESULTADOS ----
-      function mostrarResultados(nombre) {
-        document.getElementById("formLogin").style.display = "none";
-        document.getElementById("resultadosPanel").classList.add("visible");
+// ── LOGIN
+function intentarLogin() {
+  const raw = document.getElementById('inputDNI').value.trim();
+  const dni = raw.replace(/\D/g,'');
+  const errLogin = document.getElementById('loginError');
+  const campo    = document.getElementById('campoDNI');
 
-        document.getElementById("nombrePaciente").textContent =
-          "Hola, " + nombre;
-        document.getElementById("fechaConsulta").textContent =
-          "Última consulta: " +
-          new Date().toLocaleDateString("es-AR", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-          });
+  if (dni.length < 6 || dni.length > 8) {
+    campo.classList.add('con-error');
+    document.getElementById('inputDNI').classList.add('invalido');
+    errLogin.classList.remove('visible');
+    return;
+  }
 
-        // Fechas de ejemplo
-        const hoy = new Date();
-        const ayer = new Date(hoy);
-        ayer.setDate(ayer.getDate() - 1);
-        const hace3 = new Date(hoy);
-        hace3.setDate(hace3.getDate() - 3);
+  campo.classList.remove('con-error');
+  document.getElementById('inputDNI').classList.remove('invalido');
 
-        const fmt = (d) =>
-          d.toLocaleDateString("es-AR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          });
+  const pacientes = getPacientes();
+  const pac = pacientes[dni];
 
-        document.getElementById("fechaRes1").textContent = fmt(hoy);
-        document.getElementById("fechaRes2").textContent = fmt(ayer);
-        document.getElementById("fechaRes3").textContent =
-          fmt(hace3) + " (en proceso)";
-      }
+  if (!pac) { errLogin.classList.add('visible'); return; }
 
-      // ---- DEMO DESCARGA ----
-      function descargarDemo() {
-        alert(
-          "En la versión completa, aquí se descargará el PDF con tus resultados.\n\nPor ahora, podés solicitarlos por WhatsApp o retirando en el laboratorio.",
-        );
-      }
+  errLogin.classList.remove('visible');
+  mostrarResultados(pac, dni);
+}
 
-      // ---- CERRAR SESIÓN ----
-      function cerrarSesion() {
-        document.getElementById("formLogin").style.display = "block";
-        document.getElementById("resultadosPanel").classList.remove("visible");
-        document.getElementById("inputDNI").value = "";
-        document.getElementById("inputCodigo").value = "";
-        document.getElementById("loginError").classList.remove("visible");
-      }
+// ── MOSTRAR RESULTADOS
+function mostrarResultados(pac, dni) {
+  document.getElementById('pacNombre').textContent = pac.nombre;
+  document.getElementById('pacMeta').textContent =
+    'DNI ' + dni + ' · Consulta: ' +
+    new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'});
 
-      // Enter para hacer login
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") intentarLogin();
-      });
-    </script>
-  </body>
+  document.getElementById('bienvenida').classList.add('oculto');
+  document.getElementById('resPanel').classList.add('visible');
+
+  const lista = document.getElementById('listaRes');
+  lista.innerHTML = '';
+
+  const resultados = pac.resultados || [];
+
+  if (!resultados.length) {
+    lista.innerHTML = `
+      <div class="sin-res">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <p style="font-weight:500; margin-bottom:0.3rem; color:var(--texto);">Sin resultados disponibles aún</p>
+        <p>Si te hiciste un análisis recientemente puede estar en proceso. Escribinos.</p>
+        <a href="https://wa.me/5491100000000" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.2rem;background:#25D366;color:white;padding:0.6rem 1.3rem;border-radius:20px;font-size:0.83rem;font-weight:500;text-decoration:none;">${WA_SVG} Consultar por WhatsApp</a>
+      </div>`;
+    return;
+  }
+
+  // Ordenar más recientes primero
+  [...resultados]
+    .sort((a,b) => new Date(b.fecha) - new Date(a.fecha))
+    .forEach(res => lista.appendChild(crearCard(res)));
+}
+
+// ── CREAR CARD de resultado
+function crearCard(res) {
+  const card = document.createElement('div');
+  card.className = 'res-card';
+
+  const fechaStr = new Date(res.fecha + 'T12:00:00')
+    .toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'});
+
+  // Badge estado
+  const badge = res.estado === 'proceso'
+    ? `<span class="badge proceso"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>En proceso</span>`
+    : `<span class="badge listo"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>Disponible</span>`;
+
+  // Valores
+  let valoresHTML = '';
+  if (res.estado === 'proceso') {
+    valoresHTML = `<div class="en-proceso-msg">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Tu resultado está siendo procesado. Te avisamos cuando esté listo.
+    </div>`;
+  } else if (res.valores && res.valores.length) {
+    valoresHTML = `<div class="valores-tabla">`;
+    res.valores.forEach(v => {
+      const cls = v.estado === 'alto' ? 'alto' : v.estado === 'bajo' ? 'bajo' : 'normal';
+      valoresHTML += `
+        <div class="val-fila">
+          <span class="val-nombre">${v.nombre}</span>
+          <span class="val-valor ${cls}">
+            ${v.valor} ${v.unidad || ''}
+            <span class="ind ${cls}"></span>
+          </span>
+          <span class="val-ref">${v.referencia || ''}</span>
+        </div>`;
+    });
+    valoresHTML += `</div>`;
+  }
+
+  // Nota médica
+  const notaHTML = res.nota
+    ? `<div class="res-nota">📋 ${res.nota}</div>`
+    : '';
+
+  // Acciones
+  let accionesHTML = '';
+  if (res.estado === 'proceso') {
+    accionesHTML = `<div class="res-acciones">
+      <span class="btn-gris"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>En proceso</span>
+      <a href="https://wa.me/5491100000000?text=Hola%2C+consulto+por+el+estado+de+mi+análisis+${encodeURIComponent(res.nombre)}" target="_blank" class="btn-wa-res">${WA_SVG} Consultar estado</a>
+    </div>`;
+  } else {
+    const pdfBtn = res.pdfUrl
+      ? `<a href="${res.pdfUrl}" target="_blank" class="btn-pdf"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Descargar PDF</a>`
+      : `<span class="btn-gris" title="PDF no disponible para este análisis"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>Sin PDF</span>`;
+    accionesHTML = `<div class="res-acciones">
+      ${pdfBtn}
+      <a href="https://wa.me/5491100000000?text=Hola%2C+tengo+una+consulta+sobre+mi+análisis+${encodeURIComponent(res.nombre)}+del+${encodeURIComponent(fechaStr)}" target="_blank" class="btn-wa-res">${WA_SVG} Consultar</a>
+    </div>`;
+  }
+
+  card.innerHTML = `
+    <div class="res-top">
+      <div>
+        <div class="res-nombre">${res.nombre}</div>
+        <div class="res-fecha">${fechaStr}</div>
+      </div>
+      ${badge}
+    </div>
+    ${valoresHTML}
+    ${notaHTML}
+    ${accionesHTML}
+  `;
+
+  return card;
+}
+
+// ── CERRAR SESIÓN
+function cerrarSesion() {
+  document.getElementById('bienvenida').classList.remove('oculto');
+  document.getElementById('resPanel').classList.remove('visible');
+  document.getElementById('loginError').classList.remove('visible');
+  document.getElementById('inputDNI').value = '';
+  document.getElementById('listaRes').innerHTML = '';
+}
+</script>
+</body>
 </html>
