@@ -1,564 +1,1205 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Panel Administrador — Áurea Lab</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-    :root {
-      --verde:#445925; --verde-med:#9BAB8F; --verde-claro:#DEE8D2;
-      --crema:#F2F2F2; --arena:#F2DEA2; --arena-med:#EBE7D0;
-      --marron:#4D301F; --marron-med:#BC6849;
-      --blanco:#ffffff; --texto:#2a2a2a; --texto-suave:#6b6b6b;
-      --error:#c0392b; --ok:#27ae60;
-    }
-    body { font-family:'DM Sans',sans-serif; background:var(--crema); color:var(--texto); min-height:100vh; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Administrador — Áurea Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --verde: #445925;
+        --verde-med: #9bab8f;
+        --verde-claro: #dee8d2;
+        --crema: #f2f2f2;
+        --arena: #f2dea2;
+        --arena-med: #ebe7d0;
+        --marron: #4d301f;
+        --marron-med: #bc6849;
+        --blanco: #ffffff;
+        --texto: #2a2a2a;
+        --texto-suave: #6b6b6b;
+        --error: #c0392b;
+        --ok: #27ae60;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--crema);
+        color: var(--texto);
+        min-height: 100vh;
+      }
 
-    /* LOGIN ADMIN */
-    .login-admin {
-      min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem;
-    }
-    .login-card {
-      background:var(--blanco); border-radius:20px; border:1px solid #e4e0d6;
-      padding:2.5rem; width:100%; max-width:380px;
-      box-shadow:0 4px 32px rgba(0,0,0,0.07);
-    }
-    .login-card h2 { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:600; color:var(--verde); margin-bottom:0.3rem; }
-    .login-card p { font-size:0.84rem; color:var(--texto-suave); margin-bottom:1.8rem; }
-    .login-error { background:#fdf0ef; border:1px solid #f5c6c3; border-radius:8px; padding:0.7rem 0.9rem; font-size:0.82rem; color:var(--error); margin-bottom:1rem; display:none; }
-    .login-error.visible { display:block; }
+      /* LOGIN ADMIN */
+      .login-admin {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .login-card {
+        background: var(--blanco);
+        border-radius: 20px;
+        border: 1px solid #e4e0d6;
+        padding: 2.5rem;
+        width: 100%;
+        max-width: 380px;
+        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.07);
+      }
+      .login-card h2 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--verde);
+        margin-bottom: 0.3rem;
+      }
+      .login-card p {
+        font-size: 0.84rem;
+        color: var(--texto-suave);
+        margin-bottom: 1.8rem;
+      }
+      .login-error {
+        background: #fdf0ef;
+        border: 1px solid #f5c6c3;
+        border-radius: 8px;
+        padding: 0.7rem 0.9rem;
+        font-size: 0.82rem;
+        color: var(--error);
+        margin-bottom: 1rem;
+        display: none;
+      }
+      .login-error.visible {
+        display: block;
+      }
 
-    /* CAMPOS GENÉRICOS */
-    .campo { display:flex; flex-direction:column; gap:0.35rem; margin-bottom:1rem; }
-    .campo label { font-size:0.76rem; font-weight:500; color:var(--texto); letter-spacing:0.03em; }
-    .campo input, .campo select, .campo textarea {
-      border:1.5px solid #ddd8c8; border-radius:10px;
-      padding:0.65rem 0.9rem; font-family:'DM Sans',sans-serif;
-      font-size:0.9rem; color:var(--texto); background:var(--crema);
-      outline:none; transition:border-color 0.2s; width:100%;
-    }
-    .campo input:focus, .campo select:focus, .campo textarea:focus { border-color:var(--verde); background:var(--blanco); }
-    .campo textarea { resize:vertical; min-height:70px; }
-    .campo select { cursor:pointer; }
+      /* CAMPOS GENÉRICOS */
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        margin-bottom: 1rem;
+      }
+      .campo label {
+        font-size: 0.76rem;
+        font-weight: 500;
+        color: var(--texto);
+        letter-spacing: 0.03em;
+      }
+      .campo input,
+      .campo select,
+      .campo textarea {
+        border: 1.5px solid #ddd8c8;
+        border-radius: 10px;
+        padding: 0.65rem 0.9rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.9rem;
+        color: var(--texto);
+        background: var(--crema);
+        outline: none;
+        transition: border-color 0.2s;
+        width: 100%;
+      }
+      .campo input:focus,
+      .campo select:focus,
+      .campo textarea:focus {
+        border-color: var(--verde);
+        background: var(--blanco);
+      }
+      .campo textarea {
+        resize: vertical;
+        min-height: 70px;
+      }
+      .campo select {
+        cursor: pointer;
+      }
 
-    /* BOTONES */
-    .btn-verde { background:var(--verde); color:var(--blanco); border:none; border-radius:10px; padding:0.75rem 1.4rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:0.45rem; transition:background 0.2s, transform 0.15s; }
-    .btn-verde:hover { background:#354a1c; transform:translateY(-1px); }
-    .btn-verde svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; }
-    .btn-verde.full { width:100%; justify-content:center; }
+      /* BOTONES */
+      .btn-verde {
+        background: var(--verde);
+        color: var(--blanco);
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 1.4rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+      }
+      .btn-verde:hover {
+        background: #354a1c;
+        transform: translateY(-1px);
+      }
+      .btn-verde svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+      }
+      .btn-verde.full {
+        width: 100%;
+        justify-content: center;
+      }
 
-    .btn-rojo { background:#e74c3c; color:var(--blanco); border:none; border-radius:8px; padding:0.4rem 0.8rem; font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:0.3rem; transition:background 0.2s; }
-    .btn-rojo:hover { background:#c0392b; }
-    .btn-rojo svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; }
+      .btn-rojo {
+        background: #e74c3c;
+        color: var(--blanco);
+        border: none;
+        border-radius: 8px;
+        padding: 0.4rem 0.8rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.78rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: background 0.2s;
+      }
+      .btn-rojo:hover {
+        background: #c0392b;
+      }
+      .btn-rojo svg {
+        width: 12px;
+        height: 12px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+      }
 
-    .btn-gris { background:var(--crema); color:var(--texto-suave); border:1px solid #ddd8c8; border-radius:8px; padding:0.4rem 0.8rem; font-family:'DM Sans',sans-serif; font-size:0.78rem; cursor:pointer; display:inline-flex; align-items:center; gap:0.3rem; transition:background 0.2s; }
-    .btn-gris:hover { background:#e4e0d6; }
-    .btn-gris svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; }
+      .btn-gris {
+        background: var(--crema);
+        color: var(--texto-suave);
+        border: 1px solid #ddd8c8;
+        border-radius: 8px;
+        padding: 0.4rem 0.8rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.78rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: background 0.2s;
+      }
+      .btn-gris:hover {
+        background: #e4e0d6;
+      }
+      .btn-gris svg {
+        width: 12px;
+        height: 12px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+      }
 
-    .btn-outline { background:transparent; color:var(--verde); border:1.5px solid var(--verde); border-radius:10px; padding:0.65rem 1.2rem; font-family:'DM Sans',sans-serif; font-size:0.88rem; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:0.45rem; transition:background 0.2s, color 0.2s; }
-    .btn-outline:hover { background:var(--verde); color:var(--blanco); }
-    .btn-outline svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
+      .btn-outline {
+        background: transparent;
+        color: var(--verde);
+        border: 1.5px solid var(--verde);
+        border-radius: 10px;
+        padding: 0.65rem 1.2rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.88rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .btn-outline:hover {
+        background: var(--verde);
+        color: var(--blanco);
+      }
+      .btn-outline svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+      }
 
-    /* PANEL ADMIN */
-    .admin-panel { display:none; min-height:100vh; }
-    .admin-panel.visible { display:flex; }
+      /* PANEL ADMIN */
+      .admin-panel {
+        display: none;
+        min-height: 100vh;
+      }
+      .admin-panel.visible {
+        display: flex;
+      }
 
-    /* SIDEBAR */
-    .sidebar {
-      width:240px; background:var(--verde); flex-shrink:0;
-      display:flex; flex-direction:column; min-height:100vh;
-      position:sticky; top:0;
-    }
-    .sidebar-logo { padding:1.5rem 1.5rem 1rem; border-bottom:1px solid rgba(255,255,255,0.1); }
-    .sidebar-logo-nombre { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:var(--blanco); letter-spacing:0.06em; }
-    .sidebar-logo-sub { font-size:0.56rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.45); }
+      /* SIDEBAR */
+      .sidebar {
+        width: 240px;
+        background: var(--verde);
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        position: sticky;
+        top: 0;
+      }
+      .sidebar-logo {
+        padding: 1.5rem 1.5rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .sidebar-logo-nombre {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--blanco);
+        letter-spacing: 0.06em;
+      }
+      .sidebar-logo-sub {
+        font-size: 0.56rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.45);
+      }
 
-    .sidebar-nav { padding:1rem 0; flex:1; }
-    .sidebar-nav-item {
-      display:flex; align-items:center; gap:0.7rem;
-      padding:0.7rem 1.5rem; color:rgba(255,255,255,0.7);
-      font-size:0.86rem; cursor:pointer;
-      transition:background 0.15s, color 0.15s;
-      border-left:3px solid transparent;
-    }
-    .sidebar-nav-item:hover { background:rgba(255,255,255,0.08); color:var(--blanco); }
-    .sidebar-nav-item.activo { background:rgba(255,255,255,0.12); color:var(--blanco); border-left-color:var(--arena); }
-    .sidebar-nav-item svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.8; flex-shrink:0; }
+      .sidebar-nav {
+        padding: 1rem 0;
+        flex: 1;
+      }
+      .sidebar-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem 1.5rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.86rem;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        border-left: 3px solid transparent;
+      }
+      .sidebar-nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--blanco);
+      }
+      .sidebar-nav-item.activo {
+        background: rgba(255, 255, 255, 0.12);
+        color: var(--blanco);
+        border-left-color: var(--arena);
+      }
+      .sidebar-nav-item svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.8;
+        flex-shrink: 0;
+      }
 
-    .sidebar-footer { padding:1.5rem; border-top:1px solid rgba(255,255,255,0.1); }
-    .sidebar-user { font-size:0.76rem; color:rgba(255,255,255,0.5); margin-bottom:0.8rem; }
-    .btn-logout { width:100%; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:0.55rem; font-family:'DM Sans',sans-serif; font-size:0.82rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.4rem; transition:background 0.2s; }
-    .btn-logout:hover { background:rgba(255,255,255,0.15); color:var(--blanco); }
-    .btn-logout svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
+      .sidebar-footer {
+        padding: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .sidebar-user {
+        font-size: 0.76rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 0.8rem;
+      }
+      .btn-logout {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        padding: 0.55rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.82rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        transition: background 0.2s;
+      }
+      .btn-logout:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--blanco);
+      }
+      .btn-logout svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+      }
 
-    /* CONTENIDO PRINCIPAL */
-    .main-content { flex:1; padding:2rem; overflow-y:auto; }
+      /* CONTENIDO PRINCIPAL */
+      .main-content {
+        flex: 1;
+        padding: 2rem;
+        overflow-y: auto;
+      }
 
-    /* VISTAS */
-    .vista { display:none; }
-    .vista.activa { display:block; }
+      /* VISTAS */
+      .vista {
+        display: none;
+      }
+      .vista.activa {
+        display: block;
+      }
 
-    /* HEADER DE VISTA */
-    .vista-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem; }
-    .vista-titulo { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:600; color:var(--verde); }
-    .vista-sub { font-size:0.84rem; color:var(--texto-suave); margin-top:0.1rem; }
+      /* HEADER DE VISTA */
+      .vista-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .vista-titulo {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--verde);
+      }
+      .vista-sub {
+        font-size: 0.84rem;
+        color: var(--texto-suave);
+        margin-top: 0.1rem;
+      }
 
-    /* STATS */
-    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem; }
-    .stat-card { background:var(--blanco); border-radius:14px; border:1px solid #e4e0d6; padding:1.2rem 1.4rem; }
-    .stat-num { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:600; color:var(--verde); line-height:1; margin-bottom:0.3rem; }
-    .stat-lbl { font-size:0.76rem; color:var(--texto-suave); }
+      /* STATS */
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .stat-card {
+        background: var(--blanco);
+        border-radius: 14px;
+        border: 1px solid #e4e0d6;
+        padding: 1.2rem 1.4rem;
+      }
+      .stat-num {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: var(--verde);
+        line-height: 1;
+        margin-bottom: 0.3rem;
+      }
+      .stat-lbl {
+        font-size: 0.76rem;
+        color: var(--texto-suave);
+      }
 
-    /* TABLA DE PACIENTES */
-    .tabla-wrap { background:var(--blanco); border-radius:16px; border:1px solid #e4e0d6; overflow:hidden; }
-    .tabla-header-row { display:flex; justify-content:space-between; align-items:center; padding:1.2rem 1.5rem; border-bottom:1px solid #eee; flex-wrap:wrap; gap:0.5rem; }
-    .tabla-search { display:flex; align-items:center; gap:0.6rem; background:var(--crema); border:1px solid #ddd8c8; border-radius:8px; padding:0.5rem 0.9rem; }
-    .tabla-search svg { width:15px; height:15px; stroke:var(--verde-med); fill:none; stroke-width:2; flex-shrink:0; }
-    .tabla-search input { border:none; background:none; outline:none; font-family:'DM Sans',sans-serif; font-size:0.86rem; color:var(--texto); width:180px; }
+      /* TABLA DE PACIENTES */
+      .tabla-wrap {
+        background: var(--blanco);
+        border-radius: 16px;
+        border: 1px solid #e4e0d6;
+        overflow: hidden;
+      }
+      .tabla-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid #eee;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .tabla-search {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        background: var(--crema);
+        border: 1px solid #ddd8c8;
+        border-radius: 8px;
+        padding: 0.5rem 0.9rem;
+      }
+      .tabla-search svg {
+        width: 15px;
+        height: 15px;
+        stroke: var(--verde-med);
+        fill: none;
+        stroke-width: 2;
+        flex-shrink: 0;
+      }
+      .tabla-search input {
+        border: none;
+        background: none;
+        outline: none;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.86rem;
+        color: var(--texto);
+        width: 180px;
+      }
 
-    table { width:100%; border-collapse:collapse; }
-    th { padding:0.7rem 1rem; text-align:left; font-size:0.7rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--verde-med); background:var(--crema); border-bottom:1px solid #eee; }
-    td { padding:0.85rem 1rem; font-size:0.86rem; border-bottom:1px solid #f5f2ea; vertical-align:middle; }
-    tr:last-child td { border-bottom:none; }
-    tr:hover td { background:#fafaf7; }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th {
+        padding: 0.7rem 1rem;
+        text-align: left;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--verde-med);
+        background: var(--crema);
+        border-bottom: 1px solid #eee;
+      }
+      td {
+        padding: 0.85rem 1rem;
+        font-size: 0.86rem;
+        border-bottom: 1px solid #f5f2ea;
+        vertical-align: middle;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover td {
+        background: #fafaf7;
+      }
 
-    .badge-small { display:inline-flex; align-items:center; gap:0.25rem; font-size:0.71rem; font-weight:500; padding:0.18rem 0.6rem; border-radius:20px; }
-    .badge-small.listo { background:#eaf7ef; color:#1a6e3a; }
-    .badge-small.proceso { background:#fff8e8; color:#7a5500; }
+      .badge-small {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.71rem;
+        font-weight: 500;
+        padding: 0.18rem 0.6rem;
+        border-radius: 20px;
+      }
+      .badge-small.listo {
+        background: #eaf7ef;
+        color: #1a6e3a;
+      }
+      .badge-small.proceso {
+        background: #fff8e8;
+        color: #7a5500;
+      }
 
-    .acciones-td { display:flex; gap:0.4rem; flex-wrap:wrap; }
+      .acciones-td {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+      }
 
-    /* FORMULARIO AGREGAR/EDITAR PACIENTE */
-    .form-card { background:var(--blanco); border-radius:16px; border:1px solid #e4e0d6; padding:2rem; margin-bottom:1.5rem; }
-    .form-card h3 { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:var(--verde); margin-bottom:0.3rem; }
-    .form-card .form-sub { font-size:0.82rem; color:var(--texto-suave); margin-bottom:1.5rem; }
-    .campo-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-    .sep { height:1px; background:#eee; margin:1.2rem 0; }
+      /* FORMULARIO AGREGAR/EDITAR PACIENTE */
+      .form-card {
+        background: var(--blanco);
+        border-radius: 16px;
+        border: 1px solid #e4e0d6;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+      }
+      .form-card h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--verde);
+        margin-bottom: 0.3rem;
+      }
+      .form-card .form-sub {
+        font-size: 0.82rem;
+        color: var(--texto-suave);
+        margin-bottom: 1.5rem;
+      }
+      .campo-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .sep {
+        height: 1px;
+        background: #eee;
+        margin: 1.2rem 0;
+      }
 
-    /* Resultado individual dentro del formulario */
-    .res-item {
-      background:var(--crema); border-radius:12px; border:1px solid #ddd8c8;
-      padding:1.2rem; margin-bottom:0.8rem; position:relative;
-    }
-    .res-item-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
-    .res-item-num { font-size:0.75rem; font-weight:500; color:var(--verde-med); text-transform:uppercase; letter-spacing:0.08em; }
+      /* Resultado individual dentro del formulario */
+      .res-item {
+        background: var(--crema);
+        border-radius: 12px;
+        border: 1px solid #ddd8c8;
+        padding: 1.2rem;
+        margin-bottom: 0.8rem;
+        position: relative;
+      }
+      .res-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      .res-item-num {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--verde-med);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
 
-    /* Valores dentro de un resultado */
-    .valores-wrap { margin-top:0.8rem; }
-    .valor-row { display:grid; grid-template-columns:1.5fr 0.8fr 0.6fr 0.8fr 0.6fr auto; gap:0.5rem; align-items:center; margin-bottom:0.5rem; }
-    .valor-row input { padding:0.45rem 0.7rem; font-size:0.83rem; }
-    .valor-lbl { font-size:0.7rem; color:var(--texto-suave); text-align:center; }
+      /* Valores dentro de un resultado */
+      .valores-wrap {
+        margin-top: 0.8rem;
+      }
+      .valor-row {
+        display: grid;
+        grid-template-columns: 1.5fr 0.8fr 0.6fr 0.8fr 0.6fr auto;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+      .valor-row input {
+        padding: 0.45rem 0.7rem;
+        font-size: 0.83rem;
+      }
+      .valor-lbl {
+        font-size: 0.7rem;
+        color: var(--texto-suave);
+        text-align: center;
+      }
 
-    /* Toast de éxito */
-    .toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:var(--verde); color:var(--blanco); padding:0.9rem 1.8rem; border-radius:10px; font-size:0.88rem; font-weight:500; display:none; align-items:center; gap:0.5rem; z-index:9999; box-shadow:0 4px 20px rgba(0,0,0,0.15); }
-    .toast.visible { display:flex; }
-    .toast svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; }
+      /* Toast de éxito */
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--verde);
+        color: var(--blanco);
+        padding: 0.9rem 1.8rem;
+        border-radius: 10px;
+        font-size: 0.88rem;
+        font-weight: 500;
+        display: none;
+        align-items: center;
+        gap: 0.5rem;
+        z-index: 9999;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+      .toast.visible {
+        display: flex;
+      }
+      .toast svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+      }
 
-    @media(max-width:900px) {
-      .sidebar { display:none; }
-      .stats-row { grid-template-columns:1fr 1fr; }
-      .campo-row { grid-template-columns:1fr; }
-      .valor-row { grid-template-columns:1fr 1fr 1fr; }
-    }
-    @media(max-width:500px) {
-      .main-content { padding:1rem; }
-      .stats-row { grid-template-columns:1fr 1fr; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- ====================================================
+      @media (max-width: 900px) {
+        .sidebar {
+          display: none;
+        }
+        .stats-row {
+          grid-template-columns: 1fr 1fr;
+        }
+        .campo-row {
+          grid-template-columns: 1fr;
+        }
+        .valor-row {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+      @media (max-width: 500px) {
+        .main-content {
+          padding: 1rem;
+        }
+        .stats-row {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ====================================================
      PANTALLA DE LOGIN ADMIN
 ==================================================== -->
-<div class="login-admin" id="loginAdmin">
-  <div class="login-card">
-    <h2>Panel Áurea</h2>
-    <p>Acceso exclusivo para el equipo del laboratorio.</p>
+    <div class="login-admin" id="loginAdmin">
+      <div class="login-card">
+        <h2>Panel Áurea</h2>
+        <p>Acceso exclusivo para el equipo del laboratorio.</p>
 
-    <div class="login-error" id="adminLoginError">Contraseña incorrecta.</div>
+        <div class="login-error" id="adminLoginError">
+          Contraseña incorrecta.
+        </div>
 
-    <div class="campo">
-      <label>Contraseña de acceso</label>
-      <input type="password" id="adminPass" placeholder="••••••••"
-             onkeydown="if(event.key==='Enter')loginAdmin()"/>
+        <div class="campo">
+          <label>Contraseña de acceso</label>
+          <input
+            type="password"
+            id="adminPass"
+            placeholder="••••••••"
+            onkeydown="if (event.key === 'Enter') loginAdmin();"
+          />
+        </div>
+
+        <button class="btn-verde full" onclick="loginAdmin()">
+          <svg viewBox="0 0 24 24">
+            <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
+            <polyline points="10 17 15 12 10 7" />
+            <line x1="15" y1="12" x2="3" y2="12" />
+          </svg>
+          Ingresar al panel
+        </button>
+
+        <p
+          style="
+            font-size: 0.74rem;
+            color: var(--texto-suave);
+            margin-top: 1.2rem;
+            text-align: center;
+          "
+        >
+          Contraseña por defecto: <strong>aurea2025</strong><br />
+          <small>Cambiala en la sección Configuración</small>
+        </p>
+      </div>
     </div>
 
-    <button class="btn-verde full" onclick="loginAdmin()">
-      <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-      Ingresar al panel
-    </button>
-
-    <p style="font-size:0.74rem; color:var(--texto-suave); margin-top:1.2rem; text-align:center;">
-      Contraseña por defecto: <strong>aurea2025</strong><br/>
-      <small>Cambiala en la sección Configuración</small>
-    </p>
-  </div>
-</div>
-
-<!-- ====================================================
+    <!-- ====================================================
      PANEL ADMINISTRADOR
 ==================================================== -->
-<div class="admin-panel" id="adminPanel">
-
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <div class="sidebar-logo">
-      <div class="sidebar-logo-nombre">ÁUREA</div>
-      <div class="sidebar-logo-sub">Panel de administración</div>
-    </div>
-
-    <div class="sidebar-nav">
-      <div class="sidebar-nav-item activo" onclick="mostrarVista('dashboard')">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Dashboard
-      </div>
-      <div class="sidebar-nav-item" onclick="mostrarVista('pacientes')">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        Pacientes
-      </div>
-      <div class="sidebar-nav-item" onclick="mostrarVista('agregar')">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        Nuevo paciente
-      </div>
-      <div class="sidebar-nav-item" onclick="mostrarVista('config')">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-        Configuración
-      </div>
-    </div>
-
-    <div class="sidebar-footer">
-      <div class="sidebar-user">Sesión iniciada</div>
-      <button class="btn-logout" onclick="cerrarSesionAdmin()">
-        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Cerrar sesión
-      </button>
-    </div>
-  </div>
-
-  <!-- CONTENIDO -->
-  <div class="main-content">
-
-    <!-- ── DASHBOARD ── -->
-    <div class="vista activa" id="v-dashboard">
-      <div class="vista-header">
-        <div>
-          <div class="vista-titulo">Dashboard</div>
-          <div class="vista-sub">Resumen del laboratorio</div>
+    <div class="admin-panel" id="adminPanel">
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-nombre">ÁUREA</div>
+          <div class="sidebar-logo-sub">Panel de administración</div>
         </div>
-        <button class="btn-verde" onclick="mostrarVista('agregar')">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Nuevo paciente
-        </button>
-      </div>
 
-      <div class="stats-row" id="statsRow">
-        <div class="stat-card"><div class="stat-num" id="s-total">0</div><div class="stat-lbl">Pacientes registrados</div></div>
-        <div class="stat-card"><div class="stat-num" id="s-listos">0</div><div class="stat-lbl">Resultados disponibles</div></div>
-        <div class="stat-card"><div class="stat-num" id="s-proceso">0</div><div class="stat-lbl">En proceso</div></div>
-        <div class="stat-card"><div class="stat-num" id="s-hoy">0</div><div class="stat-lbl">Cargados hoy</div></div>
-      </div>
-
-      <!-- Últimos pacientes -->
-      <div class="tabla-wrap">
-        <div class="tabla-header-row">
-          <span style="font-size:0.8rem;font-weight:500;color:var(--texto);">Últimos pacientes</span>
-          <button class="btn-outline" onclick="mostrarVista('pacientes')">Ver todos</button>
-        </div>
-        <table>
-          <thead><tr>
-            <th>Nombre</th><th>DNI</th><th>Análisis</th><th>Estado</th><th>Acciones</th>
-          </tr></thead>
-          <tbody id="tablaResumen"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- ── PACIENTES ── -->
-    <div class="vista" id="v-pacientes">
-      <div class="vista-header">
-        <div>
-          <div class="vista-titulo">Pacientes</div>
-          <div class="vista-sub">Todos los pacientes registrados</div>
-        </div>
-        <button class="btn-verde" onclick="mostrarVista('agregar')">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Nuevo paciente
-        </button>
-      </div>
-
-      <div class="tabla-wrap">
-        <div class="tabla-header-row">
-          <div class="tabla-search">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="buscarPac" placeholder="Buscar por nombre o DNI..." oninput="renderTablaPacientes()"/>
+        <div class="sidebar-nav">
+          <div
+            class="sidebar-nav-item activo"
+            onclick="mostrarVista('dashboard')"
+          >
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+            </svg>
+            Dashboard
           </div>
-        </div>
-        <table>
-          <thead><tr>
-            <th>Nombre completo</th><th>DNI</th><th>Análisis</th><th>Último</th><th>Estado</th><th>Acciones</th>
-          </tr></thead>
-          <tbody id="tablaPacientes"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- ── AGREGAR / EDITAR PACIENTE ── -->
-    <div class="vista" id="v-agregar">
-      <div class="vista-header">
-        <div>
-          <div class="vista-titulo" id="formTitulo">Nuevo paciente</div>
-          <div class="vista-sub">Cargá los datos y resultados del paciente</div>
-        </div>
-      </div>
-
-      <div class="form-card">
-        <h3>Datos del paciente</h3>
-        <p class="form-sub">El DNI es el identificador único para el acceso del paciente.</p>
-
-        <div class="campo-row">
-          <div class="campo">
-            <label>Nombre completo *</label>
-            <input type="text" id="fNombre" placeholder="Ej: María García"/>
+          <div class="sidebar-nav-item" onclick="mostrarVista('pacientes')">
+            <svg viewBox="0 0 24 24">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+            </svg>
+            Pacientes
           </div>
-          <div class="campo">
-            <label>DNI *</label>
-            <input type="text" id="fDNI" placeholder="Sin puntos ni guiones" maxlength="8" inputmode="numeric"/>
+          <div class="sidebar-nav-item" onclick="mostrarVista('agregar')">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="16" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+            Nuevo paciente
+          </div>
+          <div class="sidebar-nav-item" onclick="mostrarVista('config')">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"
+              />
+            </svg>
+            Configuración
           </div>
         </div>
 
-        <div class="campo-row">
-          <div class="campo">
-            <label>Fecha de nacimiento</label>
-            <input type="date" id="fFechaNac"/>
-          </div>
-          <div class="campo">
-            <label>Teléfono / WhatsApp</label>
-            <input type="tel" id="fTel" placeholder="Ej: 2364 123456"/>
-          </div>
-        </div>
-      </div>
-
-      <!-- RESULTADOS -->
-      <div class="form-card">
-        <h3>Resultados</h3>
-        <p class="form-sub">Agregá uno o más análisis para este paciente.</p>
-
-        <div id="resultadosForm"></div>
-
-        <button class="btn-outline" onclick="agregarResultado()">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Agregar otro análisis
-        </button>
-      </div>
-
-      <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-        <button class="btn-verde" onclick="guardarPaciente()">
-          <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-          Guardar paciente
-        </button>
-        <button class="btn-gris" onclick="mostrarVista('pacientes')">
-          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-          Cancelar
-        </button>
-      </div>
-    </div>
-
-    <!-- ── CONFIGURACIÓN ── -->
-    <div class="vista" id="v-config">
-      <div class="vista-header">
-        <div>
-          <div class="vista-titulo">Configuración</div>
-          <div class="vista-sub">Ajustes del sistema</div>
-        </div>
-      </div>
-
-      <div class="form-card">
-        <h3>Cambiar contraseña de acceso</h3>
-        <p class="form-sub">Cambiá la contraseña que usa el laboratorio para entrar a este panel.</p>
-        <div class="campo-row">
-          <div class="campo">
-            <label>Nueva contraseña</label>
-            <input type="password" id="nuevaPass" placeholder="Mínimo 6 caracteres"/>
-          </div>
-          <div class="campo">
-            <label>Confirmar contraseña</label>
-            <input type="password" id="confirmarPass" placeholder="Repetí la contraseña"/>
-          </div>
-        </div>
-        <button class="btn-verde" onclick="cambiarPassword()">
-          <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/></svg>
-          Guardar contraseña
-        </button>
-      </div>
-
-      <div class="form-card">
-        <h3>Exportar / Importar datos</h3>
-        <p class="form-sub" style="margin-bottom:1rem;">Hacé un backup de todos los pacientes y resultados cargados.</p>
-        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
-          <button class="btn-verde" onclick="exportarDatos()">
-            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Exportar JSON
+        <div class="sidebar-footer">
+          <div class="sidebar-user">Sesión iniciada</div>
+          <button class="btn-logout" onclick="cerrarSesionAdmin()">
+            <svg viewBox="0 0 24 24">
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Cerrar sesión
           </button>
-          <label class="btn-outline" style="cursor:pointer;">
-            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            Importar JSON
-            <input type="file" accept=".json" style="display:none;" onchange="importarDatos(event)"/>
-          </label>
         </div>
       </div>
 
-      <div class="form-card" style="border-color:#f5c6c3;">
-        <h3 style="color:var(--error);">Zona de peligro</h3>
-        <p class="form-sub">Borrar todos los datos del sistema. Esta acción no se puede deshacer.</p>
-        <button class="btn-rojo" onclick="borrarTodo()">
-          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-          Borrar todos los datos
-        </button>
+      <!-- CONTENIDO -->
+      <div class="main-content">
+        <!-- ── DASHBOARD ── -->
+        <div class="vista activa" id="v-dashboard">
+          <div class="vista-header">
+            <div>
+              <div class="vista-titulo">Dashboard</div>
+              <div class="vista-sub">Resumen del laboratorio</div>
+            </div>
+            <button class="btn-verde" onclick="mostrarVista('agregar')">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="16" />
+                <line x1="8" y1="12" x2="16" y2="12" />
+              </svg>
+              Nuevo paciente
+            </button>
+          </div>
+
+          <div class="stats-row" id="statsRow">
+            <div class="stat-card">
+              <div class="stat-num" id="s-total">0</div>
+              <div class="stat-lbl">Pacientes registrados</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" id="s-listos">0</div>
+              <div class="stat-lbl">Resultados disponibles</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" id="s-proceso">0</div>
+              <div class="stat-lbl">En proceso</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" id="s-hoy">0</div>
+              <div class="stat-lbl">Cargados hoy</div>
+            </div>
+          </div>
+
+          <!-- Últimos pacientes -->
+          <div class="tabla-wrap">
+            <div class="tabla-header-row">
+              <span
+                style="font-size: 0.8rem; font-weight: 500; color: var(--texto)"
+                >Últimos pacientes</span
+              >
+              <button class="btn-outline" onclick="mostrarVista('pacientes')">
+                Ver todos
+              </button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>DNI</th>
+                  <th>Análisis</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tablaResumen"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── PACIENTES ── -->
+        <div class="vista" id="v-pacientes">
+          <div class="vista-header">
+            <div>
+              <div class="vista-titulo">Pacientes</div>
+              <div class="vista-sub">Todos los pacientes registrados</div>
+            </div>
+            <button class="btn-verde" onclick="mostrarVista('agregar')">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="16" />
+                <line x1="8" y1="12" x2="16" y2="12" />
+              </svg>
+              Nuevo paciente
+            </button>
+          </div>
+
+          <div class="tabla-wrap">
+            <div class="tabla-header-row">
+              <div class="tabla-search">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input
+                  type="text"
+                  id="buscarPac"
+                  placeholder="Buscar por nombre o DNI..."
+                  oninput="renderTablaPacientes()"
+                />
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre completo</th>
+                  <th>DNI</th>
+                  <th>Análisis</th>
+                  <th>Último</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tablaPacientes"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── AGREGAR / EDITAR PACIENTE ── -->
+        <div class="vista" id="v-agregar">
+          <div class="vista-header">
+            <div>
+              <div class="vista-titulo" id="formTitulo">Nuevo paciente</div>
+              <div class="vista-sub">
+                Cargá los datos y resultados del paciente
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <h3>Datos del paciente</h3>
+            <p class="form-sub">
+              El DNI es el identificador único para el acceso del paciente.
+            </p>
+
+            <div class="campo-row">
+              <div class="campo">
+                <label>Nombre completo *</label>
+                <input
+                  type="text"
+                  id="fNombre"
+                  placeholder="Ej: María García"
+                />
+              </div>
+              <div class="campo">
+                <label>DNI *</label>
+                <input
+                  type="text"
+                  id="fDNI"
+                  placeholder="Sin puntos ni guiones"
+                  maxlength="8"
+                  inputmode="numeric"
+                />
+              </div>
+            </div>
+
+            <div class="campo-row">
+              <div class="campo">
+                <label>Fecha de nacimiento</label>
+                <input type="date" id="fFechaNac" />
+              </div>
+              <div class="campo">
+                <label>Teléfono / WhatsApp</label>
+                <input type="tel" id="fTel" placeholder="Ej: 2364 123456" />
+              </div>
+            </div>
+          </div>
+
+          <!-- RESULTADOS -->
+          <div class="form-card">
+            <h3>Resultados</h3>
+            <p class="form-sub">
+              Agregá uno o más análisis para este paciente.
+            </p>
+
+            <div id="resultadosForm"></div>
+
+            <button class="btn-outline" onclick="agregarResultado()">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="16" />
+                <line x1="8" y1="12" x2="16" y2="12" />
+              </svg>
+              Agregar otro análisis
+            </button>
+          </div>
+
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap">
+            <button class="btn-verde" onclick="guardarPaciente()">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"
+                />
+                <polyline points="17 21 17 13 7 13 7 21" />
+                <polyline points="7 3 7 8 15 8" />
+              </svg>
+              Guardar paciente
+            </button>
+            <button class="btn-gris" onclick="mostrarVista('pacientes')">
+              <svg viewBox="0 0 24 24">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+              Cancelar
+            </button>
+          </div>
+        </div>
+
+        <!-- ── CONFIGURACIÓN ── -->
+        <div class="vista" id="v-config">
+          <div class="vista-header">
+            <div>
+              <div class="vista-titulo">Configuración</div>
+              <div class="vista-sub">Ajustes del sistema</div>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <h3>Cambiar contraseña de acceso</h3>
+            <p class="form-sub">
+              Cambiá la contraseña que usa el laboratorio para entrar a este
+              panel.
+            </p>
+            <div class="campo-row">
+              <div class="campo">
+                <label>Nueva contraseña</label>
+                <input
+                  type="password"
+                  id="nuevaPass"
+                  placeholder="Mínimo 6 caracteres"
+                />
+              </div>
+              <div class="campo">
+                <label>Confirmar contraseña</label>
+                <input
+                  type="password"
+                  id="confirmarPass"
+                  placeholder="Repetí la contraseña"
+                />
+              </div>
+            </div>
+            <button class="btn-verde" onclick="cambiarPassword()">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"
+                />
+              </svg>
+              Guardar contraseña
+            </button>
+          </div>
+
+          <div class="form-card">
+            <h3>Exportar / Importar datos</h3>
+            <p class="form-sub" style="margin-bottom: 1rem">
+              Hacé un backup de todos los pacientes y resultados cargados.
+            </p>
+            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap">
+              <button class="btn-verde" onclick="exportarDatos()">
+                <svg viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Exportar JSON
+              </button>
+              <label class="btn-outline" style="cursor: pointer">
+                <svg viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                Importar JSON
+                <input
+                  type="file"
+                  accept=".json"
+                  style="display: none"
+                  onchange="importarDatos(event)"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div class="form-card" style="border-color: #f5c6c3">
+            <h3 style="color: var(--error)">Zona de peligro</h3>
+            <p class="form-sub">
+              Borrar todos los datos del sistema. Esta acción no se puede
+              deshacer.
+            </p>
+            <button class="btn-rojo" onclick="borrarTodo()">
+              <svg viewBox="0 0 24 24">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+                <path d="M10 11v6M14 11v6" />
+              </svg>
+              Borrar todos los datos
+            </button>
+          </div>
+        </div>
       </div>
+      <!-- /main-content -->
+    </div>
+    <!-- /admin-panel -->
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+      <svg viewBox="0 0 24 24">
+        <path d="M9 12l2 2 4-4" />
+        <circle cx="12" cy="12" r="10" />
+      </svg>
+      <span id="toastMsg">Guardado</span>
     </div>
 
-  </div><!-- /main-content -->
+    <script>
+      // =====================================================
+      // STORAGE
+      // =====================================================
+      const PASS_KEY = "aurea_admin_pass";
+      const DATA_KEY = "aurea_pacientes";
 
-</div><!-- /admin-panel -->
+      function getPass() {
+        return localStorage.getItem(PASS_KEY) || "aurea2025";
+      }
+      function getPacientes() {
+        try {
+          return JSON.parse(localStorage.getItem(DATA_KEY) || "{}");
+        } catch {
+          return {};
+        }
+      }
+      function savePacientes(data) {
+        localStorage.setItem(DATA_KEY, JSON.stringify(data));
+      }
 
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-  <span id="toastMsg">Guardado</span>
-</div>
+      // =====================================================
+      // LOGIN ADMIN
+      // =====================================================
+      function loginAdmin() {
+        const pass = document.getElementById("adminPass").value;
+        if (pass === getPass()) {
+          document.getElementById("loginAdmin").style.display = "none";
+          document.getElementById("adminPanel").classList.add("visible");
+          actualizarDashboard();
+          renderTablaPacientes();
+        } else {
+          document.getElementById("adminLoginError").classList.add("visible");
+        }
+      }
 
-<script>
-// =====================================================
-// STORAGE
-// =====================================================
-const PASS_KEY = 'aurea_admin_pass';
-const DATA_KEY = 'aurea_pacientes';
+      function cerrarSesionAdmin() {
+        document.getElementById("adminPanel").classList.remove("visible");
+        document.getElementById("loginAdmin").style.display = "flex";
+        document.getElementById("adminPass").value = "";
+        document.getElementById("adminLoginError").classList.remove("visible");
+      }
 
-function getPass() { return localStorage.getItem(PASS_KEY) || 'aurea2025'; }
-function getPacientes() {
-  try { return JSON.parse(localStorage.getItem(DATA_KEY) || '{}'); }
-  catch { return {}; }
-}
-function savePacientes(data) { localStorage.setItem(DATA_KEY, JSON.stringify(data)); }
+      // =====================================================
+      // NAVEGACIÓN ENTRE VISTAS
+      // =====================================================
+      let editandoDNI = null;
 
-// =====================================================
-// LOGIN ADMIN
-// =====================================================
-function loginAdmin() {
-  const pass = document.getElementById('adminPass').value;
-  if (pass === getPass()) {
-    document.getElementById('loginAdmin').style.display = 'none';
-    document.getElementById('adminPanel').classList.add('visible');
-    actualizarDashboard();
-    renderTablaPacientes();
-  } else {
-    document.getElementById('adminLoginError').classList.add('visible');
-  }
-}
+      function mostrarVista(id) {
+        document
+          .querySelectorAll(".vista")
+          .forEach((v) => v.classList.remove("activa"));
+        document
+          .querySelectorAll(".sidebar-nav-item")
+          .forEach((i) => i.classList.remove("activo"));
+        document.getElementById("v-" + id).classList.add("activa");
+        document.querySelectorAll(".sidebar-nav-item").forEach((i) => {
+          if (i.getAttribute("onclick").includes(id)) i.classList.add("activo");
+        });
 
-function cerrarSesionAdmin() {
-  document.getElementById('adminPanel').classList.remove('visible');
-  document.getElementById('loginAdmin').style.display = 'flex';
-  document.getElementById('adminPass').value = '';
-  document.getElementById('adminLoginError').classList.remove('visible');
-}
+        if (id === "dashboard") actualizarDashboard();
+        if (id === "pacientes") renderTablaPacientes();
+        if (id === "agregar" && !editandoDNI) {
+          limpiarFormulario();
+          document.getElementById("formTitulo").textContent = "Nuevo paciente";
+          editandoDNI = null;
+        }
+      }
 
-// =====================================================
-// NAVEGACIÓN ENTRE VISTAS
-// =====================================================
-let editandoDNI = null;
+      // =====================================================
+      // DASHBOARD
+      // =====================================================
+      function actualizarDashboard() {
+        const pacs = getPacientes();
+        const lista = Object.values(pacs);
+        let totalRes = 0,
+          listos = 0,
+          proceso = 0,
+          hoy = 0;
+        const hoyStr = new Date().toISOString().split("T")[0];
 
-function mostrarVista(id) {
-  document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
-  document.querySelectorAll('.sidebar-nav-item').forEach(i => i.classList.remove('activo'));
-  document.getElementById('v-' + id).classList.add('activa');
-  document.querySelectorAll('.sidebar-nav-item').forEach(i => {
-    if (i.getAttribute('onclick').includes(id)) i.classList.add('activo');
-  });
+        lista.forEach((p) => {
+          (p.resultados || []).forEach((r) => {
+            totalRes++;
+            if (r.estado === "listo") listos++;
+            if (r.estado === "proceso") proceso++;
+            if (r.fechaCarga === hoyStr) hoy++;
+          });
+        });
 
-  if (id === 'dashboard') actualizarDashboard();
-  if (id === 'pacientes') renderTablaPacientes();
-  if (id === 'agregar' && !editandoDNI) {
-    limpiarFormulario();
-    document.getElementById('formTitulo').textContent = 'Nuevo paciente';
-    editandoDNI = null;
-  }
-}
+        document.getElementById("s-total").textContent = lista.length;
+        document.getElementById("s-listos").textContent = listos;
+        document.getElementById("s-proceso").textContent = proceso;
+        document.getElementById("s-hoy").textContent = hoy;
 
-// =====================================================
-// DASHBOARD
-// =====================================================
-function actualizarDashboard() {
-  const pacs = getPacientes();
-  const lista = Object.values(pacs);
-  let totalRes = 0, listos = 0, proceso = 0, hoy = 0;
-  const hoyStr = new Date().toISOString().split('T')[0];
-
-  lista.forEach(p => {
-    (p.resultados || []).forEach(r => {
-      totalRes++;
-      if (r.estado === 'listo') listos++;
-      if (r.estado === 'proceso') proceso++;
-      if (r.fechaCarga === hoyStr) hoy++;
-    });
-  });
-
-  document.getElementById('s-total').textContent = lista.length;
-  document.getElementById('s-listos').textContent = listos;
-  document.getElementById('s-proceso').textContent = proceso;
-  document.getElementById('s-hoy').textContent = hoy;
-
-  // Tabla resumen (últimos 5)
-  const tbody = document.getElementById('tablaResumen');
-  tbody.innerHTML = '';
-  const ultimos = lista.slice(-5).reverse();
-  ultimos.forEach(p => {
-    const ults = (p.resultados || []).slice(-1)[0];
-    tbody.innerHTML += `<tr>
+        // Tabla resumen (últimos 5)
+        const tbody = document.getElementById("tablaResumen");
+        tbody.innerHTML = "";
+        const ultimos = lista.slice(-5).reverse();
+        ultimos.forEach((p) => {
+          const ults = (p.resultados || []).slice(-1)[0];
+          tbody.innerHTML += `<tr>
       <td style="font-weight:500;">${p.nombre}</td>
       <td style="color:var(--texto-suave);">${p.dni}</td>
-      <td>${(p.resultados||[]).length} estudio${(p.resultados||[]).length!==1?'s':''}</td>
-      <td>${ults ? `<span class="badge-small ${ults.estado}">${ults.estado==='listo'?'Disponible':'En proceso'}</span>` : '—'}</td>
+      <td>${(p.resultados || []).length} estudio${(p.resultados || []).length !== 1 ? "s" : ""}</td>
+      <td>${ults ? `<span class="badge-small ${ults.estado}">${ults.estado === "listo" ? "Disponible" : "En proceso"}</span>` : "—"}</td>
       <td class="acciones-td">
         <button class="btn-gris" onclick="editarPaciente('${p.dni}')"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Editar</button>
       </td>
     </tr>`;
-  });
-  if (!ultimos.length) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--texto-suave);padding:2rem;">No hay pacientes aún.</td></tr>';
-}
+        });
+        if (!ultimos.length)
+          tbody.innerHTML =
+            '<tr><td colspan="5" style="text-align:center;color:var(--texto-suave);padding:2rem;">No hay pacientes aún.</td></tr>';
+      }
 
-// =====================================================
-// TABLA PACIENTES
-// =====================================================
-function renderTablaPacientes() {
-  const q = (document.getElementById('buscarPac')?.value || '').toLowerCase();
-  const pacs = getPacientes();
-  const tbody = document.getElementById('tablaPacientes');
-  tbody.innerHTML = '';
+      // =====================================================
+      // TABLA PACIENTES
+      // =====================================================
+      function renderTablaPacientes() {
+        const q = (
+          document.getElementById("buscarPac")?.value || ""
+        ).toLowerCase();
+        const pacs = getPacientes();
+        const tbody = document.getElementById("tablaPacientes");
+        tbody.innerHTML = "";
 
-  const lista = Object.values(pacs).filter(p =>
-    p.nombre.toLowerCase().includes(q) || p.dni.includes(q)
-  );
+        const lista = Object.values(pacs).filter(
+          (p) => p.nombre.toLowerCase().includes(q) || p.dni.includes(q),
+        );
 
-  if (!lista.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--texto-suave);padding:2rem;">Sin resultados.</td></tr>';
-    return;
-  }
+        if (!lista.length) {
+          tbody.innerHTML =
+            '<tr><td colspan="6" style="text-align:center;color:var(--texto-suave);padding:2rem;">Sin resultados.</td></tr>';
+          return;
+        }
 
-  lista.forEach(p => {
-    const ults = (p.resultados || []).slice(-1)[0];
-    const ultFecha = ults ? new Date(ults.fecha + 'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}) : '—';
-    const badge = ults
-      ? `<span class="badge-small ${ults.estado}">${ults.estado==='listo'?'Disponible':'En proceso'}</span>`
-      : '—';
-    tbody.innerHTML += `<tr>
+        lista.forEach((p) => {
+          const ults = (p.resultados || []).slice(-1)[0];
+          const ultFecha = ults
+            ? new Date(ults.fecha + "T12:00:00").toLocaleDateString("es-AR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })
+            : "—";
+          const badge = ults
+            ? `<span class="badge-small ${ults.estado}">${ults.estado === "listo" ? "Disponible" : "En proceso"}</span>`
+            : "—";
+          tbody.innerHTML += `<tr>
       <td style="font-weight:500;">${p.nombre}</td>
       <td style="color:var(--texto-suave);">${p.dni}</td>
-      <td>${(p.resultados||[]).length}</td>
+      <td>${(p.resultados || []).length}</td>
       <td>${ultFecha}</td>
       <td>${badge}</td>
       <td class="acciones-td">
@@ -566,34 +1207,34 @@ function renderTablaPacientes() {
         <button class="btn-rojo" onclick="eliminarPaciente('${p.dni}')"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Eliminar</button>
       </td>
     </tr>`;
-  });
-}
+        });
+      }
 
-// =====================================================
-// FORMULARIO — RESULTADOS
-// =====================================================
-let resCount = 0;
+      // =====================================================
+      // FORMULARIO — RESULTADOS
+      // =====================================================
+      let resCount = 0;
 
-function limpiarFormulario() {
-  document.getElementById('fNombre').value = '';
-  document.getElementById('fDNI').value = '';
-  document.getElementById('fFechaNac').value = '';
-  document.getElementById('fTel').value = '';
-  document.getElementById('resultadosForm').innerHTML = '';
-  resCount = 0;
-  editandoDNI = null;
-  agregarResultado(); // uno por defecto
-}
+      function limpiarFormulario() {
+        document.getElementById("fNombre").value = "";
+        document.getElementById("fDNI").value = "";
+        document.getElementById("fFechaNac").value = "";
+        document.getElementById("fTel").value = "";
+        document.getElementById("resultadosForm").innerHTML = "";
+        resCount = 0;
+        editandoDNI = null;
+        agregarResultado(); // uno por defecto
+      }
 
-function agregarResultado(datos = null) {
-  resCount++;
-  const id = resCount;
-  const hoy = new Date().toISOString().split('T')[0];
+      function agregarResultado(datos = null) {
+        resCount++;
+        const id = resCount;
+        const hoy = new Date().toISOString().split("T")[0];
 
-  const div = document.createElement('div');
-  div.className = 'res-item';
-  div.id = 'res-' + id;
-  div.innerHTML = `
+        const div = document.createElement("div");
+        div.className = "res-item";
+        div.id = "res-" + id;
+        div.innerHTML = `
     <div class="res-item-header">
       <span class="res-item-num">Análisis ${id}</span>
       <button class="btn-rojo" onclick="this.closest('.res-item').remove()">
@@ -604,29 +1245,29 @@ function agregarResultado(datos = null) {
     <div class="campo-row">
       <div class="campo">
         <label>Nombre del estudio *</label>
-        <input type="text" class="res-nombre" placeholder="Ej: Hemograma completo" value="${datos?.nombre||''}"/>
+        <input type="text" class="res-nombre" placeholder="Ej: Hemograma completo" value="${datos?.nombre || ""}"/>
       </div>
       <div class="campo">
         <label>Fecha del análisis *</label>
-        <input type="date" class="res-fecha" value="${datos?.fecha||hoy}"/>
+        <input type="date" class="res-fecha" value="${datos?.fecha || hoy}"/>
       </div>
     </div>
     <div class="campo-row">
       <div class="campo">
         <label>Estado</label>
         <select class="res-estado">
-          <option value="listo" ${datos?.estado==='listo'?'selected':''}>Disponible (listo)</option>
-          <option value="proceso" ${datos?.estado==='proceso'?'selected':''}>En proceso</option>
+          <option value="listo" ${datos?.estado === "listo" ? "selected" : ""}>Disponible (listo)</option>
+          <option value="proceso" ${datos?.estado === "proceso" ? "selected" : ""}>En proceso</option>
         </select>
       </div>
       <div class="campo">
         <label>Link al PDF (opcional)</label>
-        <input type="url" class="res-pdf" placeholder="https://... o dejá vacío" value="${datos?.pdfUrl||''}"/>
+        <input type="url" class="res-pdf" placeholder="https://... o dejá vacío" value="${datos?.pdfUrl || ""}"/>
       </div>
     </div>
     <div class="campo">
       <label>Nota para el paciente (opcional)</label>
-      <textarea class="res-nota" placeholder="Ej: Consulte con su médico los valores alterados...">${datos?.nota||''}</textarea>
+      <textarea class="res-nota" placeholder="Ej: Consulte con su médico los valores alterados...">${datos?.nota || ""}</textarea>
     </div>
     <div class="sep"></div>
     <p style="font-size:0.76rem;font-weight:500;color:var(--verde-med);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem;">Valores del resultado</p>
@@ -639,205 +1280,247 @@ function agregarResultado(datos = null) {
       Agregar valor
     </button>
   `;
-  document.getElementById('resultadosForm').appendChild(div);
+        document.getElementById("resultadosForm").appendChild(div);
 
-  // Cargar valores si hay datos
-  if (datos?.valores?.length) {
-    datos.valores.forEach(v => agregarValor(id, v));
-  } else {
-    agregarValor(id); // uno por defecto
-  }
-}
+        // Cargar valores si hay datos
+        if (datos?.valores?.length) {
+          datos.valores.forEach((v) => agregarValor(id, v));
+        } else {
+          agregarValor(id); // uno por defecto
+        }
+      }
 
-function agregarValor(resId, datos = null) {
-  const wrap = document.getElementById('vals-' + resId);
-  const row = document.createElement('div');
-  row.className = 'valor-row';
-  row.innerHTML = `
-    <input type="text" class="vNombre" placeholder="Ej: Glucosa" value="${datos?.nombre||''}"/>
-    <input type="text" class="vValor"  placeholder="89"   value="${datos?.valor||''}"/>
-    <input type="text" class="vUnidad" placeholder="mg/dL" value="${datos?.unidad||''}"/>
-    <input type="text" class="vRef"    placeholder="70–100" value="${datos?.referencia||''}"/>
+      function agregarValor(resId, datos = null) {
+        const wrap = document.getElementById("vals-" + resId);
+        const row = document.createElement("div");
+        row.className = "valor-row";
+        row.innerHTML = `
+    <input type="text" class="vNombre" placeholder="Ej: Glucosa" value="${datos?.nombre || ""}"/>
+    <input type="text" class="vValor"  placeholder="89"   value="${datos?.valor || ""}"/>
+    <input type="text" class="vUnidad" placeholder="mg/dL" value="${datos?.unidad || ""}"/>
+    <input type="text" class="vRef"    placeholder="70–100" value="${datos?.referencia || ""}"/>
     <select class="vEstado">
-      <option value="normal" ${datos?.estado==='normal'||!datos?'selected':''}>Normal</option>
-      <option value="alto"   ${datos?.estado==='alto'?'selected':''}>Elevado</option>
-      <option value="bajo"   ${datos?.estado==='bajo'?'selected':''}>Bajo</option>
+      <option value="normal" ${datos?.estado === "normal" || !datos ? "selected" : ""}>Normal</option>
+      <option value="alto"   ${datos?.estado === "alto" ? "selected" : ""}>Elevado</option>
+      <option value="bajo"   ${datos?.estado === "bajo" ? "selected" : ""}>Bajo</option>
     </select>
     <button class="btn-rojo" onclick="this.closest('.valor-row').remove()">
       <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   `;
-  wrap.appendChild(row);
-}
+        wrap.appendChild(row);
+      }
 
-// =====================================================
-// GUARDAR PACIENTE
-// =====================================================
-function guardarPaciente() {
-  const nombre = document.getElementById('fNombre').value.trim();
-  const dni    = document.getElementById('fDNI').value.trim().replace(/\D/g,'');
-  const tel    = document.getElementById('fTel').value.trim();
-  const fnac   = document.getElementById('fFechaNac').value;
-  const hoy    = new Date().toISOString().split('T')[0];
+      // =====================================================
+      // GUARDAR PACIENTE
+      // =====================================================
+      function guardarPaciente() {
+        const nombre = document.getElementById("fNombre").value.trim();
+        const dni = document
+          .getElementById("fDNI")
+          .value.trim()
+          .replace(/\D/g, "");
+        const tel = document.getElementById("fTel").value.trim();
+        const fnac = document.getElementById("fFechaNac").value;
+        const hoy = new Date().toISOString().split("T")[0];
 
-  if (!nombre || !dni || dni.length < 6) {
-    toast('Completá nombre y DNI correctamente', 'error');
-    return;
-  }
+        if (!nombre || !dni || dni.length < 6) {
+          toast("Completá nombre y DNI correctamente", "error");
+          return;
+        }
 
-  // Recopilar resultados
-  const resultados = [];
-  document.querySelectorAll('.res-item').forEach(item => {
-    const nombreRes = item.querySelector('.res-nombre').value.trim();
-    const fecha     = item.querySelector('.res-fecha').value;
-    const estado    = item.querySelector('.res-estado').value;
-    const pdfUrl    = item.querySelector('.res-pdf').value.trim();
-    const nota      = item.querySelector('.res-nota').value.trim();
+        // Recopilar resultados
+        const resultados = [];
+        document.querySelectorAll(".res-item").forEach((item) => {
+          const nombreRes = item.querySelector(".res-nombre").value.trim();
+          const fecha = item.querySelector(".res-fecha").value;
+          const estado = item.querySelector(".res-estado").value;
+          const pdfUrl = item.querySelector(".res-pdf").value.trim();
+          const nota = item.querySelector(".res-nota").value.trim();
 
-    if (!nombreRes || !fecha) return;
+          if (!nombreRes || !fecha) return;
 
-    // Recopilar valores
-    const valores = [];
-    item.querySelectorAll('.valor-row').forEach(row => {
-      const n = row.querySelector('.vNombre').value.trim();
-      const v = row.querySelector('.vValor').value.trim();
-      if (!n || !v) return;
-      valores.push({
-        nombre:     n,
-        valor:      v,
-        unidad:     row.querySelector('.vUnidad').value.trim(),
-        referencia: row.querySelector('.vRef').value.trim(),
-        estado:     row.querySelector('.vEstado').value,
-      });
-    });
+          // Recopilar valores
+          const valores = [];
+          item.querySelectorAll(".valor-row").forEach((row) => {
+            const n = row.querySelector(".vNombre").value.trim();
+            const v = row.querySelector(".vValor").value.trim();
+            if (!n || !v) return;
+            valores.push({
+              nombre: n,
+              valor: v,
+              unidad: row.querySelector(".vUnidad").value.trim(),
+              referencia: row.querySelector(".vRef").value.trim(),
+              estado: row.querySelector(".vEstado").value,
+            });
+          });
 
-    resultados.push({ nombre:nombreRes, fecha, estado, pdfUrl, nota, valores, fechaCarga:hoy });
-  });
+          resultados.push({
+            nombre: nombreRes,
+            fecha,
+            estado,
+            pdfUrl,
+            nota,
+            valores,
+            fechaCarga: hoy,
+          });
+        });
 
-  const pacs = getPacientes();
+        const pacs = getPacientes();
 
-  // Si estamos editando, conservar resultados anteriores no modificados
-  const pacExistente = editandoDNI ? (pacs[editandoDNI] || {}) : {};
+        // Si estamos editando, conservar resultados anteriores no modificados
+        const pacExistente = editandoDNI ? pacs[editandoDNI] || {} : {};
 
-  pacs[dni] = {
-    nombre, dni, tel, fechaNac: fnac,
-    resultados,
-    fechaRegistro: pacExistente.fechaRegistro || hoy,
-  };
+        pacs[dni] = {
+          nombre,
+          dni,
+          tel,
+          fechaNac: fnac,
+          resultados,
+          fechaRegistro: pacExistente.fechaRegistro || hoy,
+        };
 
-  // Si el DNI cambió al editar, borrar el anterior
-  if (editandoDNI && editandoDNI !== dni) {
-    delete pacs[editandoDNI];
-  }
+        // Si el DNI cambió al editar, borrar el anterior
+        if (editandoDNI && editandoDNI !== dni) {
+          delete pacs[editandoDNI];
+        }
 
-  savePacientes(pacs);
-  toast('Paciente guardado correctamente');
-  editandoDNI = null;
-  mostrarVista('pacientes');
-}
+        savePacientes(pacs);
+        toast("Paciente guardado correctamente");
+        editandoDNI = null;
+        mostrarVista("pacientes");
+      }
 
-// =====================================================
-// EDITAR PACIENTE
-// =====================================================
-function editarPaciente(dni) {
-  const pacs = getPacientes();
-  const p = pacs[dni];
-  if (!p) return;
+      // =====================================================
+      // EDITAR PACIENTE
+      // =====================================================
+      function editarPaciente(dni) {
+        const pacs = getPacientes();
+        const p = pacs[dni];
+        if (!p) return;
 
-  editandoDNI = dni;
-  document.getElementById('formTitulo').textContent = 'Editar: ' + p.nombre;
-  document.getElementById('fNombre').value  = p.nombre || '';
-  document.getElementById('fDNI').value     = p.dni    || '';
-  document.getElementById('fTel').value     = p.tel    || '';
-  document.getElementById('fFechaNac').value= p.fechaNac || '';
-  document.getElementById('resultadosForm').innerHTML = '';
-  resCount = 0;
+        editandoDNI = dni;
+        document.getElementById("formTitulo").textContent =
+          "Editar: " + p.nombre;
+        document.getElementById("fNombre").value = p.nombre || "";
+        document.getElementById("fDNI").value = p.dni || "";
+        document.getElementById("fTel").value = p.tel || "";
+        document.getElementById("fFechaNac").value = p.fechaNac || "";
+        document.getElementById("resultadosForm").innerHTML = "";
+        resCount = 0;
 
-  (p.resultados || []).forEach(r => agregarResultado(r));
-  if (!p.resultados?.length) agregarResultado();
+        (p.resultados || []).forEach((r) => agregarResultado(r));
+        if (!p.resultados?.length) agregarResultado();
 
-  mostrarVista('agregar');
-}
+        mostrarVista("agregar");
+      }
 
-// =====================================================
-// ELIMINAR PACIENTE
-// =====================================================
-function eliminarPaciente(dni) {
-  if (!confirm('¿Eliminár a este paciente y todos sus resultados? Esta acción no se puede deshacer.')) return;
-  const pacs = getPacientes();
-  delete pacs[dni];
-  savePacientes(pacs);
-  toast('Paciente eliminado');
-  renderTablaPacientes();
-  actualizarDashboard();
-}
+      // =====================================================
+      // ELIMINAR PACIENTE
+      // =====================================================
+      function eliminarPaciente(dni) {
+        if (
+          !confirm(
+            "¿Eliminár a este paciente y todos sus resultados? Esta acción no se puede deshacer.",
+          )
+        )
+          return;
+        const pacs = getPacientes();
+        delete pacs[dni];
+        savePacientes(pacs);
+        toast("Paciente eliminado");
+        renderTablaPacientes();
+        actualizarDashboard();
+      }
 
-// =====================================================
-// CONFIGURACIÓN
-// =====================================================
-function cambiarPassword() {
-  const nueva     = document.getElementById('nuevaPass').value;
-  const confirmar = document.getElementById('confirmarPass').value;
-  if (nueva.length < 6) { toast('La contraseña debe tener al menos 6 caracteres', 'error'); return; }
-  if (nueva !== confirmar) { toast('Las contraseñas no coinciden', 'error'); return; }
-  localStorage.setItem(PASS_KEY, nueva);
-  document.getElementById('nuevaPass').value = '';
-  document.getElementById('confirmarPass').value = '';
-  toast('Contraseña actualizada');
-}
+      // =====================================================
+      // CONFIGURACIÓN
+      // =====================================================
+      function cambiarPassword() {
+        const nueva = document.getElementById("nuevaPass").value;
+        const confirmar = document.getElementById("confirmarPass").value;
+        if (nueva.length < 6) {
+          toast("La contraseña debe tener al menos 6 caracteres", "error");
+          return;
+        }
+        if (nueva !== confirmar) {
+          toast("Las contraseñas no coinciden", "error");
+          return;
+        }
+        localStorage.setItem(PASS_KEY, nueva);
+        document.getElementById("nuevaPass").value = "";
+        document.getElementById("confirmarPass").value = "";
+        toast("Contraseña actualizada");
+      }
 
-function exportarDatos() {
-  const data = { pacientes: getPacientes(), exportado: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url; a.download = 'aurea-backup-' + new Date().toISOString().split('T')[0] + '.json';
-  a.click(); URL.revokeObjectURL(url);
-}
+      function exportarDatos() {
+        const data = {
+          pacientes: getPacientes(),
+          exportado: new Date().toISOString(),
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download =
+          "aurea-backup-" + new Date().toISOString().split("T")[0] + ".json";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
 
-function importarDatos(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const data = JSON.parse(ev.target.result);
-      if (data.pacientes) {
-        savePacientes(data.pacientes);
-        toast('Datos importados correctamente');
+      function importarDatos(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            const data = JSON.parse(ev.target.result);
+            if (data.pacientes) {
+              savePacientes(data.pacientes);
+              toast("Datos importados correctamente");
+              actualizarDashboard();
+              renderTablaPacientes();
+            } else toast("Archivo inválido", "error");
+          } catch {
+            toast("Error al leer el archivo", "error");
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function borrarTodo() {
+        if (
+          !confirm(
+            "⚠ Esto borrará TODOS los pacientes y resultados. ¿Estás segura?",
+          )
+        )
+          return;
+        if (!confirm("Última confirmación: ¿Borrar todo?")) return;
+        savePacientes({});
+        toast("Datos borrados");
         actualizarDashboard();
         renderTablaPacientes();
-      } else toast('Archivo inválido', 'error');
-    } catch { toast('Error al leer el archivo', 'error'); }
-  };
-  reader.readAsText(file);
-}
+      }
 
-function borrarTodo() {
-  if (!confirm('⚠ Esto borrará TODOS los pacientes y resultados. ¿Estás segura?')) return;
-  if (!confirm('Última confirmación: ¿Borrar todo?')) return;
-  savePacientes({});
-  toast('Datos borrados');
-  actualizarDashboard();
-  renderTablaPacientes();
-}
+      // =====================================================
+      // TOAST
+      // =====================================================
+      function toast(msg, tipo = "ok") {
+        const el = document.getElementById("toast");
+        document.getElementById("toastMsg").textContent = msg;
+        el.style.background =
+          tipo === "error" ? "var(--error)" : "var(--verde)";
+        el.classList.add("visible");
+        setTimeout(() => el.classList.remove("visible"), 2800);
+      }
 
-// =====================================================
-// TOAST
-// =====================================================
-function toast(msg, tipo = 'ok') {
-  const el = document.getElementById('toast');
-  document.getElementById('toastMsg').textContent = msg;
-  el.style.background = tipo === 'error' ? 'var(--error)' : 'var(--verde)';
-  el.classList.add('visible');
-  setTimeout(() => el.classList.remove('visible'), 2800);
-}
-
-// =====================================================
-// INIT
-// =====================================================
-// Agregar un resultado vacío al cargar el formulario
-limpiarFormulario();
-</script>
-</body>
+      // =====================================================
+      // INIT
+      // =====================================================
+      // Agregar un resultado vacío al cargar el formulario
+      limpiarFormulario();
+    </script>
+  </body>
 </html>
