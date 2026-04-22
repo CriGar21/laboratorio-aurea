@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Preparación de Estudios — Áurea Laboratorio Bioquímico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --verde:#445925; --verde-med:#9BAB8F; --verde-claro:#DEE8D2;
+      --crema:#F2F2F2; --arena:#F2DEA2; --arena-med:#EBE7D0;
+      --marron:#4D301F; --marron-med:#BC6849;
+      --blanco:#ffffff; --texto:#2a2a2a; --texto-suave:#6b6b6b;
+      --nav-h:80px;
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:'DM Sans',sans-serif; color:var(--texto); background:var(--crema); overflow-x:hidden; }
+    a { text-decoration:none; color:inherit; }
+
+    /* NAVBAR */
+    .navbar { position:fixed; top:0; left:0; right:0; height:var(--nav-h); z-index:1000; display:flex; align-items:center; padding:0 3rem; background:var(--blanco); box-shadow:0 2px 20px rgba(0,0,0,0.07); }
+    .nav-logo { display:flex; align-items:center; gap:0.8rem; text-decoration:none; flex-shrink:0; }
+    .nav-logo-circulo { width:50px; height:50px; border-radius:50%; background:var(--verde-claro); display:flex; align-items:center; justify-content:center; }
+    .nav-logo-circulo svg { width:36px; height:36px; }
+    .nav-logo-texto { display:flex; flex-direction:column; line-height:1.1; }
+    .nav-logo-nombre { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; letter-spacing:0.07em; color:var(--verde); }
+    .nav-logo-sub { font-size:0.57rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--verde-med); }
+    .nav-links { display:flex; align-items:center; gap:0.1rem; margin-left:auto; }
+    .nav-links a { font-size:0.84rem; color:var(--texto-suave); padding:0.45rem 0.85rem; border-radius:6px; transition:color 0.2s,background 0.2s; white-space:nowrap; }
+    .nav-links a:hover,.nav-links a.activo { color:var(--verde); background:var(--verde-claro); }
+    .nav-drop { position:relative; }
+    .nav-drop>a::after { content:" ▾"; font-size:0.62rem; }
+    .drop-menu { display:none; position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%); background:var(--blanco); border:1px solid #e4e0d6; border-radius:14px; min-width:220px; box-shadow:0 12px 36px rgba(0,0,0,0.1); padding:0.6rem 0; z-index:200; }
+    .nav-drop:hover .drop-menu { display:block; }
+    .drop-menu a { display:flex; align-items:center; gap:0.6rem; padding:0.6rem 1.2rem; font-size:0.84rem; color:var(--texto) !important; background:none !important; }
+    .drop-menu a:hover { background:var(--arena-med) !important; color:var(--verde) !important; }
+    .drop-sep { height:1px; background:#eee8d8; margin:0.4rem 1rem; }
+    .nav-cta { display:inline-flex; align-items:center; gap:0.4rem; background:var(--verde) !important; color:var(--blanco) !important; padding:0.5rem 1.2rem !important; border-radius:30px !important; font-weight:500 !important; font-size:0.83rem !important; margin-left:0.6rem; }
+    .nav-cta:hover { opacity:0.9; }
+    .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:0.4rem; margin-left:auto; }
+    .hamburger span { display:block; width:22px; height:2px; background:var(--verde); border-radius:2px; }
+    .mobile-nav { display:none; position:fixed; top:var(--nav-h); left:0; right:0; background:var(--blanco); border-bottom:1px solid #e0ddd5; padding:1rem; flex-direction:column; gap:0.2rem; z-index:999; }
+    .mobile-nav.abierto { display:flex; }
+    .mobile-nav a { padding:0.65rem 1rem; font-size:0.9rem; color:var(--texto); border-radius:8px; }
+    .mobile-nav a:hover { background:var(--verde-claro); color:var(--verde); }
+    .mobile-nav .mob-sep { height:1px; background:#eee; margin:0.3rem 0; }
+    .mobile-nav .mob-cta { background:var(--verde); color:var(--blanco) !important; text-align:center; font-weight:500; }
+
+    /* PAGE HERO */
+    .page-hero { position:relative; height:50vh; min-height:320px; display:flex; align-items:flex-end; overflow:hidden; padding-top:var(--nav-h); }
+    .page-hero-bg { position:absolute; inset:0; background: linear-gradient(to bottom,rgba(68,89,37,0.55) 0%,rgba(68,89,37,0.9) 100%), url('img/estudios-hero.jpg') center/cover no-repeat; }
+    /* FOTO: img/estudios-hero.jpg — mesa de laboratorio, tubos, microscopio */
+    .page-hero-content { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:0 3rem 4rem; width:100%; }
+    .breadcrumb { font-size:0.74rem; color:rgba(255,255,255,0.52); margin-bottom:0.8rem; }
+    .breadcrumb a { color:rgba(255,255,255,0.52); }
+    .breadcrumb a:hover { color:var(--blanco); }
+    .page-hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4rem); font-weight:300; color:var(--blanco); line-height:1.1; }
+    .page-hero h1 strong { font-weight:600; font-style:italic; color:var(--arena); }
+    .page-hero p { font-size:1rem; color:rgba(255,255,255,0.7); margin-top:0.6rem; max-width:520px; }
+
+    /* ANIMACIONES */
+    .reveal { opacity:0; transform:translateY(36px); transition:opacity 0.7s ease,transform 0.7s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+
+    /* BUSCADOR STICKY */
+    .buscador-sticky {
+      background:var(--blanco);
+      border-bottom:1px solid #e4e0d6;
+      padding:1.2rem 2rem;
+      position:sticky;
+      top:var(--nav-h);
+      z-index:100;
+    }
+
+    .buscador-sticky-inner { max-width:1200px; margin:0 auto; display:flex; gap:1rem; align-items:center; flex-wrap:wrap; }
+
+    .search-grande {
+      display:flex; align-items:center; gap:0.7rem;
+      background:var(--crema); border:1.5px solid #ddd8c8;
+      border-radius:40px; padding:0.7rem 1.3rem;
+      flex:1; min-width:200px;
+      transition:border-color 0.2s;
+    }
+    .search-grande:focus-within { border-color:var(--verde); background:var(--blanco); }
+    .search-grande svg { width:18px; height:18px; stroke:var(--verde-med); fill:none; stroke-width:2; flex-shrink:0; }
+    .search-grande input { border:none; background:none; outline:none; font-family:'DM Sans',sans-serif; font-size:0.95rem; color:var(--texto); flex:1; }
+    .search-grande input::placeholder { color:var(--texto-suave); }
+
+    .alpha-fila { display:flex; flex-wrap:wrap; gap:0.2rem; }
+    .abtn { padding:0.3rem 0.55rem; border:1px solid #ddd8c8; border-radius:6px; background:none; font-family:'DM Sans',sans-serif; font-size:0.76rem; color:var(--texto-suave); cursor:pointer; transition:all 0.15s; }
+    .abtn:hover,.abtn.activo { background:var(--verde); color:var(--blanco); border-color:var(--verde); }
+
+    /* LAYOUT PRINCIPAL */
+    .estudios-layout { max-width:1200px; margin:0 auto; padding:2.5rem 2rem 5rem; display:grid; grid-template-columns:1fr 1.2fr; gap:2rem; align-items:start; }
+
+    /* LISTA */
+    .lista-card { background:var(--blanco); border-radius:18px; border:1px solid #e4e0d6; overflow:hidden; }
+
+    .lista-header { padding:0.8rem 1.2rem; background:var(--crema); border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; }
+    .lista-header span { font-size:0.76rem; color:var(--texto-suave); }
+    .lista-header strong { font-size:0.76rem; color:var(--verde); font-weight:500; }
+
+    .lista-scroll { max-height:calc(100vh - 280px); overflow-y:auto; }
+    .lista-scroll::-webkit-scrollbar { width:4px; }
+    .lista-scroll::-webkit-scrollbar-thumb { background:var(--verde-med); border-radius:10px; }
+
+    /* Categorías */
+    .cat-header { padding:0.5rem 1.2rem; background:var(--verde-claro); font-size:0.68rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--verde); border-bottom:1px solid #d8e8c8; }
+
+    .exam-row { display:flex; align-items:center; gap:0.8rem; padding:0.75rem 1.2rem; border-bottom:1px solid #f0ece2; cursor:pointer; transition:background 0.12s; }
+    .exam-row:last-child { border-bottom:none; }
+    .exam-row:hover,.exam-row.elegido { background:var(--verde-claro); }
+    .exam-row.elegido .exam-row-nombre { color:var(--verde); font-weight:500; }
+    .exam-punto { width:7px; height:7px; border-radius:50%; background:var(--verde-med); flex-shrink:0; }
+    .exam-row-nombre { font-size:0.87rem; flex:1; }
+    .exam-row-cat { font-size:0.68rem; color:var(--texto-suave); background:var(--crema); padding:0.1rem 0.5rem; border-radius:20px; white-space:nowrap; }
+
+    .sin-res { padding:2rem; text-align:center; font-size:0.86rem; color:var(--texto-suave); }
+
+    /* DETALLE */
+    .detalle-wrap { position:sticky; top:calc(var(--nav-h) + 90px); }
+
+    .detalle-empty { background:var(--blanco); border-radius:18px; border:1px solid #e4e0d6; padding:4rem 2rem; text-align:center; }
+    .detalle-empty svg { width:44px; height:44px; stroke:var(--verde-claro); fill:none; stroke-width:1.4; margin:0 auto 1rem; display:block; }
+    .detalle-empty p { font-size:0.86rem; color:var(--texto-suave); }
+
+    .detalle-card { background:var(--blanco); border-radius:18px; border:1px solid #e4e0d6; overflow:hidden; display:none; }
+    .detalle-card.visible { display:block; }
+
+    .detalle-head { background:var(--verde); padding:1.8rem 2rem; }
+    .detalle-nombre { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:600; color:var(--blanco); margin-bottom:0.2rem; }
+    .detalle-sigla { font-size:0.7rem; color:rgba(255,255,255,0.55); text-transform:uppercase; letter-spacing:0.12em; }
+    .detalle-tags { display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.9rem; }
+    .dtag { background:rgba(255,255,255,0.15); color:var(--blanco); font-size:0.72rem; padding:0.22rem 0.7rem; border-radius:20px; }
+
+    .detalle-body { padding:1.8rem 2rem; }
+
+    .det-bloque { margin-bottom:1.4rem; }
+    .det-bloque:last-child { margin-bottom:0; }
+    .det-lbl { font-size:0.65rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--verde-med); margin-bottom:0.5rem; font-weight:500; }
+    .det-val { font-size:0.92rem; color:var(--texto-suave); line-height:1.65; }
+
+    .det-sep { height:1px; background:#eee; margin:1.2rem 0; }
+
+    .det-alerta { background:#fff8e8; border-left:3px solid #e8a500; border-radius:0 10px 10px 0; padding:0.8rem 1rem; font-size:0.83rem; color:#7a5500; line-height:1.55; margin-top:1.2rem; }
+
+    .det-ayuno-badge {
+      display:inline-flex; align-items:center; gap:0.5rem;
+      padding:0.6rem 1rem; border-radius:10px; font-size:0.84rem; font-weight:500;
+      margin-bottom:1.2rem;
+    }
+    .det-ayuno-badge.si { background:#fff8e8; color:#7a5500; }
+    .det-ayuno-badge.no { background:#eaf7ef; color:#1a6e3a; }
+    .det-ayuno-badge svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; }
+
+    .btn-wa-det { display:inline-flex; align-items:center; gap:0.5rem; background:#25D366; color:var(--blanco); padding:0.65rem 1.3rem; border-radius:30px; font-size:0.84rem; font-weight:500; margin-top:1.4rem; transition:background 0.2s; }
+    .btn-wa-det:hover { background:#1ebe5d; }
+    .btn-wa-det svg { width:16px; height:16px; fill:var(--blanco); }
+
+    /* AVISO GENERAL */
+    .aviso-gral { background:var(--verde); padding:4rem 2rem; }
+    .aviso-gral-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr 1fr; gap:2rem; }
+    .aviso-item { display:flex; gap:1rem; align-items:flex-start; }
+    .aviso-ico { width:42px; height:42px; border-radius:11px; background:rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .aviso-ico svg { width:20px; height:20px; stroke:var(--arena); fill:none; stroke-width:1.8; }
+    .aviso-txt h4 { font-size:0.95rem; font-weight:500; color:var(--blanco); margin-bottom:0.3rem; }
+    .aviso-txt p { font-size:0.82rem; color:rgba(255,255,255,0.65); line-height:1.55; }
+
+    /* FOOTER */
+    footer { background:var(--marron); color:rgba(255,255,255,0.62); padding:4rem 3rem 2rem; }
+    .footer-top { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.8fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:2rem; }
+    .footer-marca-nombre { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; color:var(--blanco); letter-spacing:0.07em; }
+    .footer-marca-sub { font-size:0.57rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:1rem; }
+    .footer-desc { font-size:0.82rem; line-height:1.65; max-width:280px; }
+    .footer-col h5 { font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:1.2rem; }
+    .footer-col a { display:block; font-size:0.84rem; color:rgba(255,255,255,0.58); margin-bottom:0.55rem; transition:color 0.2s; }
+    .footer-col a:hover { color:var(--blanco); }
+    .footer-bottom { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; font-size:0.74rem; color:rgba(255,255,255,0.26); flex-wrap:wrap; gap:0.5rem; }
+
+    .wa-flotante { position:fixed; bottom:1.8rem; right:1.8rem; width:52px; height:52px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,0,0,0.2); z-index:999; text-decoration:none; transition:transform 0.2s; }
+    .wa-flotante:hover { transform:scale(1.1); }
+    .wa-flotante svg { width:27px; height:27px; fill:var(--blanco); }
+
+    @media(max-width:1024px){
+      .estudios-layout { grid-template-columns:1fr; }
+      .detalle-wrap { position:static; }
+      .lista-scroll { max-height:400px; }
+      .aviso-gral-inner { grid-template-columns:1fr; gap:1.5rem; }
+      .footer-top { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:768px){
+      .navbar { padding:0 1.5rem; }
+      .nav-links { display:none; }
+      .hamburger { display:flex; }
+      .page-hero-content { padding:0 1.5rem 3rem; }
+      .buscador-sticky { padding:1rem 1.2rem; }
+      .buscador-sticky-inner { flex-direction:column; align-items:stretch; }
+      .estudios-layout { padding:1.5rem 1.2rem 4rem; }
+      .footer-top { grid-template-columns:1fr; }
+      .footer-bottom { flex-direction:column; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-circulo">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M 15 78 L 15 42 A 38 38 0 0 1 53 4 L 85 4 L 85 78 Z" stroke="#445925" stroke-width="4.5" fill="none" stroke-linejoin="round"/>
+        <rect x="53" y="42" width="32" height="36" stroke="#445925" stroke-width="4" fill="none"/>
+        <rect x="53" y="61" width="17" height="17" stroke="#445925" stroke-width="3.5" fill="none"/>
+        <path d="M 53 78 A 36 36 0 0 0 15 42" stroke="#445925" stroke-width="4" fill="none"/>
+        <path d="M 53 61 A 19 19 0 0 0 85 42" stroke="#445925" stroke-width="3.5" fill="none"/>
+        <path d="M 70 61 A 9 9 0 0 0 70 78" stroke="#9BAB8F" stroke-width="3" fill="none"/>
+        <circle cx="70" cy="69" r="3" fill="#9BAB8F"/>
+      </svg>
+    </div>
+    <div class="nav-logo-texto">
+      <span class="nav-logo-nombre">ÁUREA</span>
+      <span class="nav-logo-sub">Laboratorio Bioquímico</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="nosotros.html">Nosotros</a>
+    <div class="nav-drop">
+      <a href="#">Pacientes</a>
+      <div class="drop-menu">
+        <a href="resultados.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Ver resultados online</a>
+        <a href="domicilio.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Extracción a domicilio</a>
+        <div class="drop-sep"></div>
+        <a href="estudios.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Preparación de estudios</a>
+      </div>
+    </div>
+    <a href="servicios.html">Servicios</a>
+    <a href="estudios.html" class="activo">Estudios</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="resultados.html" class="nav-cta"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Ver resultados</a>
+  </div>
+  <button class="hamburger" id="hambBtn"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Inicio</a>
+  <a href="nosotros.html">Nosotros</a>
+  <a href="servicios.html">Servicios</a>
+  <a href="estudios.html">Estudios</a>
+  <a href="contacto.html">Contacto</a>
+  <div class="mob-sep"></div>
+  <a href="resultados.html">Ver resultados online</a>
+  <a href="domicilio.html">Extracción a domicilio</a>
+  <a href="resultados.html" class="mob-cta">Ver mis resultados</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-content">
+    <p class="breadcrumb"><a href="index.html">Inicio</a> &nbsp;/&nbsp; Estudios</p>
+    <h1>Preparación de <strong>estudios.</strong></h1>
+    <p>Todo lo que necesitás saber antes de venir al laboratorio.</p>
+  </div>
+</div>
+
+<!-- BUSCADOR STICKY -->
+<div class="buscador-sticky">
+  <div class="buscador-sticky-inner">
+    <div class="search-grande">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="buscarInput" placeholder="Buscá un estudio por nombre o sigla..." oninput="filtrar()"/>
+    </div>
+    <div class="alpha-fila" id="alphaFila"></div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="estudios-layout">
+
+  <!-- LISTA -->
+  <div class="lista-card reveal">
+    <div class="lista-header">
+      <span id="contador">Cargando...</span>
+      <strong>Hacé clic para ver la preparación</strong>
+    </div>
+    <div class="lista-scroll" id="listaScroll"></div>
+  </div>
+
+  <!-- DETALLE -->
+  <div class="detalle-wrap">
+    <div class="detalle-empty" id="detalleEmpty">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <p>Seleccioná un estudio de la lista<br/>para ver toda la información.</p>
+    </div>
+    <div class="detalle-card" id="detalleCard"></div>
+  </div>
+
+</div>
+
+<!-- AVISOS GENERALES -->
+<div class="aviso-gral">
+  <div class="aviso-gral-inner">
+    <div class="aviso-item reveal">
+      <div class="aviso-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="aviso-txt">
+        <h4>Horario de extracción</h4>
+        <p>Lunes a viernes de 7:00 a 12:00 hs. Sábados de 7:00 a 10:00 hs. Sin turno previo.</p>
+      </div>
+    </div>
+    <div class="aviso-item reveal">
+      <div class="aviso-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="aviso-txt">
+        <h4>Documentación necesaria</h4>
+        <p>DNI del paciente y orden médica (si la tenés). Podés venir sin orden para análisis de rutina.</p>
+      </div>
+    </div>
+    <div class="aviso-item reveal">
+      <div class="aviso-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2"/></svg></div>
+      <div class="aviso-txt">
+        <h4>¿Dudas sobre tu estudio?</h4>
+        <p>Escribinos por WhatsApp y te decimos exactamente cómo prepararte antes de venir.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-marca-nombre">ÁUREA</div>
+      <div class="footer-marca-sub">Laboratorio Bioquímico</div>
+      <p class="footer-desc">Análisis clínicos de alta complejidad con atención personalizada. Junín, Buenos Aires, Argentina.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Navegación</h5>
+      <a href="index.html">Inicio</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="servicios.html">Servicios</a>
+      <a href="estudios.html">Estudios</a>
+      <a href="contacto.html">Contacto</a>
+    </div>
+    <div class="footer-col">
+      <h5>Pacientes</h5>
+      <a href="resultados.html">Resultados online</a>
+      <a href="domicilio.html">Extracción a domicilio</a>
+      <a href="estudios.html">Preparación de estudios</a>
+    </div>
+    <div class="footer-col">
+      <h5>Contacto</h5>
+      <a href="#">Av. [Tu dirección]</a>
+      <a href="#">Junín, Buenos Aires</a>
+      <a href="tel:+54XXXXXXXXX">(xxx) xxx-xxxx</a>
+      <a href="mailto:contacto@aurea.com.ar">contacto@aurea.com.ar</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Áurea Laboratorio Bioquímico. Todos los derechos reservados.</span>
+    <span>Junín, Buenos Aires, Argentina</span>
+  </div>
+</footer>
+
+<a href="https://wa.me/5491100000000" target="_blank" class="wa-flotante">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+  // NAVBAR & MOBILE
+  document.getElementById('hambBtn').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('abierto'));
+  const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }), {threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // BASE DE DATOS COMPLETA
+  const examenes = [
+    { nombre:"Ácido úrico", sigla:"AURIC", cat:"Bioquímica", ayuno:"8 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno de 8 horas. Los 3 días previos evitá mariscos, vísceras y alcohol.", nota:"" },
+    { nombre:"Antibiograma", sigla:"ANTIBIOG", cat:"Microbiología", ayuno:"No requerido", muestra:"Según cultivo", resultado:"48–72 horas", prep:"Se informa junto con el cultivo correspondiente. No requiere preparación adicional del paciente.", nota:"" },
+    { nombre:"Bilirrubina total y fracciones", sigla:"BILI", cat:"Hepático", ayuno:"4 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno de 4 horas. Evitá exposición solar directa antes de la extracción.", nota:"" },
+    { nombre:"Calcio sérico", sigla:"CA", cat:"Bioquímica", ayuno:"4 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno mínimo de 4 horas.", nota:"" },
+    { nombre:"Chagas (serología)", sigla:"CHAG", cat:"Serología", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"No se requiere preparación especial.", nota:"" },
+    { nombre:"Coagulograma (TP y KPTT)", sigla:"COAG", cat:"Hematología", ayuno:"No requerido", muestra:"Sangre venosa (citrato)", resultado:"Mismo día", prep:"No se requiere preparación especial. Informá si tomás anticoagulantes.", nota:"Informá siempre si tomás anticoagulantes (warfarina, acenocumarol, heparina)." },
+    { nombre:"Colesterol total y fracciones", sigla:"COL", cat:"Bioquímica", ayuno:"12 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno de 12 horas. Los 3 días previos evitá comidas grasosas y el consumo de alcohol.", nota:"" },
+    { nombre:"Coprocultivo", sigla:"COPRO", cat:"Microbiología", ayuno:"No requerido", muestra:"Materia fecal", resultado:"48–72 horas", prep:"Recolectá una muestra de materia fecal fresca en un frasco estéril. No mezclar con orina. Llevá la muestra dentro de las 2 horas de recolección.", nota:"No usar antibióticos 48 hs antes sin consultarnos." },
+    { nombre:"Cortisol basal", sigla:"CORT", cat:"Hormonas", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"La extracción debe realizarse entre las 7:00 y 9:00 de la mañana. No hacer ejercicio intenso el día previo.", nota:"El cortisol tiene variación diurna — el horario de extracción es clave." },
+    { nombre:"Creatinina y urea", sigla:"CREA", cat:"Bioquímica", ayuno:"4 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno mínimo de 4 horas. Hidratación normal.", nota:"" },
+    { nombre:"Eritrosedimentación (VSG)", sigla:"VSG", cat:"Hematología", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"Mismo día", prep:"No se requiere preparación especial.", nota:"" },
+    { nombre:"Estradiol", sigla:"E2", cat:"Hormonas", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"El médico indicará el día del ciclo en que debe realizarse la extracción (generalmente día 3 del ciclo).", nota:"Informá el día del ciclo menstrual al momento de la extracción." },
+    { nombre:"Ferritina", sigla:"FERR", cat:"Hematología", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24 horas", prep:"No se requiere preparación especial.", nota:"" },
+    { nombre:"Fibrinógeno", sigla:"FIB", cat:"Hematología", ayuno:"No requerido", muestra:"Sangre venosa (citrato)", resultado:"Mismo día", prep:"No se requiere preparación especial.", nota:"" },
+    { nombre:"Fosfatasa alcalina (FAL)", sigla:"FAL", cat:"Hepático", ayuno:"4–6 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno de 4 a 6 horas.", nota:"" },
+    { nombre:"FSH y LH", sigla:"FSH/LH", cat:"Hormonas", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"El médico indicará el día del ciclo. Generalmente día 2 o 3 del ciclo menstrual.", nota:"Informá el día del ciclo al momento de la extracción." },
+    { nombre:"Glucosa en ayunas", sigla:"GLUC", cat:"Bioquímica", ayuno:"8–12 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno de 8 a 12 horas. Podés tomar agua. Evitá el ejercicio intenso las 24 horas previas.", nota:"Si sos diabético o tomás insulina, consultanos antes del estudio." },
+    { nombre:"Hepatitis B (HBsAg)", sigla:"HBsAg", cat:"Serología", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24 horas", prep:"No se requiere preparación especial.", nota:"" },
+    { nombre:"Hepatitis C (Anti-HCV)", sigla:"HCV", cat:"Serología", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24 horas", prep:"No se requiere preparación especial.", nota:"" },
+    { nombre:"Hemoglobina glicosilada (HbA1c)", sigla:"HBA1C", cat:"Diabetes", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"Mismo día", prep:"No se requiere ayuno ni preparación especial.", nota:"" },
+    { nombre:"Hemograma completo", sigla:"HMG", cat:"Hematología", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"Mismo día", prep:"No se requiere preparación especial. No es necesario el ayuno.", nota:"" },
+    { nombre:"Hierro sérico y transferrina", sigla:"HIERRO", cat:"Hematología", ayuno:"8 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno de 8 horas. No tomes suplementos de hierro las 24 horas previas.", nota:"" },
+    { nombre:"HIV (Anticuerpos)", sigla:"HIV", cat:"Serología", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24 horas", prep:"No se requiere preparación especial.", nota:"Resultado completamente confidencial." },
+    { nombre:"HOMA (resistencia a la insulina)", sigla:"HOMA", cat:"Diabetes", ayuno:"8–12 horas", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"Ayuno de 8 a 12 horas. Se calcula con glucosa e insulina en ayunas.", nota:"" },
+    { nombre:"Insulina", sigla:"INS", cat:"Hormonas", ayuno:"8–12 horas", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"Ayuno de 8 a 12 horas. Se solicita generalmente junto con glucosa.", nota:"" },
+    { nombre:"Magnesio sérico", sigla:"MG", cat:"Bioquímica", ayuno:"4 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno mínimo de 4 horas.", nota:"" },
+    { nombre:"Orina completa (uroanálisis)", sigla:"ORIN", cat:"Microbiología", ayuno:"No requerido", muestra:"Orina", resultado:"Mismo día", prep:"Primera orina de la mañana. Higiene genital previa. Recolectá el chorro del medio en frasco limpio.", nota:"" },
+    { nombre:"Parasitológico de materia fecal", sigla:"PARA", cat:"Microbiología", ayuno:"No requerido", muestra:"Materia fecal", resultado:"24–48 horas", prep:"Se necesitan 3 muestras en días distintos. Recolectá en frasco estéril. No mezclar con orina ni agua del inodoro.", nota:"Consultanos si debés suspender algún medicamento." },
+    { nombre:"Potasio y sodio (ionograma)", sigla:"ION", cat:"Bioquímica", ayuno:"4 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno de 4 horas. No realizar ejercicio intenso previo.", nota:"" },
+    { nombre:"Progesterona", sigla:"PROG", cat:"Hormonas", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"El médico indicará el día del ciclo para la extracción (generalmente día 21 del ciclo).", nota:"Informá el día del ciclo al momento de la extracción." },
+    { nombre:"Prolactina", sigla:"PRL", cat:"Hormonas", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"La extracción se realiza en reposo. Debés esperar al menos 30 minutos de reposo antes de la extracción. Evitá el estrés y la actividad física el día del estudio.", nota:"Informá si tomás medicamentos que puedan alterarla (anticonceptivos, metoclopramida, etc.)." },
+    { nombre:"Proteína C reactiva (PCR)", sigla:"PCR", cat:"Inflamación", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"Mismo día", prep:"No se requiere preparación especial.", nota:"" },
+    { nombre:"Proteínas totales y albúmina", sigla:"PROT", cat:"Hepático", ayuno:"4 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno de 4 horas.", nota:"" },
+    { nombre:"PSA total y libre (próstata)", sigla:"PSA", cat:"Marcadores", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24 horas", prep:"No realizar tacto rectal, relaciones sexuales ni ejercicio intenso 48 horas antes.", nota:"Informá si tenés sonda vesical o infección urinaria activa." },
+    { nombre:"T3 libre y T4 libre", sigla:"T3L/T4L", cat:"Hormonas", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"Si tomás medicación tiroidea, hacé la extracción antes de la primera dosis del día.", nota:"" },
+    { nombre:"Testosterona total y libre", sigla:"TEST", cat:"Hormonas", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"La extracción debe realizarse entre las 7:00 y 9:00 de la mañana (pico hormonal).", nota:"Informá si tomás anabólicos o corticoides." },
+    { nombre:"Toxoplasmosis (IgG e IgM)", sigla:"TOXO", cat:"Serología", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"No se requiere preparación especial.", nota:"Importante en embarazadas e inmunocomprometidos." },
+    { nombre:"Transaminasas (TGO y TGP)", sigla:"TGO/TGP", cat:"Hepático", ayuno:"4–6 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno de 4 a 6 horas. Evitá el ejercicio intenso 48 hs antes.", nota:"El ejercicio puede elevar las transaminasas falsamente." },
+    { nombre:"Triglicéridos", sigla:"TRIG", cat:"Bioquímica", ayuno:"12 horas", muestra:"Sangre venosa", resultado:"Mismo día", prep:"Ayuno estricto de 12 horas. Evitá el alcohol 48 hs antes.", nota:"El alcohol eleva significativamente los triglicéridos." },
+    { nombre:"TSH (Hormona tiroidea)", sigla:"TSH", cat:"Hormonas", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"No se requiere ayuno. Si tomás levotiroxina, tomala DESPUÉS de la extracción.", nota:"Informá todos los medicamentos que estés tomando." },
+    { nombre:"Urocultivo con antibiograma", sigla:"UROC", cat:"Microbiología", ayuno:"No requerido", muestra:"Orina (primer chorro matinal)", resultado:"48–72 horas", prep:"Primera orina de la mañana. Limpiar genitales con agua y jabón. Descartar el primer chorro. Recolectar el chorro del medio en el frasco estéril que entregamos.", nota:"No suspendas antibióticos sin consultarnos, ya que pueden alterar el resultado." },
+    { nombre:"VDRL (Sífilis)", sigla:"VDRL", cat:"Serología", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"Mismo día", prep:"No se requiere preparación especial.", nota:"" },
+    { nombre:"Vitamina B12", sigla:"VIT-B12", cat:"Vitaminas", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"No se requiere preparación especial.", nota:"" },
+    { nombre:"Vitamina D (25-OH)", sigla:"VIT-D", cat:"Vitaminas", ayuno:"No requerido", muestra:"Sangre venosa", resultado:"24–48 horas", prep:"No se requiere preparación especial.", nota:"" },
+  ];
+
+  examenes.sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+  let filtrados = [...examenes];
+  let letraActiva = '';
+
+  // Generar botones alfabéticos
+  const letras = ['TODOS', ...new Set(examenes.map(e => e.nombre[0].toUpperCase()))];
+  const alphaFila = document.getElementById('alphaFila');
+
+  letras.forEach(l => {
+    const btn = document.createElement('button');
+    btn.className = 'abtn' + (l === 'TODOS' ? ' activo' : '');
+    btn.textContent = l;
+    btn.onclick = () => {
+      document.querySelectorAll('.abtn').forEach(b => b.classList.remove('activo'));
+      btn.classList.add('activo');
+      letraActiva = l === 'TODOS' ? '' : l;
+      document.getElementById('buscarInput').value = '';
+      filtrar();
+    };
+    alphaFila.appendChild(btn);
+  });
+
+  function filtrar() {
+    const q = document.getElementById('buscarInput').value.toLowerCase().trim();
+    if (q) {
+      document.querySelectorAll('.abtn').forEach(b => b.classList.remove('activo'));
+      alphaFila.firstChild.classList.add('activo');
+      letraActiva = '';
+    }
+    filtrados = examenes.filter(e => {
+      const ml = !letraActiva || e.nombre[0].toUpperCase() === letraActiva;
+      const mq = !q || e.nombre.toLowerCase().includes(q) || e.sigla.toLowerCase().includes(q) || e.cat.toLowerCase().includes(q);
+      return ml && mq;
+    });
+    renderLista();
+  }
+
+  function renderLista() {
+    const scroll = document.getElementById('listaScroll');
+    const contador = document.getElementById('contador');
+    scroll.innerHTML = '';
+
+    // Limpiar detalle
+    document.getElementById('detalleCard').classList.remove('visible');
+    document.getElementById('detalleEmpty').style.display = 'flex';
+
+    contador.textContent = filtrados.length === 0
+      ? 'Sin resultados'
+      : `${filtrados.length} estudio${filtrados.length !== 1 ? 's' : ''}`;
+
+    if (!filtrados.length) {
+      scroll.innerHTML = '<div class="sin-res">No encontramos ese estudio.<br/>Consultanos por WhatsApp.</div>';
+      return;
+    }
+
+    // Agrupar por categoría
+    const porCat = {};
+    filtrados.forEach(ex => {
+      if (!porCat[ex.cat]) porCat[ex.cat] = [];
+      porCat[ex.cat].push(ex);
+    });
+
+    // Si hay búsqueda activa, no agrupar
+    const q = document.getElementById('buscarInput').value.trim();
+    const mostrarCats = !q && !letraActiva;
+
+    if (mostrarCats) {
+      Object.keys(porCat).sort().forEach(cat => {
+        const catDiv = document.createElement('div');
+        catDiv.className = 'cat-header';
+        catDiv.textContent = cat;
+        scroll.appendChild(catDiv);
+        porCat[cat].forEach((ex, i) => {
+          scroll.appendChild(crearFila(ex, filtrados.indexOf(ex)));
+        });
+      });
+    } else {
+      filtrados.forEach((ex, i) => scroll.appendChild(crearFila(ex, i)));
+    }
+  }
+
+  function crearFila(ex, idx) {
+    const div = document.createElement('div');
+    div.className = 'exam-row';
+    div.innerHTML = `
+      <span class="exam-punto"></span>
+      <span class="exam-row-nombre">${ex.nombre}</span>
+      <span class="exam-row-cat">${ex.cat}</span>
+    `;
+    div.onclick = () => mostrarDetalle(idx, div);
+    return div;
+  }
+
+  function mostrarDetalle(idx, rowEl) {
+    document.querySelectorAll('.exam-row').forEach(r => r.classList.remove('elegido'));
+    rowEl.classList.add('elegido');
+
+    const ex = filtrados[idx];
+    const card = document.getElementById('detalleCard');
+    const empty = document.getElementById('detalleEmpty');
+
+    const tieneAyuno = ex.ayuno !== 'No requerido';
+    const ayunoBadge = tieneAyuno
+      ? `<div class="det-ayuno-badge si"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Ayuno requerido: ${ex.ayuno}</div>`
+      : `<div class="det-ayuno-badge no"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> Sin ayuno requerido</div>`;
+
+    card.innerHTML = `
+      <div class="detalle-head">
+        <p class="detalle-nombre">${ex.nombre}</p>
+        <p class="detalle-sigla">${ex.sigla} · ${ex.cat}</p>
+        <div class="detalle-tags">
+          <span class="dtag">${ex.muestra}</span>
+          <span class="dtag">Resultado: ${ex.resultado}</span>
+        </div>
+      </div>
+      <div class="detalle-body">
+        ${ayunoBadge}
+        <div class="det-bloque">
+          <p class="det-lbl">Preparación</p>
+          <p class="det-val">${ex.prep}</p>
+        </div>
+        <div class="det-sep"></div>
+        <div class="det-bloque">
+          <p class="det-lbl">Tipo de muestra</p>
+          <p class="det-val">${ex.muestra}</p>
+        </div>
+        <div class="det-bloque">
+          <p class="det-lbl">Tiempo de entrega</p>
+          <p class="det-val">${ex.resultado}</p>
+        </div>
+        ${ex.nota ? `<div class="det-alerta">⚠ ${ex.nota}</div>` : ''}
+        <a href="https://wa.me/5491100000000?text=Hola%2C%20quiero%20consultar%20sobre%20la%20preparaci%C3%B3n%20para%20${encodeURIComponent(ex.nombre)}" target="_blank" class="btn-wa-det">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar preparación por WhatsApp
+        </a>
+      </div>
+    `;
+
+    empty.style.display = 'none';
+    card.classList.add('visible');
+
+    // Mobile: scroll al detalle
+    if (window.innerWidth < 1024) {
+      card.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+  }
+
+  // Inicializar
+  renderLista();
+</script>
+</body>
+</html>

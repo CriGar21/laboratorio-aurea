@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contacto — Áurea Laboratorio Bioquímico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --verde:#445925; --verde-med:#9BAB8F; --verde-claro:#DEE8D2;
+      --crema:#F2F2F2; --arena:#F2DEA2; --arena-med:#EBE7D0;
+      --marron:#4D301F; --marron-med:#BC6849;
+      --blanco:#ffffff; --texto:#2a2a2a; --texto-suave:#6b6b6b;
+      --nav-h:80px; --error:#c0392b; --ok:#27ae60;
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:'DM Sans',sans-serif; color:var(--texto); background:var(--blanco); overflow-x:hidden; }
+    a { text-decoration:none; color:inherit; }
+
+    /* NAVBAR */
+    .navbar { position:fixed; top:0; left:0; right:0; height:var(--nav-h); z-index:1000; display:flex; align-items:center; padding:0 3rem; background:var(--blanco); box-shadow:0 2px 20px rgba(0,0,0,0.07); }
+    .nav-logo { display:flex; align-items:center; gap:0.8rem; text-decoration:none; flex-shrink:0; }
+    .nav-logo-circulo { width:50px; height:50px; border-radius:50%; background:var(--verde-claro); display:flex; align-items:center; justify-content:center; }
+    .nav-logo-circulo svg { width:36px; height:36px; }
+    .nav-logo-texto { display:flex; flex-direction:column; line-height:1.1; }
+    .nav-logo-nombre { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; letter-spacing:0.07em; color:var(--verde); }
+    .nav-logo-sub { font-size:0.57rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--verde-med); }
+    .nav-links { display:flex; align-items:center; gap:0.1rem; margin-left:auto; }
+    .nav-links a { font-size:0.84rem; color:var(--texto-suave); padding:0.45rem 0.85rem; border-radius:6px; transition:color 0.2s,background 0.2s; white-space:nowrap; }
+    .nav-links a:hover, .nav-links a.activo { color:var(--verde); background:var(--verde-claro); }
+    .nav-drop { position:relative; }
+    .nav-drop>a::after { content:" ▾"; font-size:0.62rem; }
+    .drop-menu { display:none; position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%); background:var(--blanco); border:1px solid #e4e0d6; border-radius:14px; min-width:220px; box-shadow:0 12px 36px rgba(0,0,0,0.1); padding:0.6rem 0; z-index:200; }
+    .nav-drop:hover .drop-menu { display:block; }
+    .drop-menu a { display:flex; align-items:center; gap:0.6rem; padding:0.6rem 1.2rem; font-size:0.84rem; color:var(--texto) !important; background:none !important; }
+    .drop-menu a:hover { background:var(--arena-med) !important; color:var(--verde) !important; }
+    .drop-sep { height:1px; background:#eee8d8; margin:0.4rem 1rem; }
+    .nav-cta { display:inline-flex; align-items:center; gap:0.4rem; background:var(--verde) !important; color:var(--blanco) !important; padding:0.5rem 1.2rem !important; border-radius:30px !important; font-weight:500 !important; font-size:0.83rem !important; margin-left:0.6rem; }
+    .nav-cta:hover { opacity:0.9; }
+    .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:0.4rem; margin-left:auto; }
+    .hamburger span { display:block; width:22px; height:2px; background:var(--verde); border-radius:2px; }
+    .mobile-nav { display:none; position:fixed; top:var(--nav-h); left:0; right:0; background:var(--blanco); border-bottom:1px solid #e0ddd5; padding:1rem; flex-direction:column; gap:0.2rem; z-index:999; box-shadow:0 8px 20px rgba(0,0,0,0.07); }
+    .mobile-nav.abierto { display:flex; }
+    .mobile-nav a { padding:0.65rem 1rem; font-size:0.9rem; color:var(--texto); border-radius:8px; }
+    .mobile-nav a:hover { background:var(--verde-claro); color:var(--verde); }
+    .mobile-nav .mob-sep { height:1px; background:#eee; margin:0.3rem 0; }
+    .mobile-nav .mob-cta { background:var(--verde); color:var(--blanco) !important; text-align:center; font-weight:500; }
+
+    /* PAGE HERO */
+    .page-hero { position:relative; height:50vh; min-height:340px; display:flex; align-items:flex-end; overflow:hidden; padding-top:var(--nav-h); }
+    .page-hero-bg { position:absolute; inset:0; background: linear-gradient(to bottom,rgba(68,89,37,0.55) 0%,rgba(68,89,37,0.88) 100%), url('img/contacto-hero.jpg') center/cover no-repeat; }
+    .page-hero-content { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:0 3rem 4rem; width:100%; }
+    .breadcrumb { font-size:0.74rem; color:rgba(255,255,255,0.52); margin-bottom:0.8rem; }
+    .breadcrumb a { color:rgba(255,255,255,0.52); }
+    .breadcrumb a:hover { color:var(--blanco); }
+    .page-hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4rem); font-weight:300; color:var(--blanco); line-height:1.1; }
+    .page-hero h1 strong { font-weight:600; font-style:italic; color:var(--arena); }
+
+    /* ANIMACIONES */
+    .reveal { opacity:0; transform:translateY(36px); transition:opacity 0.7s ease,transform 0.7s ease; }
+    .reveal-left { opacity:0; transform:translateX(-45px); transition:opacity 0.7s ease,transform 0.7s ease; }
+    .reveal-right { opacity:0; transform:translateX(45px); transition:opacity 0.7s ease,transform 0.7s ease; }
+    .reveal.visible,.reveal-left.visible,.reveal-right.visible { opacity:1; transform:none; }
+    .d1{transition-delay:0.1s} .d2{transition-delay:0.2s} .d3{transition-delay:0.3s}
+
+    /* CONTACTO PRINCIPAL */
+    .contacto-main { background:var(--blanco); padding:6rem 2rem; }
+    .contacto-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1.2fr; gap:5rem; align-items:start; }
+
+    .etiqueta { display:inline-block; font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--marron-med); margin-bottom:0.8rem; font-weight:500; }
+    .h2-grande { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,3vw,2.8rem); font-weight:600; color:var(--verde); line-height:1.15; margin-bottom:2rem; }
+
+    /* Datos de contacto */
+    .datos-lista { display:flex; flex-direction:column; gap:1.4rem; }
+    .dato { display:flex; gap:1rem; align-items:flex-start; }
+    .dato-ico { width:44px; height:44px; border-radius:11px; background:var(--verde-claro); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .dato-ico svg { width:20px; height:20px; stroke:var(--verde); fill:none; stroke-width:1.8; }
+    .dato-txt h4 { font-size:0.72rem; font-weight:500; text-transform:uppercase; letter-spacing:0.1em; color:var(--verde-med); margin-bottom:0.2rem; }
+    .dato-txt p,.dato-txt a { font-size:0.95rem; color:var(--texto); }
+    .dato-txt a:hover { color:var(--verde); }
+
+    /* Horarios */
+    .horario-tabla { width:100%; border-collapse:collapse; font-size:0.86rem; margin-top:0.3rem; }
+    .horario-tabla td { padding:0.3rem 0; color:var(--texto-suave); }
+    .horario-tabla td:first-child { font-weight:500; color:var(--texto); width:55%; }
+
+    /* Separador */
+    .datos-sep { height:1px; background:#e8e4d8; margin:0.5rem 0; }
+
+    /* Botón WhatsApp inline */
+    .btn-wa-inline { display:inline-flex; align-items:center; gap:0.6rem; background:#25D366; color:var(--blanco); padding:0.75rem 1.4rem; border-radius:30px; font-size:0.88rem; font-weight:500; margin-top:0.5rem; transition:background 0.2s; }
+    .btn-wa-inline:hover { background:#1ebe5d; }
+    .btn-wa-inline svg { width:17px; height:17px; fill:var(--blanco); }
+
+    /* FORMULARIO DE CONSULTA */
+    .form-card { background:var(--crema); border-radius:20px; border:1px solid #e4e0d6; padding:2.5rem 2rem; }
+    .form-card h3 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; color:var(--verde); margin-bottom:0.3rem; }
+    .form-card .sub { font-size:0.84rem; color:var(--texto-suave); margin-bottom:2rem; }
+
+    .campo { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.1rem; }
+    .campo label { font-size:0.78rem; font-weight:500; color:var(--texto); letter-spacing:0.03em; }
+    .campo label span { color:var(--marron-med); }
+    .campo input,.campo select,.campo textarea {
+      border:1.5px solid #ddd8c8; border-radius:10px;
+      padding:0.65rem 0.9rem; font-family:'DM Sans',sans-serif;
+      font-size:0.9rem; color:var(--texto); background:var(--blanco);
+      outline:none; transition:border-color 0.2s; width:100%;
+    }
+    .campo input:focus,.campo select:focus,.campo textarea:focus { border-color:var(--verde); }
+    .campo input.invalido,.campo textarea.invalido { border-color:var(--error); }
+    .campo .err { font-size:0.73rem; color:var(--error); display:none; }
+    .campo.con-error .err { display:block; }
+    .campo textarea { resize:vertical; min-height:100px; }
+
+    .campo-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+
+    .btn-enviar { width:100%; background:var(--verde); color:var(--blanco); border:none; border-radius:30px; padding:0.9rem; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:500; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.5rem; transition:background 0.2s,transform 0.15s; margin-top:0.5rem; }
+    .btn-enviar:hover { background:#354a1c; transform:translateY(-1px); }
+    .btn-enviar svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; }
+
+    .form-exito { display:none; text-align:center; padding:2rem 1rem; }
+    .form-exito.visible { display:block; }
+    .form-exito-ico { width:64px; height:64px; background:#eaf7ef; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1.2rem; }
+    .form-exito-ico svg { width:32px; height:32px; stroke:var(--ok); fill:none; stroke-width:2; }
+    .form-exito h4 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; color:var(--verde); margin-bottom:0.5rem; }
+    .form-exito p { font-size:0.88rem; color:var(--texto-suave); }
+
+    /* MAPA */
+    .mapa-section { background:var(--crema); padding:0 0 0; }
+    .mapa-box {
+      width:100%; height:420px;
+      background:var(--arena-med);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:1rem; text-align:center; color:var(--verde-med);
+      position:relative; overflow:hidden;
+    }
+    .mapa-box svg { width:44px; height:44px; stroke:var(--verde-claro); fill:none; stroke-width:1.4; }
+    .mapa-box p { font-size:0.88rem; }
+    .mapa-box small { font-size:0.76rem; color:#bbb; line-height:1.6; max-width:360px; }
+    .mapa-box iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+    /*
+      CÓMO AGREGAR EL MAPA DE GOOGLE:
+      1. Ir a Google Maps y buscar la dirección del laboratorio
+      2. Click en "Compartir" → "Insertar un mapa"
+      3. Copiar el código <iframe...>
+      4. Pegar dentro de .mapa-box, reemplazando el contenido actual
+    */
+
+    /* OBRA SOCIALES */
+    .os-section { background:var(--blanco); padding:5rem 2rem; }
+    .os-inner { max-width:1200px; margin:0 auto; }
+    .os-inner .etiqueta { display:block; margin-bottom:0.6rem; }
+    .os-inner .h2-grande { margin-bottom:0.5rem; }
+    .os-nota { font-size:0.9rem; color:var(--texto-suave); margin-bottom:2.5rem; }
+    .os-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:1rem; }
+    .os-item { background:var(--crema); border-radius:12px; border:1px solid #e4e0d6; padding:1rem 1.2rem; text-align:center; font-size:0.85rem; font-weight:500; color:var(--texto); transition:border-color 0.2s,background 0.2s; }
+    .os-item:hover { border-color:var(--verde-med); background:var(--verde-claro); color:var(--verde); }
+    .os-consulta { margin-top:2rem; font-size:0.88rem; color:var(--texto-suave); }
+    .os-consulta a { color:var(--verde); font-weight:500; }
+
+    /* FOOTER */
+    footer { background:var(--marron); color:rgba(255,255,255,0.62); padding:4rem 3rem 2rem; }
+    .footer-top { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.8fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:2rem; }
+    .footer-marca-nombre { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; color:var(--blanco); letter-spacing:0.07em; }
+    .footer-marca-sub { font-size:0.57rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:1rem; }
+    .footer-desc { font-size:0.82rem; line-height:1.65; max-width:280px; }
+    .footer-col h5 { font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:1.2rem; }
+    .footer-col a { display:block; font-size:0.84rem; color:rgba(255,255,255,0.58); margin-bottom:0.55rem; transition:color 0.2s; }
+    .footer-col a:hover { color:var(--blanco); }
+    .footer-bottom { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; font-size:0.74rem; color:rgba(255,255,255,0.26); flex-wrap:wrap; gap:0.5rem; }
+
+    .wa-flotante { position:fixed; bottom:1.8rem; right:1.8rem; width:52px; height:52px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,0,0,0.2); z-index:999; text-decoration:none; transition:transform 0.2s; }
+    .wa-flotante:hover { transform:scale(1.1); }
+    .wa-flotante svg { width:27px; height:27px; fill:var(--blanco); }
+
+    @media(max-width:1024px){
+      .contacto-inner{grid-template-columns:1fr; gap:3rem;}
+      .footer-top{grid-template-columns:1fr 1fr;}
+    }
+    @media(max-width:768px){
+      .navbar{padding:0 1.5rem;}
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      .page-hero-content{padding:0 1.5rem 3rem;}
+      .campo-row{grid-template-columns:1fr;}
+      .footer-top{grid-template-columns:1fr;}
+      .footer-bottom{flex-direction:column;text-align:center;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-circulo">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M 15 78 L 15 42 A 38 38 0 0 1 53 4 L 85 4 L 85 78 Z" stroke="#445925" stroke-width="4.5" fill="none" stroke-linejoin="round"/>
+        <rect x="53" y="42" width="32" height="36" stroke="#445925" stroke-width="4" fill="none"/>
+        <rect x="53" y="61" width="17" height="17" stroke="#445925" stroke-width="3.5" fill="none"/>
+        <path d="M 53 78 A 36 36 0 0 0 15 42" stroke="#445925" stroke-width="4" fill="none"/>
+        <path d="M 53 61 A 19 19 0 0 0 85 42" stroke="#445925" stroke-width="3.5" fill="none"/>
+        <path d="M 70 61 A 9 9 0 0 0 70 78" stroke="#9BAB8F" stroke-width="3" fill="none"/>
+        <circle cx="70" cy="69" r="3" fill="#9BAB8F"/>
+      </svg>
+    </div>
+    <div class="nav-logo-texto">
+      <span class="nav-logo-nombre">ÁUREA</span>
+      <span class="nav-logo-sub">Laboratorio Bioquímico</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="nosotros.html">Nosotros</a>
+    <div class="nav-drop">
+      <a href="#">Pacientes</a>
+      <div class="drop-menu">
+        <a href="resultados.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Ver resultados online</a>
+        <a href="domicilio.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Extracción a domicilio</a>
+        <div class="drop-sep"></div>
+        <a href="estudios.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Preparación de estudios</a>
+      </div>
+    </div>
+    <a href="servicios.html">Servicios</a>
+    <a href="estudios.html">Estudios</a>
+    <a href="contacto.html" class="activo">Contacto</a>
+    <a href="resultados.html" class="nav-cta"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Ver resultados</a>
+  </div>
+  <button class="hamburger" id="hambBtn"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Inicio</a>
+  <a href="nosotros.html">Nosotros</a>
+  <a href="servicios.html">Servicios</a>
+  <a href="estudios.html">Estudios</a>
+  <a href="contacto.html">Contacto</a>
+  <div class="mob-sep"></div>
+  <a href="resultados.html">Ver resultados online</a>
+  <a href="domicilio.html">Extracción a domicilio</a>
+  <a href="resultados.html" class="mob-cta">Ver mis resultados</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <!-- FOTO: img/contacto-hero.jpg -->
+  <div class="page-hero-content">
+    <p class="breadcrumb"><a href="index.html">Inicio</a> &nbsp;/&nbsp; Contacto</p>
+    <h1>Contacto y <strong>ubicación.</strong></h1>
+  </div>
+</div>
+
+<!-- CONTACTO PRINCIPAL -->
+<section class="contacto-main">
+  <div class="contacto-inner">
+
+    <!-- Columna izquierda: datos -->
+    <div>
+      <span class="etiqueta reveal">Encontranos</span>
+      <h2 class="h2-grande reveal">Estamos cerca tuyo.</h2>
+
+      <div class="datos-lista">
+
+        <div class="dato reveal d1">
+          <div class="dato-ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="dato-txt">
+            <h4>Dirección</h4>
+            <p>Av. [Tu calle y número]<br/>Junín, Buenos Aires, Argentina</p>
+          </div>
+        </div>
+
+        <div class="dato reveal d2">
+          <div class="dato-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="dato-txt">
+            <h4>Horario de atención</h4>
+            <table class="horario-tabla">
+              <tr><td>Lunes a viernes</td><td>7:00 — 12:00 hs</td></tr>
+              <tr><td>Sábados</td><td>7:00 — 10:00 hs</td></tr>
+              <tr><td>Domingos y feriados</td><td>Cerrado</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="datos-sep reveal"></div>
+
+        <div class="dato reveal">
+          <div class="dato-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.05 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg></div>
+          <div class="dato-txt">
+            <h4>Teléfono</h4>
+            <a href="tel:+54XXXXXXXXX">(xxx) xxx-xxxx</a>
+          </div>
+        </div>
+
+        <div class="dato reveal">
+          <div class="dato-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="dato-txt">
+            <h4>Email</h4>
+            <a href="mailto:contacto@aurea.com.ar">contacto@aurea.com.ar</a>
+          </div>
+        </div>
+
+        <div class="dato reveal">
+          <div class="dato-ico" style="background:#e8f7ee;"><svg viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8"/></svg></div>
+          <div class="dato-txt">
+            <h4>WhatsApp</h4>
+            <a href="https://wa.me/5491100000000" target="_blank" style="color:#25D366;">+54 9 11 xxxx-xxxx</a>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <a href="https://wa.me/5491100000000?text=Hola%2C%20quiero%20hacer%20una%20consulta." target="_blank" class="btn-wa-inline">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Escribinos por WhatsApp
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Columna derecha: formulario -->
+    <div class="form-card reveal-right">
+      <h3>Envianos un mensaje</h3>
+      <p class="sub">Te respondemos a la brevedad por email o WhatsApp.</p>
+
+      <div id="formContacto">
+        <div class="campo-row">
+          <div class="campo" id="cNombre">
+            <label>Nombre <span>*</span></label>
+            <input type="text" id="fNombre" placeholder="Tu nombre"/>
+            <span class="err">Ingresá tu nombre.</span>
+          </div>
+          <div class="campo" id="cApellido">
+            <label>Apellido <span>*</span></label>
+            <input type="text" id="fApellido" placeholder="Tu apellido"/>
+            <span class="err">Ingresá tu apellido.</span>
+          </div>
+        </div>
+
+        <div class="campo-row">
+          <div class="campo" id="cEmail">
+            <label>Email <span>*</span></label>
+            <input type="email" id="fEmail" placeholder="tu@email.com"/>
+            <span class="err">Ingresá un email válido.</span>
+          </div>
+          <div class="campo">
+            <label>Teléfono / WhatsApp</label>
+            <input type="tel" id="fTel" placeholder="Ej: 2364 123456"/>
+          </div>
+        </div>
+
+        <div class="campo" id="cMotivo">
+          <label>Motivo de la consulta <span>*</span></label>
+          <select id="fMotivo">
+            <option value="">— Seleccioná —</option>
+            <option>Consulta sobre estudios</option>
+            <option>Preparación de análisis</option>
+            <option>Coberturas / obras sociales</option>
+            <option>Extracción a domicilio</option>
+            <option>Resultados online</option>
+            <option>Otro</option>
+          </select>
+          <span class="err">Seleccioná el motivo.</span>
+        </div>
+
+        <div class="campo" id="cMensaje">
+          <label>Mensaje <span>*</span></label>
+          <textarea id="fMensaje" placeholder="Escribí tu consulta acá..."></textarea>
+          <span class="err">Escribí tu mensaje.</span>
+        </div>
+
+        <button class="btn-enviar" onclick="enviarFormulario()">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Enviar mensaje
+        </button>
+      </div>
+
+      <div class="form-exito" id="formExito">
+        <div class="form-exito-ico">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+        <h4>¡Mensaje enviado!</h4>
+        <p>Gracias por contactarnos. Te responderemos a la brevedad.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MAPA -->
+<div class="mapa-section">
+  <div class="mapa-box">
+    <!--
+      ══════════════════════════════════════════════
+      CÓMO AGREGAR EL MAPA:
+      1. Ir a maps.google.com
+      2. Buscar tu dirección
+      3. Click en "Compartir" → "Insertar un mapa"
+      4. Copiar el <iframe...> que aparece
+      5. Pegar aquí reemplazando todo el contenido
+         del div.mapa-box excepto el comentario
+      ══════════════════════════════════════════════
+    -->
+    <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <p>Mapa de Google Maps</p>
+    <small>
+      Para ver el mapa real, obtené el iframe desde<br/>
+      Google Maps → tu dirección → Compartir → Insertar mapa<br/>
+      y reemplazá este bloque.
+    </small>
+    <a href="https://maps.google.com" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--verde);color:white;padding:0.65rem 1.4rem;border-radius:30px;font-size:0.84rem;font-weight:500;margin-top:0.5rem;text-decoration:none;">
+      <svg style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2;" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Abrir en Google Maps
+    </a>
+  </div>
+</div>
+
+<!-- OBRAS SOCIALES -->
+<section class="os-section">
+  <div class="os-inner">
+    <span class="etiqueta reveal">Coberturas</span>
+    <h2 class="h2-grande reveal">Obras sociales y prepagas.</h2>
+    <p class="os-nota reveal">Trabajamos con la mayoría de las principales coberturas de salud. Confirmá la tuya antes de venir.</p>
+
+    <div class="os-grid reveal">
+      <div class="os-item">IOMA</div>
+      <div class="os-item">OSDE</div>
+      <div class="os-item">Swiss Medical</div>
+      <div class="os-item">Galeno</div>
+      <div class="os-item">PAMI</div>
+      <div class="os-item">Medifé</div>
+      <div class="os-item">OSECAC</div>
+      <div class="os-item">OSPEDYC</div>
+      <div class="os-item">SANCOR Salud</div>
+      <div class="os-item">ACCORD Salud</div>
+      <div class="os-item">DASPU</div>
+      <div class="os-item">UNIÓN Personal</div>
+      <!-- Agregá o quitá obras sociales según las que aceptes -->
+    </div>
+
+    <p class="os-consulta reveal">¿No ves la tuya? <a href="https://wa.me/5491100000000" target="_blank">Consultanos por WhatsApp</a> y te confirmamos en el momento.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-marca-nombre">ÁUREA</div>
+      <div class="footer-marca-sub">Laboratorio Bioquímico</div>
+      <p class="footer-desc">Análisis clínicos de alta complejidad con atención personalizada. Junín, Buenos Aires, Argentina.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Navegación</h5>
+      <a href="index.html">Inicio</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="servicios.html">Servicios</a>
+      <a href="estudios.html">Estudios</a>
+      <a href="contacto.html">Contacto</a>
+    </div>
+    <div class="footer-col">
+      <h5>Pacientes</h5>
+      <a href="resultados.html">Resultados online</a>
+      <a href="domicilio.html">Extracción a domicilio</a>
+      <a href="estudios.html">Preparación de estudios</a>
+    </div>
+    <div class="footer-col">
+      <h5>Contacto</h5>
+      <a href="#">Av. [Tu dirección]</a>
+      <a href="#">Junín, Buenos Aires</a>
+      <a href="tel:+54XXXXXXXXX">(xxx) xxx-xxxx</a>
+      <a href="mailto:contacto@aurea.com.ar">contacto@aurea.com.ar</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Áurea Laboratorio Bioquímico. Todos los derechos reservados.</span>
+    <span>Junín, Buenos Aires, Argentina</span>
+  </div>
+</footer>
+
+<a href="https://wa.me/5491100000000" target="_blank" class="wa-flotante">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+  document.getElementById('hambBtn').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('abierto'));
+  const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }), {threshold:0.12});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => obs.observe(el));
+
+  function marcar(id) {
+    const el = document.getElementById(id);
+    el.querySelector('input,select,textarea').classList.add('invalido');
+    el.classList.add('con-error');
+  }
+  function limpiar(id) {
+    const el = document.getElementById(id);
+    el.querySelector('input,select,textarea').classList.remove('invalido');
+    el.classList.remove('con-error');
+  }
+
+  function enviarFormulario() {
+    const nombre   = document.getElementById('fNombre').value.trim();
+    const apellido = document.getElementById('fApellido').value.trim();
+    const email    = document.getElementById('fEmail').value.trim();
+    const motivo   = document.getElementById('fMotivo').value;
+    const mensaje  = document.getElementById('fMensaje').value.trim();
+    let ok = true;
+
+    nombre   ? limpiar('cNombre')   : (marcar('cNombre'),   ok = false);
+    apellido ? limpiar('cApellido') : (marcar('cApellido'), ok = false);
+    email && email.includes('@') ? limpiar('cEmail') : (marcar('cEmail'), ok = false);
+    motivo   ? limpiar('cMotivo')   : (marcar('cMotivo'),   ok = false);
+    mensaje  ? limpiar('cMensaje')  : (marcar('cMensaje'),  ok = false);
+
+    if (!ok) return;
+
+    // En producción conectar con un servicio como Formspree, EmailJS, etc.
+    // Por ahora mostramos la pantalla de éxito.
+    document.getElementById('formContacto').style.display = 'none';
+    document.getElementById('formExito').classList.add('visible');
+
+    // Opcional: abrir WhatsApp con el mensaje pre-cargado
+    const msg = encodeURIComponent(`Hola Áurea 👋\n\nNombre: ${nombre} ${apellido}\nEmail: ${email}\nMotivo: ${motivo}\n\n${mensaje}`);
+    // window.open(`https://wa.me/5491100000000?text=${msg}`, '_blank');
+  }
+</script>
+</body>
+</html>
