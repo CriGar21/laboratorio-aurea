@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Servicios — Áurea Laboratorio Bioquímico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --verde:#445925; --verde-med:#9BAB8F; --verde-claro:#DEE8D2;
+      --crema:#F2F2F2; --arena:#F2DEA2; --arena-med:#EBE7D0;
+      --marron:#4D301F; --marron-med:#BC6849;
+      --blanco:#ffffff; --texto:#2a2a2a; --texto-suave:#6b6b6b;
+      --nav-h:80px;
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:'DM Sans',sans-serif; color:var(--texto); background:var(--blanco); overflow-x:hidden; }
+    a { text-decoration:none; color:inherit; }
+
+    /* NAVBAR */
+    .navbar { position:fixed; top:0; left:0; right:0; height:var(--nav-h); z-index:1000; display:flex; align-items:center; padding:0 3rem; background:var(--blanco); box-shadow:0 2px 20px rgba(0,0,0,0.07); }
+    .nav-logo { display:flex; align-items:center; gap:0.8rem; text-decoration:none; flex-shrink:0; }
+    .nav-logo-circulo { width:50px; height:50px; border-radius:50%; background:var(--verde-claro); display:flex; align-items:center; justify-content:center; }
+    .nav-logo-circulo svg { width:36px; height:36px; }
+    .nav-logo-texto { display:flex; flex-direction:column; line-height:1.1; }
+    .nav-logo-nombre { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; letter-spacing:0.07em; color:var(--verde); }
+    .nav-logo-sub { font-size:0.57rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--verde-med); }
+    .nav-links { display:flex; align-items:center; gap:0.1rem; margin-left:auto; }
+    .nav-links a { font-size:0.84rem; color:var(--texto-suave); padding:0.45rem 0.85rem; border-radius:6px; transition:color 0.2s,background 0.2s; white-space:nowrap; }
+    .nav-links a:hover,.nav-links a.activo { color:var(--verde); background:var(--verde-claro); }
+    .nav-drop { position:relative; }
+    .nav-drop>a::after { content:" ▾"; font-size:0.62rem; }
+    .drop-menu { display:none; position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%); background:var(--blanco); border:1px solid #e4e0d6; border-radius:14px; min-width:220px; box-shadow:0 12px 36px rgba(0,0,0,0.1); padding:0.6rem 0; z-index:200; }
+    .nav-drop:hover .drop-menu { display:block; }
+    .drop-menu a { display:flex; align-items:center; gap:0.6rem; padding:0.6rem 1.2rem; font-size:0.84rem; color:var(--texto) !important; background:none !important; }
+    .drop-menu a:hover { background:var(--arena-med) !important; color:var(--verde) !important; }
+    .drop-sep { height:1px; background:#eee8d8; margin:0.4rem 1rem; }
+    .nav-cta { display:inline-flex; align-items:center; gap:0.4rem; background:var(--verde) !important; color:var(--blanco) !important; padding:0.5rem 1.2rem !important; border-radius:30px !important; font-weight:500 !important; font-size:0.83rem !important; margin-left:0.6rem; }
+    .nav-cta:hover { opacity:0.9; }
+    .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:0.4rem; margin-left:auto; }
+    .hamburger span { display:block; width:22px; height:2px; background:var(--verde); border-radius:2px; }
+    .mobile-nav { display:none; position:fixed; top:var(--nav-h); left:0; right:0; background:var(--blanco); border-bottom:1px solid #e0ddd5; padding:1rem; flex-direction:column; gap:0.2rem; z-index:999; box-shadow:0 8px 20px rgba(0,0,0,0.07); }
+    .mobile-nav.abierto { display:flex; }
+    .mobile-nav a { padding:0.65rem 1rem; font-size:0.9rem; color:var(--texto); border-radius:8px; }
+    .mobile-nav a:hover { background:var(--verde-claro); color:var(--verde); }
+    .mobile-nav .mob-sep { height:1px; background:#eee; margin:0.3rem 0; }
+    .mobile-nav .mob-cta { background:var(--verde); color:var(--blanco) !important; text-align:center; font-weight:500; }
+
+    /* PAGE HERO */
+    .page-hero { position:relative; height:55vh; min-height:360px; display:flex; align-items:flex-end; overflow:hidden; padding-top:var(--nav-h); }
+    .page-hero-bg { position:absolute; inset:0; background: linear-gradient(to bottom,rgba(68,89,37,0.55) 0%,rgba(68,89,37,0.88) 100%), url('img/servicios-hero.jpg') center/cover no-repeat; }
+    /* FOTO: img/servicios-hero.jpg — interior del laboratorio con equipamiento */
+    .page-hero-content { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:0 3rem 4rem; width:100%; }
+    .breadcrumb { font-size:0.74rem; color:rgba(255,255,255,0.52); margin-bottom:0.8rem; }
+    .breadcrumb a { color:rgba(255,255,255,0.52); }
+    .breadcrumb a:hover { color:var(--blanco); }
+    .page-hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4rem); font-weight:300; color:var(--blanco); line-height:1.1; }
+    .page-hero h1 strong { font-weight:600; font-style:italic; color:var(--arena); }
+
+    /* ANIMACIONES */
+    .reveal { opacity:0; transform:translateY(36px); transition:opacity 0.7s ease,transform 0.7s ease; }
+    .reveal-left { opacity:0; transform:translateX(-45px); transition:opacity 0.7s ease,transform 0.7s ease; }
+    .reveal-right { opacity:0; transform:translateX(45px); transition:opacity 0.7s ease,transform 0.7s ease; }
+    .reveal.visible,.reveal-left.visible,.reveal-right.visible { opacity:1; transform:none; }
+    .d1{transition-delay:0.1s} .d2{transition-delay:0.2s} .d3{transition-delay:0.3s} .d4{transition-delay:0.4s} .d5{transition-delay:0.5s} .d6{transition-delay:0.6s}
+
+    /* HELPERS */
+    .etiqueta { display:inline-block; font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--marron-med); margin-bottom:0.8rem; font-weight:500; }
+    .h2-grande { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,3.5vw,3rem); font-weight:600; color:var(--verde); line-height:1.15; margin-bottom:1rem; }
+    .p-normal { font-size:0.97rem; color:var(--texto-suave); line-height:1.8; margin-bottom:0.8rem; }
+
+    /* ---- INTRO ---- */
+    .intro { background:var(--blanco); padding:5rem 2rem 4rem; text-align:center; }
+    .intro-inner { max-width:720px; margin:0 auto; }
+
+    /* ---- SERVICIOS SPLIT (imagen + texto alternado, estilo Bilac) ---- */
+    .serv-split { display:grid; grid-template-columns:1fr 1fr; min-height:480px; }
+    .serv-split.inv { direction:rtl; }
+    .serv-split.inv > * { direction:ltr; }
+
+    .serv-split-img { position:relative; overflow:hidden; min-height:380px; }
+
+    .img-ph {
+      position:absolute; inset:0;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:0.8rem; text-align:center; padding:2rem;
+      background:var(--arena-med);
+      color:var(--verde-med);
+    }
+    .img-ph.verde { background:var(--verde-claro); }
+    .img-ph.oscuro { background:#d5cbb8; }
+    .img-ph svg { width:38px; height:38px; stroke:var(--verde-med); fill:none; stroke-width:1.2; }
+    .img-ph p { font-size:0.78rem; line-height:1.5; }
+    .img-ph code { background:rgba(68,89,37,0.1); color:var(--verde); padding:0.15rem 0.4rem; border-radius:4px; font-size:0.7rem; }
+
+    .serv-split-txt {
+      padding:5rem 4.5rem;
+      display:flex; flex-direction:column; justify-content:center;
+      background:var(--blanco);
+    }
+    .serv-split-txt.bg-crema { background:var(--crema); }
+    .serv-split-txt.bg-arena { background:var(--arena-med); }
+    .serv-split-txt.bg-verde { background:var(--verde); }
+    .serv-split-txt.bg-verde .etiqueta { color:rgba(255,255,255,0.45); }
+    .serv-split-txt.bg-verde .h2-grande { color:var(--blanco); }
+    .serv-split-txt.bg-verde .p-normal { color:rgba(255,255,255,0.7); }
+
+    /* lista de estudios dentro del split */
+    .estudios-lista { margin-top:1.4rem; display:flex; flex-direction:column; gap:0.5rem; }
+    .estudio-item { display:flex; align-items:center; gap:0.7rem; font-size:0.88rem; color:var(--texto-suave); }
+    .estudio-item::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--verde-med); flex-shrink:0; }
+    .serv-split-txt.bg-verde .estudio-item { color:rgba(255,255,255,0.7); }
+    .serv-split-txt.bg-verde .estudio-item::before { background:var(--arena); }
+
+    .btn-seccion { display:inline-flex; align-items:center; gap:0.5rem; margin-top:1.8rem; font-size:0.88rem; font-weight:500; color:var(--verde); border-bottom:1.5px solid var(--verde); padding-bottom:0.15rem; transition:gap 0.2s,color 0.2s; width:fit-content; }
+    .btn-seccion:hover { gap:0.8rem; color:var(--marron-med); border-color:var(--marron-med); }
+    .btn-seccion svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; }
+    .serv-split-txt.bg-verde .btn-seccion { color:var(--arena); border-color:var(--arena); }
+
+    /* ---- DOMICILIO CTA ---- */
+    .domicilio-cta { position:relative; min-height:400px; display:flex; align-items:center; overflow:hidden; }
+    .domicilio-cta-bg { position:absolute; inset:0; background: linear-gradient(100deg,rgba(68,89,37,0.92) 40%,rgba(68,89,37,0.5) 100%), url('img/domicilio.jpg') center/cover no-repeat; }
+    .domicilio-cta-inner { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:5rem 3rem; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+    .domicilio-cta h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,3.5vw,3rem); font-weight:600; color:var(--blanco); line-height:1.15; margin-bottom:1rem; }
+    .domicilio-cta p { font-size:1rem; color:rgba(255,255,255,0.74); line-height:1.7; margin-bottom:2rem; }
+    .btn-blanco { display:inline-flex; align-items:center; gap:0.5rem; background:var(--blanco); color:var(--verde); padding:0.9rem 2rem; border-radius:40px; font-weight:500; font-size:0.95rem; transition:background 0.2s,transform 0.2s; }
+    .btn-blanco:hover { background:var(--arena); transform:translateY(-2px); }
+    .btn-blanco svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; }
+    .dom-feats { display:flex; flex-direction:column; gap:1rem; }
+    .dom-feat { display:flex; gap:0.9rem; align-items:flex-start; }
+    .dom-feat-ico { width:36px; height:36px; border-radius:9px; background:rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .dom-feat-ico svg { width:18px; height:18px; stroke:var(--arena); fill:none; stroke-width:1.8; }
+    .dom-feat h4 { font-size:0.88rem; font-weight:500; color:var(--blanco); margin-bottom:0.1rem; }
+    .dom-feat p { font-size:0.78rem; color:rgba(255,255,255,0.6); }
+
+    /* ---- PROCESO ---- */
+    .proceso-section { background:var(--crema); padding:6rem 2rem; }
+    .proceso-inner { max-width:1200px; margin:0 auto; }
+    .proceso-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:2rem; margin-top:3.5rem; position:relative; }
+    .proceso-steps::before { content:''; position:absolute; top:28px; left:calc(12.5% + 20px); right:calc(12.5% + 20px); height:1.5px; background:var(--verde-claro); z-index:0; }
+    .paso { text-align:center; position:relative; z-index:1; }
+    .paso-num { width:56px; height:56px; border-radius:50%; background:var(--verde); color:var(--blanco); display:flex; align-items:center; justify-content:center; margin:0 auto 1.2rem; font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; }
+    .paso h4 { font-size:0.95rem; font-weight:500; color:var(--verde); margin-bottom:0.4rem; }
+    .paso p { font-size:0.82rem; color:var(--texto-suave); line-height:1.6; }
+
+    /* ---- FOOTER ---- */
+    footer { background:var(--marron); color:rgba(255,255,255,0.62); padding:4rem 3rem 2rem; }
+    .footer-top { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.8fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:2rem; }
+    .footer-marca-nombre { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; color:var(--blanco); letter-spacing:0.07em; }
+    .footer-marca-sub { font-size:0.57rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:1rem; }
+    .footer-desc { font-size:0.82rem; line-height:1.65; max-width:280px; }
+    .footer-col h5 { font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:1.2rem; }
+    .footer-col a { display:block; font-size:0.84rem; color:rgba(255,255,255,0.58); margin-bottom:0.55rem; transition:color 0.2s; }
+    .footer-col a:hover { color:var(--blanco); }
+    .footer-bottom { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; font-size:0.74rem; color:rgba(255,255,255,0.26); flex-wrap:wrap; gap:0.5rem; }
+
+    .wa-flotante { position:fixed; bottom:1.8rem; right:1.8rem; width:52px; height:52px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,0,0,0.2); z-index:999; text-decoration:none; transition:transform 0.2s; }
+    .wa-flotante:hover { transform:scale(1.1); }
+    .wa-flotante svg { width:27px; height:27px; fill:var(--blanco); }
+
+    @media(max-width:1024px){
+      .serv-split { grid-template-columns:1fr; }
+      .serv-split.inv { direction:ltr; }
+      .serv-split-img { min-height:280px; }
+      .serv-split-txt { padding:3.5rem 2.5rem; }
+      .proceso-steps { grid-template-columns:1fr 1fr; gap:2rem; }
+      .proceso-steps::before { display:none; }
+      .domicilio-cta-inner { grid-template-columns:1fr; }
+      .footer-top { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:768px){
+      .navbar { padding:0 1.5rem; }
+      .nav-links { display:none; }
+      .hamburger { display:flex; }
+      .page-hero-content { padding:0 1.5rem 3rem; }
+      .serv-split-txt { padding:2.5rem 1.5rem; }
+      .proceso-steps { grid-template-columns:1fr; }
+      .domicilio-cta-inner { padding:3rem 1.5rem; }
+      .footer-top { grid-template-columns:1fr; }
+      .footer-bottom { flex-direction:column; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-circulo">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M 15 78 L 15 42 A 38 38 0 0 1 53 4 L 85 4 L 85 78 Z" stroke="#445925" stroke-width="4.5" fill="none" stroke-linejoin="round"/>
+        <rect x="53" y="42" width="32" height="36" stroke="#445925" stroke-width="4" fill="none"/>
+        <rect x="53" y="61" width="17" height="17" stroke="#445925" stroke-width="3.5" fill="none"/>
+        <path d="M 53 78 A 36 36 0 0 0 15 42" stroke="#445925" stroke-width="4" fill="none"/>
+        <path d="M 53 61 A 19 19 0 0 0 85 42" stroke="#445925" stroke-width="3.5" fill="none"/>
+        <path d="M 70 61 A 9 9 0 0 0 70 78" stroke="#9BAB8F" stroke-width="3" fill="none"/>
+        <circle cx="70" cy="69" r="3" fill="#9BAB8F"/>
+      </svg>
+    </div>
+    <div class="nav-logo-texto">
+      <span class="nav-logo-nombre">ÁUREA</span>
+      <span class="nav-logo-sub">Laboratorio Bioquímico</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="nosotros.html">Nosotros</a>
+    <div class="nav-drop">
+      <a href="#">Pacientes</a>
+      <div class="drop-menu">
+        <a href="resultados.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Ver resultados online</a>
+        <a href="domicilio.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Extracción a domicilio</a>
+        <div class="drop-sep"></div>
+        <a href="estudios.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Preparación de estudios</a>
+      </div>
+    </div>
+    <a href="servicios.html" class="activo">Servicios</a>
+    <a href="estudios.html">Estudios</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="resultados.html" class="nav-cta"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Ver resultados</a>
+  </div>
+  <button class="hamburger" id="hambBtn"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Inicio</a>
+  <a href="nosotros.html">Nosotros</a>
+  <a href="servicios.html">Servicios</a>
+  <a href="estudios.html">Estudios</a>
+  <a href="contacto.html">Contacto</a>
+  <div class="mob-sep"></div>
+  <a href="resultados.html">Ver resultados online</a>
+  <a href="domicilio.html">Extracción a domicilio</a>
+  <a href="resultados.html" class="mob-cta">Ver mis resultados</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-content">
+    <p class="breadcrumb"><a href="index.html">Inicio</a> &nbsp;/&nbsp; Servicios</p>
+    <h1>Nuestros <strong>servicios.</strong></h1>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+  <div class="intro-inner">
+    <span class="etiqueta reveal">Lo que hacemos</span>
+    <h2 class="h2-grande reveal">Análisis clínicos de alta complejidad.</h2>
+    <p class="p-normal reveal">Contamos con una amplia gama de estudios para el cuidado integral de tu salud. Tecnología de vanguardia, bioquímicos especializados y resultados confiables.</p>
+  </div>
+</section>
+
+<!-- SERVICIO 1: HEMATOLOGÍA — imagen izq, texto der -->
+<section id="hematologia">
+  <div class="serv-split">
+    <div class="serv-split-img reveal-left">
+      <!--
+        FOTO: img/serv-hematologia.jpg
+        Reemplazá div.img-ph con:
+        <img src="img/serv-hematologia.jpg" alt="Hematología"
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+      -->
+      <div class="img-ph verde">
+        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        <p>Foto hematología<br/><code>img/serv-hematologia.jpg</code></p>
+      </div>
+    </div>
+    <div class="serv-split-txt reveal-right">
+      <span class="etiqueta">Área 01</span>
+      <h2 class="h2-grande">Hematología</h2>
+      <p class="p-normal">Estudios del sistema sanguíneo con equipamiento automatizado de última generación. Resultados precisos para el diagnóstico de anemias, infecciones, trastornos de coagulación y más.</p>
+      <div class="estudios-lista">
+        <span class="estudio-item">Hemograma completo con fórmula leucocitaria</span>
+        <span class="estudio-item">Coagulograma (TP, KPTT, Fibrinógeno)</span>
+        <span class="estudio-item">Eritrosedimentación (VSG)</span>
+        <span class="estudio-item">Ferritina, Hierro sérico y Transferrina</span>
+        <span class="estudio-item">Frotis de sangre periférica</span>
+        <span class="estudio-item">Reticulocitos</span>
+      </div>
+      <a href="estudios.html" class="btn-seccion">Ver preparación <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIO 2: BIOQUÍMICA — texto izq, imagen der (invertido) -->
+<section id="bioquimica">
+  <div class="serv-split inv">
+    <div class="serv-split-img reveal-right">
+      <div class="img-ph">
+        <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v11m0 0H5a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2h-4m-6 0h6"/></svg>
+        <p>Foto bioquímica<br/><code>img/serv-bioquimica.jpg</code></p>
+      </div>
+    </div>
+    <div class="serv-split-txt bg-crema reveal-left">
+      <span class="etiqueta">Área 02</span>
+      <h2 class="h2-grande">Bioquímica general</h2>
+      <p class="p-normal">Perfiles completos para monitoreo de enfermedades crónicas, evaluación preventiva y control de tratamientos. Análisis con ayuno mínimo y resultados el mismo día.</p>
+      <div class="estudios-lista">
+        <span class="estudio-item">Glucosa en ayunas y posprandial</span>
+        <span class="estudio-item">Perfil lipídico completo (colesterol, LDL, HDL, triglicéridos)</span>
+        <span class="estudio-item">Función renal (creatinina, urea, ácido úrico)</span>
+        <span class="estudio-item">Función hepática (transaminasas, bilirrubina, FAL)</span>
+        <span class="estudio-item">Hemoglobina glicosilada (HbA1c)</span>
+        <span class="estudio-item">Proteínas totales y albúmina</span>
+      </div>
+      <a href="estudios.html" class="btn-seccion">Ver preparación <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIO 3: HORMONAS — imagen izq, texto der, fondo verde -->
+<section id="hormonas">
+  <div class="serv-split">
+    <div class="serv-split-img reveal-left">
+      <div class="img-ph oscuro">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85"/></svg>
+        <p>Foto hormonas<br/><code>img/serv-hormonas.jpg</code></p>
+      </div>
+    </div>
+    <div class="serv-split-txt bg-verde reveal-right">
+      <span class="etiqueta">Área 03</span>
+      <h2 class="h2-grande">Hormonas y tiroides</h2>
+      <p class="p-normal">Panel hormonal completo para diagnóstico y seguimiento de patologías tiroideas, reproductivas, metabólicas y de crecimiento. Para hombres, mujeres y niños.</p>
+      <div class="estudios-lista">
+        <span class="estudio-item">TSH, T3 libre y T4 libre</span>
+        <span class="estudio-item">Insulina y resistencia a la insulina (HOMA)</span>
+        <span class="estudio-item">Cortisol basal y nocturno</span>
+        <span class="estudio-item">Testosterona total y libre</span>
+        <span class="estudio-item">FSH, LH, Estradiol, Progesterona</span>
+        <span class="estudio-item">Prolactina, IGF-1, Hormona de crecimiento</span>
+      </div>
+      <a href="estudios.html" class="btn-seccion">Ver preparación <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIO 4: SEROLOGÍA — texto izq, imagen der (invertido) -->
+<section id="serologia">
+  <div class="serv-split inv">
+    <div class="serv-split-img reveal-right">
+      <div class="img-ph verde">
+        <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        <p>Foto serología<br/><code>img/serv-serologia.jpg</code></p>
+      </div>
+    </div>
+    <div class="serv-split-txt reveal-left">
+      <span class="etiqueta">Área 04</span>
+      <h2 class="h2-grande">Inmunología y serología</h2>
+      <p class="p-normal">Detección de infecciones, marcadores autoinmunes y estudios de seguimiento para enfermedades infecciosas. Resultados confidenciales y confiables.</p>
+      <div class="estudios-lista">
+        <span class="estudio-item">HIV (anticuerpos y antígeno p24)</span>
+        <span class="estudio-item">Hepatitis B (HBsAg, Anti-HBs, Anti-HBc)</span>
+        <span class="estudio-item">Hepatitis C (Anti-HCV)</span>
+        <span class="estudio-item">VDRL y FTA-ABS (sífilis)</span>
+        <span class="estudio-item">Chagas (ELISA y HAI)</span>
+        <span class="estudio-item">Toxoplasmosis, Rubéola, CMV (IgG e IgM)</span>
+      </div>
+      <a href="estudios.html" class="btn-seccion">Ver preparación <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIO 5: MICROBIOLOGÍA — imagen izq, texto der -->
+<section id="microbiologia">
+  <div class="serv-split">
+    <div class="serv-split-img reveal-left">
+      <div class="img-ph">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M11 8v3l2 2"/></svg>
+        <p>Foto microbiología<br/><code>img/serv-microbiologia.jpg</code></p>
+      </div>
+    </div>
+    <div class="serv-split-txt bg-arena reveal-right">
+      <span class="etiqueta">Área 05</span>
+      <h2 class="h2-grande">Microbiología</h2>
+      <p class="p-normal">Cultivos microbiológicos e identificación de agentes infecciosos con antibiograma para orientar el tratamiento antibiótico más adecuado en cada caso.</p>
+      <div class="estudios-lista">
+        <span class="estudio-item">Urocultivo con antibiograma</span>
+        <span class="estudio-item">Coprocultivo y parasitológico de materia fecal</span>
+        <span class="estudio-item">Hemocultivo (2 muestras)</span>
+        <span class="estudio-item">Cultivo de secreciones y exudados</span>
+        <span class="estudio-item">Test rápido de Antígeno Streptocócico</span>
+        <span class="estudio-item">Helicobacter pylori (serología y antígeno en materia fecal)</span>
+      </div>
+      <a href="estudios.html" class="btn-seccion">Ver preparación <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section class="proceso-section">
+  <div class="proceso-inner">
+    <span class="etiqueta reveal">¿Cómo funciona?</span>
+    <h2 class="h2-grande reveal">De la extracción al resultado.</h2>
+    <div class="proceso-steps">
+      <div class="paso reveal d1">
+        <div class="paso-num">1</div>
+        <h4>Venís al laboratorio</h4>
+        <p>Sin turno previo. Atención de lunes a viernes de 7 a 12 hs y sábados de 7 a 10 hs.</p>
+      </div>
+      <div class="paso reveal d2">
+        <div class="paso-num">2</div>
+        <h4>Extracción de muestra</h4>
+        <p>Personal capacitado realiza la extracción con el mayor cuidado y precisión.</p>
+      </div>
+      <div class="paso reveal d3">
+        <div class="paso-num">3</div>
+        <h4>Procesamiento</h4>
+        <p>Tu muestra es procesada con equipamiento de última generación bajo estrictos protocolos de calidad.</p>
+      </div>
+      <div class="paso reveal d4">
+        <div class="paso-num">4</div>
+        <h4>Recibís tus resultados</h4>
+        <p>Te avisamos por WhatsApp cuando estén listos. Los podés ver online o retirar en el laboratorio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA DOMICILIO -->
+<div class="domicilio-cta">
+  <div class="domicilio-cta-bg"></div>
+  <div class="domicilio-cta-inner">
+    <div class="reveal-left">
+      <span class="etiqueta" style="color:rgba(255,255,255,0.45);">Servicio especial</span>
+      <h2>Extracción a domicilio</h2>
+      <p>Todos estos estudios también pueden realizarse en tu casa. Nuestro equipo se acerca con todo el equipamiento necesario.</p>
+      <a href="domicilio.html" class="btn-blanco">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        Solicitar extracción a domicilio
+      </a>
+    </div>
+    <div class="dom-feats reveal-right">
+      <div class="dom-feat"><div class="dom-feat-ico"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div><div><h4>Sin costo adicional</h4><p>El servicio no tiene cargo extra en la zona de cobertura.</p></div></div>
+      <div class="dom-feat"><div class="dom-feat-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><h4>Horario matinal</h4><p>Extracciones de 7:00 a 10:00 hs para respetar el ayuno.</p></div></div>
+      <div class="dom-feat"><div class="dom-feat-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2"/></svg></div><div><h4>Confirmación por WhatsApp</h4><p>Te avisamos cuando el pedido esté confirmado.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-marca-nombre">ÁUREA</div>
+      <div class="footer-marca-sub">Laboratorio Bioquímico</div>
+      <p class="footer-desc">Análisis clínicos de alta complejidad con atención personalizada. Junín, Buenos Aires, Argentina.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Navegación</h5>
+      <a href="index.html">Inicio</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="servicios.html">Servicios</a>
+      <a href="estudios.html">Estudios</a>
+      <a href="contacto.html">Contacto</a>
+    </div>
+    <div class="footer-col">
+      <h5>Pacientes</h5>
+      <a href="resultados.html">Resultados online</a>
+      <a href="domicilio.html">Extracción a domicilio</a>
+      <a href="estudios.html">Preparación de estudios</a>
+    </div>
+    <div class="footer-col">
+      <h5>Contacto</h5>
+      <a href="#">Av. [Tu dirección]</a>
+      <a href="#">Junín, Buenos Aires</a>
+      <a href="tel:+54XXXXXXXXX">(xxx) xxx-xxxx</a>
+      <a href="mailto:contacto@aurea.com.ar">contacto@aurea.com.ar</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Áurea Laboratorio Bioquímico. Todos los derechos reservados.</span>
+    <span>Junín, Buenos Aires, Argentina</span>
+  </div>
+</footer>
+
+<a href="https://wa.me/5491100000000" target="_blank" class="wa-flotante">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+  document.getElementById('hambBtn').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('abierto'));
+  const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }), {threshold:0.12});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

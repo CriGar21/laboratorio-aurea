@@ -1,0 +1,1545 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Extracción a Domicilio — Áurea Laboratorio Bioquímico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --verde: #445925;
+        --verde-med: #9bab8f;
+        --verde-claro: #dee8d2;
+        --crema: #f2f2f2;
+        --arena: #f2dea2;
+        --arena-med: #ebe7d0;
+        --marron: #4d301f;
+        --marron-med: #bc6849;
+        --blanco: #ffffff;
+        --texto: #2a2a2a;
+        --texto-suave: #6b6b6b;
+        --header-h: 76px;
+        --error: #c0392b;
+        --ok: #27ae60;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--crema);
+        color: var(--texto);
+        font-size: 16px;
+        line-height: 1.7;
+        min-height: 100vh;
+      }
+
+      /* ---- HEADER ---- */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: var(--header-h);
+        background: var(--blanco);
+        border-bottom: 1px solid #e0ddd5;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+        gap: 1rem;
+      }
+
+      .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+      }
+
+      .logo-circulo {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: var(--blanco);
+        border: 1.5px solid var(--verde-claro);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .logo-circulo svg {
+        width: 34px;
+        height: 34px;
+      }
+
+      .logo-nombre {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.45rem;
+        font-weight: 600;
+        color: var(--verde);
+        letter-spacing: 0.06em;
+        display: block;
+        line-height: 1;
+      }
+
+      .logo-sub {
+        font-size: 0.58rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--verde-med);
+        display: block;
+      }
+
+      .nav-volver {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        text-decoration: none;
+        font-size: 0.85rem;
+        color: var(--texto-suave);
+        padding: 0.4rem 0.9rem;
+        border-radius: 6px;
+        transition:
+          color 0.2s,
+          background 0.2s;
+      }
+
+      .nav-volver:hover {
+        color: var(--verde);
+        background: var(--verde-claro);
+      }
+
+      .nav-volver svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2.2;
+      }
+
+      /* ---- HERO DE LA PÁGINA ---- */
+      .page-hero {
+        background: linear-gradient(140deg, #f5f3ed 0%, #eae7da 100%);
+        padding: calc(var(--header-h) + 3rem) 2rem 3rem;
+        text-align: center;
+        border-bottom: 1px solid #e4e0d6;
+      }
+
+      .page-tag {
+        display: inline-block;
+        font-size: 0.71rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--marron-med);
+        margin-bottom: 0.6rem;
+        font-weight: 500;
+      }
+
+      .page-hero h1 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 600;
+        color: var(--verde);
+        margin-bottom: 0.75rem;
+        line-height: 1.15;
+      }
+
+      .page-hero p {
+        color: var(--texto-suave);
+        max-width: 520px;
+        margin: 0 auto;
+        font-size: 1rem;
+      }
+
+      /* ---- AVISOS INFORMATIVOS ---- */
+      .avisos {
+        max-width: 860px;
+        margin: 2.5rem auto 0;
+        padding: 0 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+
+      .aviso {
+        background: var(--blanco);
+        border-radius: 14px;
+        border: 1px solid #e4e0d6;
+        padding: 1.2rem 1.3rem;
+        display: flex;
+        gap: 0.9rem;
+        align-items: flex-start;
+      }
+
+      .aviso-ico {
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+        background: var(--verde-claro);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .aviso-ico svg {
+        width: 18px;
+        height: 18px;
+        stroke: var(--verde);
+        fill: none;
+        stroke-width: 1.8;
+      }
+
+      .aviso h4 {
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 0.15rem;
+      }
+
+      .aviso p {
+        font-size: 0.78rem;
+        color: var(--texto-suave);
+        line-height: 1.4;
+      }
+
+      /* ---- FORMULARIO PRINCIPAL ---- */
+      .form-wrap {
+        max-width: 860px;
+        margin: 2rem auto 4rem;
+        padding: 0 1.5rem;
+      }
+
+      /* Stepper de pasos */
+      .stepper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        margin-bottom: 2.5rem;
+      }
+
+      .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        flex: 1;
+        max-width: 140px;
+      }
+
+      .step-num {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #ddd8c8;
+        color: var(--texto-suave);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.82rem;
+        font-weight: 500;
+        transition:
+          background 0.3s,
+          color 0.3s;
+      }
+
+      .step.activo .step-num {
+        background: var(--verde);
+        color: var(--blanco);
+      }
+
+      .step.completo .step-num {
+        background: var(--ok);
+        color: var(--blanco);
+      }
+
+      .step.completo .step-num::after {
+        content: "✓";
+      }
+
+      .step.completo .step-num span {
+        display: none;
+      }
+
+      .step-lbl {
+        font-size: 0.72rem;
+        color: var(--texto-suave);
+        text-align: center;
+        line-height: 1.2;
+      }
+
+      .step.activo .step-lbl {
+        color: var(--verde);
+        font-weight: 500;
+      }
+
+      .step-linea {
+        flex: 1;
+        height: 1.5px;
+        background: #ddd8c8;
+        margin-bottom: 1.2rem;
+        max-width: 60px;
+      }
+
+      /* Tarjeta del formulario */
+      .form-card {
+        background: var(--blanco);
+        border-radius: 20px;
+        border: 1px solid #e4e0d6;
+        padding: 2.5rem 2rem;
+      }
+
+      /* Cada paso */
+      .paso {
+        display: none;
+      }
+
+      .paso.activo {
+        display: block;
+      }
+
+      .paso-titulo {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--verde);
+        margin-bottom: 0.3rem;
+      }
+
+      .paso-desc {
+        font-size: 0.88rem;
+        color: var(--texto-suave);
+        margin-bottom: 1.8rem;
+      }
+
+      /* Opciones de tipo (tarjetas clicables) */
+      .opciones-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .opcion-card {
+        border: 2px solid #e4e0d6;
+        border-radius: 14px;
+        padding: 1.3rem;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+        text-align: center;
+      }
+
+      .opcion-card:hover {
+        border-color: var(--verde-med);
+        background: var(--verde-claro);
+      }
+
+      .opcion-card.elegida {
+        border-color: var(--verde);
+        background: var(--verde-claro);
+      }
+
+      .opcion-ico {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: var(--verde-claro);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.8rem;
+      }
+
+      .opcion-card.elegida .opcion-ico {
+        background: var(--verde);
+      }
+
+      .opcion-ico svg {
+        width: 22px;
+        height: 22px;
+        stroke: var(--verde);
+        fill: none;
+        stroke-width: 1.7;
+      }
+
+      .opcion-card.elegida .opcion-ico svg {
+        stroke: var(--blanco);
+      }
+
+      .opcion-card h4 {
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 0.2rem;
+      }
+
+      .opcion-card p {
+        font-size: 0.77rem;
+        color: var(--texto-suave);
+        line-height: 1.4;
+      }
+
+      /* Campos del formulario */
+      .campo-grupo {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .campo-grupo.uno {
+        grid-template-columns: 1fr;
+      }
+      .campo-grupo.tres {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+
+      .campo label {
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--texto);
+        letter-spacing: 0.04em;
+      }
+
+      .campo label span.req {
+        color: var(--marron-med);
+        margin-left: 0.1rem;
+      }
+
+      .campo input,
+      .campo select,
+      .campo textarea {
+        border: 1.5px solid #ddd8c8;
+        border-radius: 10px;
+        padding: 0.65rem 0.9rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.9rem;
+        color: var(--texto);
+        background: var(--crema);
+        outline: none;
+        transition: border-color 0.2s;
+        width: 100%;
+      }
+
+      .campo input:focus,
+      .campo select:focus,
+      .campo textarea:focus {
+        border-color: var(--verde);
+        background: var(--blanco);
+      }
+
+      .campo input.invalido,
+      .campo select.invalido,
+      .campo textarea.invalido {
+        border-color: var(--error);
+      }
+
+      .campo .error-msg {
+        font-size: 0.74rem;
+        color: var(--error);
+        display: none;
+      }
+
+      .campo.con-error .error-msg {
+        display: block;
+      }
+
+      .campo textarea {
+        resize: vertical;
+        min-height: 90px;
+      }
+
+      /* Selección de fecha y hora */
+      .fecha-hora-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+      }
+
+      /* Selector de horario visual */
+      .horarios-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
+
+      .hora-btn {
+        padding: 0.5rem 0;
+        border: 1.5px solid #ddd8c8;
+        border-radius: 8px;
+        background: var(--crema);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.82rem;
+        color: var(--texto-suave);
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.15s;
+      }
+
+      .hora-btn:hover {
+        border-color: var(--verde-med);
+        color: var(--verde);
+      }
+
+      .hora-btn.elegida {
+        background: var(--verde);
+        border-color: var(--verde);
+        color: var(--blanco);
+        font-weight: 500;
+      }
+
+      .hora-btn.ocupada {
+        opacity: 0.4;
+        cursor: not-allowed;
+        text-decoration: line-through;
+      }
+
+      /* Resumen de confirmación */
+      .resumen {
+        background: var(--crema);
+        border-radius: 14px;
+        padding: 1.4rem 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e4e0d6;
+      }
+
+      .resumen h4 {
+        font-size: 0.75rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--verde-med);
+        margin-bottom: 0.8rem;
+      }
+
+      .resumen-fila {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 0.4rem 0;
+        border-bottom: 1px solid #e8e4d8;
+        font-size: 0.88rem;
+        gap: 1rem;
+      }
+
+      .resumen-fila:last-child {
+        border-bottom: none;
+      }
+
+      .resumen-fila .r-lbl {
+        color: var(--texto-suave);
+        flex-shrink: 0;
+      }
+      .resumen-fila .r-val {
+        font-weight: 500;
+        text-align: right;
+      }
+
+      /* Botones de navegación */
+      .form-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #eee;
+      }
+
+      .btn-prev {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: none;
+        border: 1.5px solid #ddd8c8;
+        border-radius: 30px;
+        padding: 0.7rem 1.4rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.88rem;
+        color: var(--texto-suave);
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+
+      .btn-prev:hover {
+        border-color: var(--verde-med);
+        color: var(--verde);
+      }
+
+      .btn-prev svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2.2;
+      }
+
+      .btn-next {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--verde);
+        color: var(--blanco);
+        border: none;
+        border-radius: 30px;
+        padding: 0.75rem 1.8rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+      }
+
+      .btn-next:hover {
+        background: #354a1c;
+        transform: translateY(-1px);
+      }
+      .btn-next svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2.2;
+      }
+
+      /* Pantalla de éxito */
+      .exito {
+        display: none;
+        text-align: center;
+        padding: 2rem 1rem;
+      }
+
+      .exito.visible {
+        display: block;
+      }
+
+      .exito-ico {
+        width: 72px;
+        height: 72px;
+        background: #eaf7ef;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+      }
+
+      .exito-ico svg {
+        width: 36px;
+        height: 36px;
+        stroke: var(--ok);
+        fill: none;
+        stroke-width: 2;
+      }
+
+      .exito h2 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--verde);
+        margin-bottom: 0.5rem;
+      }
+
+      .exito p {
+        font-size: 0.92rem;
+        color: var(--texto-suave);
+        max-width: 420px;
+        margin: 0 auto 1.5rem;
+      }
+
+      .exito-datos {
+        background: var(--crema);
+        border-radius: 12px;
+        padding: 1.2rem;
+        max-width: 380px;
+        margin: 0 auto 2rem;
+        text-align: left;
+        font-size: 0.86rem;
+      }
+
+      .exito-datos p {
+        margin-bottom: 0.4rem;
+        color: var(--texto-suave);
+      }
+      .exito-datos strong {
+        color: var(--texto);
+      }
+
+      /* Nota aclaratoria */
+      .nota-form {
+        background: #fff8e8;
+        border-left: 3px solid #e8a500;
+        border-radius: 0 10px 10px 0;
+        padding: 0.8rem 1rem;
+        font-size: 0.82rem;
+        color: #7a5500;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+      }
+
+      /* Checkbox obras sociales */
+      .check-row {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        cursor: pointer;
+        font-size: 0.88rem;
+        color: var(--texto-suave);
+        margin-top: 0.5rem;
+      }
+
+      .check-row input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--verde);
+        cursor: pointer;
+      }
+
+      /* WhatsApp flotante */
+      .wa-flotante {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 50px;
+        height: 50px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+        z-index: 999;
+        text-decoration: none;
+        transition: transform 0.2s;
+      }
+
+      .wa-flotante:hover {
+        transform: scale(1.1);
+      }
+      .wa-flotante svg {
+        width: 26px;
+        height: 26px;
+        fill: var(--blanco);
+      }
+
+      /* Responsive */
+      @media (max-width: 640px) {
+        .campo-grupo,
+        .campo-grupo.tres {
+          grid-template-columns: 1fr;
+        }
+        .fecha-hora-grid {
+          grid-template-columns: 1fr;
+        }
+        .horarios-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .form-card {
+          padding: 1.5rem 1rem;
+        }
+        .stepper {
+          gap: 0;
+        }
+        .step-lbl {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <a href="index.html" class="logo-area">
+        <div class="logo-circulo">
+          <svg viewBox="0 0 100 100" fill="none">
+            <path
+              d="M 15 78 L 15 42 A 38 38 0 0 1 53 4 L 85 4 L 85 78 Z"
+              stroke="#445925"
+              stroke-width="4"
+              fill="none"
+              stroke-linejoin="round"
+            />
+            <rect
+              x="53"
+              y="42"
+              width="32"
+              height="36"
+              stroke="#445925"
+              stroke-width="3.5"
+              fill="none"
+            />
+            <rect
+              x="53"
+              y="61"
+              width="17"
+              height="17"
+              stroke="#445925"
+              stroke-width="3"
+              fill="none"
+            />
+            <path
+              d="M 53 78 A 36 36 0 0 0 15 42"
+              stroke="#445925"
+              stroke-width="3.5"
+              fill="none"
+            />
+            <path
+              d="M 53 61 A 19 19 0 0 0 85 42"
+              stroke="#445925"
+              stroke-width="3"
+              fill="none"
+            />
+            <path
+              d="M 70 61 A 9 9 0 0 0 70 78"
+              stroke="#9BAB8F"
+              stroke-width="2.5"
+              fill="none"
+            />
+            <circle cx="70" cy="69" r="2.5" fill="#9BAB8F" />
+          </svg>
+        </div>
+        <div>
+          <span class="logo-nombre">ÁUREA</span>
+          <span class="logo-sub">Laboratorio Bioquímico</span>
+        </div>
+      </a>
+      <a href="index.html" class="nav-volver">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" /></svg>
+        Volver al inicio
+      </a>
+    </header>
+
+    <!-- HERO -->
+    <div class="page-hero">
+      <span class="page-tag">Servicio especial</span>
+      <h1>Extracción a domicilio</h1>
+      <p>
+        Agendá tu visita y nuestro equipo se acerca a tu casa para realizar la
+        extracción. Sin filas, sin traslados.
+      </p>
+    </div>
+
+    <!-- AVISOS -->
+    <div class="avisos">
+      <div class="aviso">
+        <div class="aviso-ico">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+        </div>
+        <div>
+          <h4>Sin costo extra</h4>
+          <p>
+            El servicio a domicilio no tiene costo adicional en la zona de
+            cobertura.
+          </p>
+        </div>
+      </div>
+      <div class="aviso">
+        <div class="aviso-ico">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8"
+            />
+          </svg>
+        </div>
+        <div>
+          <h4>Confirmación por WhatsApp</h4>
+          <p>
+            Te confirmamos el turno y horario por WhatsApp dentro de las 2
+            horas.
+          </p>
+        </div>
+      </div>
+      <div class="aviso">
+        <div class="aviso-ico">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+        </div>
+        <div>
+          <h4>Zona de cobertura</h4>
+          <p>
+            Consultar disponibilidad según tu barrio o localidad en Junín y
+            alrededores.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="form-wrap">
+      <!-- STEPPER -->
+      <div class="stepper" id="stepper">
+        <div class="step activo" id="st1">
+          <div class="step-num"><span>1</span></div>
+          <div class="step-lbl">Motivo</div>
+        </div>
+        <div class="step-linea"></div>
+        <div class="step" id="st2">
+          <div class="step-num"><span>2</span></div>
+          <div class="step-lbl">Fecha y hora</div>
+        </div>
+        <div class="step-linea"></div>
+        <div class="step" id="st3">
+          <div class="step-num"><span>3</span></div>
+          <div class="step-lbl">Tus datos</div>
+        </div>
+        <div class="step-linea"></div>
+        <div class="step" id="st4">
+          <div class="step-num"><span>4</span></div>
+          <div class="step-lbl">Confirmar</div>
+        </div>
+      </div>
+
+      <!-- CARD PRINCIPAL -->
+      <div class="form-card" id="formCard">
+        <!-- PASO 1: Motivo de la visita -->
+        <div class="paso activo" id="p1">
+          <p class="paso-titulo">¿Para quién es la extracción?</p>
+          <p class="paso-desc">
+            Seleccioná el tipo de paciente y el motivo principal de la visita.
+          </p>
+
+          <div class="opciones-grid">
+            <div
+              class="opcion-card"
+              onclick="elegirOpcion(this, 'tipoPaciente', 'adulto')"
+            >
+              <div class="opcion-ico">
+                <svg viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              <h4>Adulto / Mayor</h4>
+              <p>Paciente adulto, adulto mayor o con dificultad de traslado.</p>
+            </div>
+            <div
+              class="opcion-card"
+              onclick="elegirOpcion(this, 'tipoPaciente', 'niño')"
+            >
+              <div class="opcion-ico">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="8" r="5" />
+                  <path d="M3 21c0-4.4 4-8 9-8s9 3.6 9 8" />
+                </svg>
+              </div>
+              <h4>Niño / Bebé</h4>
+              <p>Paciente pediátrico que requiere extracción en casa.</p>
+            </div>
+            <div
+              class="opcion-card"
+              onclick="elegirOpcion(this, 'tipoPaciente', 'embarazada')"
+            >
+              <div class="opcion-ico">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2a5 5 0 015 5v2a5 5 0 01-10 0V7a5 5 0 015-5z" />
+                  <path d="M12 14c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z" />
+                </svg>
+              </div>
+              <h4>Embarazada</h4>
+              <p>Controles de embarazo y estudios perinatales.</p>
+            </div>
+            <div
+              class="opcion-card"
+              onclick="elegirOpcion(this, 'tipoPaciente', 'otro')"
+            >
+              <div class="opcion-ico">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              </div>
+              <h4>Otro motivo</h4>
+              <p>Comodidad personal, internación domiciliaria u otro.</p>
+            </div>
+          </div>
+
+          <input type="hidden" id="tipoPaciente" value="" />
+
+          <div class="campo campo-grupo uno" id="campoPracticas">
+            <label
+              >¿Tiene orden médica o sabe qué estudios necesita?
+              <span class="req">*</span></label
+            >
+            <textarea
+              id="practicas"
+              placeholder="Ej: Hemograma completo, glucosa, TSH — o indicá si aún no lo sabés y lo coordinamos por WhatsApp"
+            ></textarea>
+            <span class="error-msg"
+              >Por favor describí el motivo o los estudios solicitados.</span
+            >
+          </div>
+
+          <div class="campo-grupo uno campo">
+            <label>¿Tenés obra social o prepaga?</label>
+            <label class="check-row">
+              <input type="checkbox" id="tieneOS" onchange="toggleOS()" />
+              Sí, tengo cobertura de salud
+            </label>
+          </div>
+
+          <div
+            class="campo-grupo uno campo"
+            id="campoOS"
+            style="display: none; margin-top: 0.8rem"
+          >
+            <label>Nombre de tu obra social o prepaga</label>
+            <input
+              type="text"
+              id="obraSocial"
+              placeholder="Ej: IOMA, OSDE, Swiss Medical, Galeno..."
+            />
+          </div>
+
+          <div class="form-nav">
+            <span></span>
+            <button class="btn-next" onclick="irPaso(2)">
+              Continuar
+              <svg viewBox="0 0 24 24">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- PASO 2: Fecha y hora -->
+        <div class="paso" id="p2">
+          <p class="paso-titulo">¿Cuándo querés que vayamos?</p>
+          <p class="paso-desc">
+            Elegí una fecha tentativa y un rango horario preferido. Te
+            confirmamos por WhatsApp.
+          </p>
+
+          <div class="nota-form">
+            ⚠ Recordá que la mayoría de los análisis requieren
+            <strong>ayuno previo</strong>. El horario de extracción suele ser
+            temprano a la mañana (7:00 a 10:00 hs).
+          </div>
+
+          <div class="fecha-hora-grid">
+            <div class="campo">
+              <label>Fecha preferida <span class="req">*</span></label>
+              <input type="date" id="fechaTurno" min="" />
+              <span class="error-msg">Seleccioná una fecha válida.</span>
+            </div>
+            <div class="campo">
+              <label>Rango horario preferido <span class="req">*</span></label>
+              <select id="rangoHorario">
+                <option value="">— Seleccioná —</option>
+                <option value="07:00-08:00">7:00 — 8:00 hs</option>
+                <option value="08:00-09:00">8:00 — 9:00 hs</option>
+                <option value="09:00-10:00">9:00 — 10:00 hs</option>
+                <option value="10:00-11:00">
+                  10:00 — 11:00 hs (consultar)
+                </option>
+              </select>
+              <span class="error-msg">Seleccioná un rango horario.</span>
+            </div>
+          </div>
+
+          <div class="campo campo-grupo uno">
+            <label
+              >Dirección exacta de la visita <span class="req">*</span></label
+            >
+            <input
+              type="text"
+              id="direccion"
+              placeholder="Calle, número, piso/depto — Ej: San Martín 456, Piso 2 Depto B"
+            />
+            <span class="error-msg">Ingresá la dirección completa.</span>
+          </div>
+
+          <div class="campo-grupo uno campo">
+            <label>Localidad / Barrio</label>
+            <input
+              type="text"
+              id="localidad"
+              placeholder="Ej: Junín, Villa del Parque, Los Almendros..."
+            />
+          </div>
+
+          <div class="campo-grupo uno campo">
+            <label>Referencia adicional (opcional)</label>
+            <input
+              type="text"
+              id="referencia"
+              placeholder="Ej: Casa de rejas negras, portón azul, timbre no funciona..."
+            />
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-prev" onclick="irPaso(1)">
+              <svg viewBox="0 0 24 24">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+              Volver
+            </button>
+            <button class="btn-next" onclick="irPaso(3)">
+              Continuar
+              <svg viewBox="0 0 24 24">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- PASO 3: Datos del paciente -->
+        <div class="paso" id="p3">
+          <p class="paso-titulo">Tus datos de contacto</p>
+          <p class="paso-desc">
+            Necesitamos estos datos para confirmar el turno y comunicarnos con
+            vos.
+          </p>
+
+          <div class="campo-grupo">
+            <div class="campo">
+              <label>Nombre del paciente <span class="req">*</span></label>
+              <input type="text" id="nombre" placeholder="Nombre y apellido" />
+              <span class="error-msg">Ingresá el nombre completo.</span>
+            </div>
+            <div class="campo">
+              <label>DNI <span class="req">*</span></label>
+              <input
+                type="text"
+                id="dni"
+                placeholder="Sin puntos ni guiones"
+                maxlength="8"
+              />
+              <span class="error-msg">Ingresá un DNI válido.</span>
+            </div>
+          </div>
+
+          <div class="campo-grupo">
+            <div class="campo">
+              <label>Fecha de nacimiento <span class="req">*</span></label>
+              <input type="date" id="fechaNac" />
+              <span class="error-msg">Ingresá la fecha de nacimiento.</span>
+            </div>
+            <div class="campo">
+              <label>Sexo biológico <span class="req">*</span></label>
+              <select id="sexo">
+                <option value="">— Seleccioná —</option>
+                <option value="F">Femenino</option>
+                <option value="M">Masculino</option>
+              </select>
+              <span class="error-msg">Seleccioná el sexo biológico.</span>
+            </div>
+          </div>
+
+          <div class="campo-grupo">
+            <div class="campo">
+              <label>WhatsApp / Celular <span class="req">*</span></label>
+              <input type="tel" id="telefono" placeholder="Ej: 2364 123456" />
+              <span class="error-msg">Ingresá un número de contacto.</span>
+            </div>
+            <div class="campo">
+              <label>Email (opcional)</label>
+              <input type="email" id="email" placeholder="tu@email.com" />
+            </div>
+          </div>
+
+          <div class="campo campo-grupo uno">
+            <label>Observaciones adicionales (opcional)</label>
+            <textarea
+              id="observaciones"
+              placeholder="Alergias, condición especial, si necesitás que vayan venas difíciles, etc."
+            ></textarea>
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-prev" onclick="irPaso(2)">
+              <svg viewBox="0 0 24 24">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+              Volver
+            </button>
+            <button class="btn-next" onclick="irPaso(4)">
+              Revisar solicitud
+              <svg viewBox="0 0 24 24">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- PASO 4: Confirmación -->
+        <div class="paso" id="p4">
+          <p class="paso-titulo">Revisá tu solicitud</p>
+          <p class="paso-desc">
+            Verificá que todo esté correcto antes de enviar.
+          </p>
+
+          <div class="resumen" id="resumenFinal"></div>
+
+          <div class="nota-form">
+            Al confirmar, te vamos a contactar por
+            <strong>WhatsApp</strong> para validar la disponibilidad del turno.
+            El envío de este formulario no garantiza el turno hasta recibir la
+            confirmación de nuestra parte.
+          </div>
+
+          <div class="form-nav">
+            <button class="btn-prev" onclick="irPaso(3)">
+              <svg viewBox="0 0 24 24">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+              Volver
+            </button>
+            <button
+              class="btn-next"
+              onclick="confirmar()"
+              style="background: var(--ok)"
+            >
+              <svg viewBox="0 0 24 24">
+                <path d="M9 12l2 2 4-4" />
+                <circle cx="12" cy="12" r="10" />
+              </svg>
+              Confirmar solicitud
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- /form-card -->
+
+      <!-- PANTALLA DE ÉXITO -->
+      <div class="exito" id="exitoPantalla">
+        <div class="exito-ico">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 12l2 2 4-4" />
+            <circle cx="12" cy="12" r="10" />
+          </svg>
+        </div>
+        <h2>¡Solicitud enviada!</h2>
+        <p>
+          Recibimos tu pedido de extracción a domicilio. Te vamos a confirmar el
+          turno por WhatsApp en las próximas horas.
+        </p>
+
+        <div class="exito-datos" id="exitoDatos"></div>
+
+        <a
+          href="https://wa.me/5491100000000"
+          target="_blank"
+          style="
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #25d366;
+            color: white;
+            padding: 0.85rem 1.8rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.92rem;
+            margin-bottom: 1rem;
+          "
+        >
+          <svg
+            style="width: 18px; height: 18px"
+            viewBox="0 0 24 24"
+            fill="white"
+          >
+            <path
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+            />
+          </svg>
+          Escribir por WhatsApp
+        </a>
+
+        <br />
+        <a
+          href="index.html"
+          style="
+            font-size: 0.85rem;
+            color: var(--texto-suave);
+            text-decoration: none;
+          "
+          >← Volver al inicio</a
+        >
+      </div>
+    </div>
+    <!-- /form-wrap -->
+
+    <!-- WhatsApp flotante -->
+    <a href="https://wa.me/5491100000000" target="_blank" class="wa-flotante">
+      <svg viewBox="0 0 24 24">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+        />
+      </svg>
+    </a>
+
+    <script>
+      // Fecha mínima = mañana
+      const hoy = new Date();
+      hoy.setDate(hoy.getDate() + 1);
+      document.getElementById("fechaTurno").min = hoy
+        .toISOString()
+        .split("T")[0];
+
+      let pasoActual = 1;
+      let tipoPacienteVal = "";
+
+      // Elegir opción de tarjeta
+      function elegirOpcion(el, campoId, valor) {
+        el.closest(".opciones-grid")
+          .querySelectorAll(".opcion-card")
+          .forEach((c) => c.classList.remove("elegida"));
+        el.classList.add("elegida");
+        document.getElementById(campoId).value = valor;
+      }
+
+      // Toggle obra social
+      function toggleOS() {
+        const tiene = document.getElementById("tieneOS").checked;
+        document.getElementById("campoOS").style.display = tiene
+          ? "block"
+          : "none";
+      }
+
+      // Validaciones por paso
+      function validarPaso(n) {
+        let ok = true;
+
+        if (n === 1) {
+          const tipo = document.getElementById("tipoPaciente").value;
+          const prac = document.getElementById("practicas").value.trim();
+          if (!tipo) {
+            alert("Por favor seleccioná el tipo de paciente.");
+            return false;
+          }
+          if (!prac) {
+            document.getElementById("practicas").classList.add("invalido");
+            document
+              .getElementById("campoPracticas")
+              .classList.add("con-error");
+            ok = false;
+          } else {
+            document.getElementById("practicas").classList.remove("invalido");
+            document
+              .getElementById("campoPracticas")
+              .classList.remove("con-error");
+          }
+        }
+
+        if (n === 2) {
+          const fecha = document.getElementById("fechaTurno").value;
+          const rango = document.getElementById("rangoHorario").value;
+          const dir = document.getElementById("direccion").value.trim();
+          if (!fecha) {
+            marcarError("fechaTurno");
+            ok = false;
+          } else {
+            limpiarError("fechaTurno");
+          }
+          if (!rango) {
+            marcarError("rangoHorario");
+            ok = false;
+          } else {
+            limpiarError("rangoHorario");
+          }
+          if (!dir) {
+            marcarError("direccion");
+            ok = false;
+          } else {
+            limpiarError("direccion");
+          }
+        }
+
+        if (n === 3) {
+          const campos = ["nombre", "dni", "fechaNac", "sexo", "telefono"];
+          campos.forEach((id) => {
+            const v = document.getElementById(id).value.trim();
+            if (!v) {
+              marcarError(id);
+              ok = false;
+            } else {
+              limpiarError(id);
+            }
+          });
+          const dni = document.getElementById("dni").value.trim();
+          if (dni && (isNaN(dni) || dni.length < 6)) {
+            marcarError("dni");
+            ok = false;
+          }
+        }
+
+        return ok;
+      }
+
+      function marcarError(id) {
+        const el = document.getElementById(id);
+        el.classList.add("invalido");
+        const campo = el.closest(".campo");
+        if (campo) campo.classList.add("con-error");
+      }
+
+      function limpiarError(id) {
+        const el = document.getElementById(id);
+        el.classList.remove("invalido");
+        const campo = el.closest(".campo");
+        if (campo) campo.classList.remove("con-error");
+      }
+
+      // Navegar entre pasos
+      function irPaso(n) {
+        if (n > pasoActual && !validarPaso(pasoActual)) return;
+
+        // Actualizar stepper
+        for (let i = 1; i <= 4; i++) {
+          const st = document.getElementById("st" + i);
+          st.classList.remove("activo", "completo");
+          if (i < n) st.classList.add("completo");
+          if (i === n) st.classList.add("activo");
+        }
+
+        // Mostrar paso correcto
+        document
+          .querySelectorAll(".paso")
+          .forEach((p) => p.classList.remove("activo"));
+        document.getElementById("p" + n).classList.add("activo");
+
+        // Si es el paso 4, armar resumen
+        if (n === 4) armarResumen();
+
+        pasoActual = n;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // Armar resumen en paso 4
+      function armarResumen() {
+        const tipos = {
+          adulto: "Adulto / Mayor",
+          niño: "Niño / Bebé",
+          embarazada: "Embarazada",
+          otro: "Otro motivo",
+        };
+        const tipoLabel =
+          tipos[document.getElementById("tipoPaciente").value] || "—";
+        const fechaRaw = document.getElementById("fechaTurno").value;
+        const [anio, mes, dia] = fechaRaw.split("-");
+        const fechaLabel = `${dia}/${mes}/${anio}`;
+        const os = document.getElementById("tieneOS").checked
+          ? document.getElementById("obraSocial").value.trim() ||
+            "Sí (sin especificar)"
+          : "No";
+
+        const filas = [
+          ["Tipo de paciente", tipoLabel],
+          [
+            "Estudios / motivo",
+            document.getElementById("practicas").value.trim(),
+          ],
+          ["Obra social", os],
+          ["Fecha tentativa", fechaLabel],
+          [
+            "Horario preferido",
+            document.getElementById("rangoHorario").value + " hs",
+          ],
+          ["Dirección", document.getElementById("direccion").value.trim()],
+          [
+            "Localidad",
+            document.getElementById("localidad").value.trim() || "—",
+          ],
+          ["Paciente", document.getElementById("nombre").value.trim()],
+          ["DNI", document.getElementById("dni").value.trim()],
+          [
+            "Celular / WhatsApp",
+            document.getElementById("telefono").value.trim(),
+          ],
+        ];
+
+        let html = "<h4>Resumen de la solicitud</h4>";
+        filas.forEach(([lbl, val]) => {
+          html += `<div class="resumen-fila"><span class="r-lbl">${lbl}</span><span class="r-val">${val}</span></div>`;
+        });
+
+        document.getElementById("resumenFinal").innerHTML = html;
+      }
+
+      // Confirmar y mostrar éxito
+      function confirmar() {
+        // En un proyecto real, acá iría un fetch() a un servidor o un servicio de formularios.
+        // Por ahora mostramos la pantalla de éxito y preparamos el mensaje de WhatsApp.
+
+        const nombre = document.getElementById("nombre").value.trim();
+        const fecha = document
+          .getElementById("fechaTurno")
+          .value.split("-")
+          .reverse()
+          .join("/");
+        const horario = document.getElementById("rangoHorario").value;
+        const dir = document.getElementById("direccion").value.trim();
+        const prac = document.getElementById("practicas").value.trim();
+        const tel = document.getElementById("telefono").value.trim();
+
+        // Pantalla de éxito
+        document.getElementById("formCard").style.display = "none";
+        document.getElementById("stepper").style.display = "none";
+
+        document.getElementById("exitoDatos").innerHTML = `
+      <p><strong>Paciente:</strong> ${nombre}</p>
+      <p><strong>Fecha tentativa:</strong> ${fecha}</p>
+      <p><strong>Horario:</strong> ${horario} hs</p>
+      <p><strong>Dirección:</strong> ${dir}</p>
+      <p><strong>Estudios:</strong> ${prac}</p>
+    `;
+
+        document.getElementById("exitoPantalla").classList.add("visible");
+
+        // Armar mensaje de WhatsApp automático
+        const msg = encodeURIComponent(
+          `Hola Áurea Laboratorio 👋\n\nSolicito extracción a domicilio:\n` +
+            `• Paciente: ${nombre}\n` +
+            `• Fecha: ${fecha}\n` +
+            `• Horario: ${horario} hs\n` +
+            `• Dirección: ${dir}\n` +
+            `• Estudios: ${prac}\n` +
+            `• Celular: ${tel}\n\n` +
+            `Quedo a la espera de confirmación. ¡Gracias!`,
+        );
+
+        // Actualizar el link de WhatsApp del botón de éxito con el mensaje pre-cargado
+        document.querySelectorAll('a[href*="wa.me"]').forEach((a) => {
+          if (a.closest("#exitoPantalla")) {
+            a.href = `https://wa.me/5491100000000?text=${msg}`;
+          }
+        });
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>
