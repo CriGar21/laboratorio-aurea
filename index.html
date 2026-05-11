@@ -1737,9 +1737,14 @@
     <div class="hero">
       <div class="hero-bg"></div>
 
+      <div class="hero-img-hint">
+        📸 Tu foto aquí<br />
+        Guardá como<br /><code>img/hero.jpg</code>
+      </div>
+
       <div class="hero-content">
         <div class="hero-tag reveal d1">
-          Laboratorio Bioquímico · San Miguel de Tucumán, Argentina.
+          Laboratorio Bioquímico · Junín, Buenos Aires
         </div>
         <h1 class="reveal d2">
           Tu salud merece<br /><strong>precisión y cuidado.</strong>
@@ -1839,18 +1844,14 @@
         ║       object-fit:cover;">            ║
         ╚══════════════════════════════════════╝
       -->
-          <img
-            src="img/nosotros.jpg"
-            ║
-            ║
-            alt="Laboratorio Áurea"
-            ║
-            ║
-            style="position: absolute;      ║
-        ║       inset:0};width:100%;            ║
-        ║       height:50%;                   ║
-        ║       object-fit:cover;"
-          />
+          <div class="img-ph">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
+            <p>Tu foto del laboratorio<br /><code>img/nosotros.jpg</code></p>
+          </div>
         </div>
         <div class="split-texto reveal-right">
           <span class="etiqueta">Sobre nosotros</span>
@@ -2906,5 +2907,7 @@
 
       renderLista();
     </script>
+    <!-- Chat con IA -->
+    <script src="chat.js"></script>
   </body>
 </html>
