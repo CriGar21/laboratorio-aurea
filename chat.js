@@ -422,10 +422,7 @@ Cuando el paciente quiera ser derivado a WhatsApp, incluí exactamente este text
         bottom: 1.2rem;
         right: 1.2rem;
       }
-      /* Ocultar WA flotante cuando chat está abierto */
-      body.aurea-chat-abierto .wa-flotante {
-        display: none !important;
-      }
+      /* WA flotante ocultado via JS cuando chat está abierto */
       /* Evitar zoom automático en iOS */
       #aurea-chat-input {
         font-size: 16px;
@@ -506,13 +503,29 @@ Cuando el paciente quiera ser derivado a WhatsApp, incluí exactamente este text
   // Mensaje de bienvenida al abrir por primera vez
   let primerApertura = true;
 
+  // Buscar el botón WA flotante de la página (puede cargarse después)
+  function getWABtn() {
+    return document.querySelector(".wa-flotante");
+  }
+
   window.aureaToggleChat = function () {
     chatAbierto = !chatAbierto;
     const ventana = document.getElementById("aurea-chat-window");
+    const esMobile = window.innerWidth <= 600;
+
     ventana.classList.toggle("abierto", chatAbierto);
 
-    // En mobile: agregar clase al body para ocultar el WA flotante
-    document.body.classList.toggle("aurea-chat-abierto", chatAbierto);
+    // Ocultar/mostrar el botón WA flotante de la página directamente con JS
+    const waBtn = getWABtn();
+    if (waBtn) {
+      waBtn.style.display = chatAbierto ? "none" : "";
+    }
+
+    // También ocultar el propio botón del chat en mobile cuando está abierto
+    const chatBtn = document.getElementById("aurea-chat-btn");
+    if (esMobile && chatBtn) {
+      chatBtn.style.display = chatAbierto ? "none" : "";
+    }
 
     if (chatAbierto) {
       // Ocultar badge
@@ -528,9 +541,7 @@ Cuando el paciente quiera ser derivado a WhatsApp, incluí exactamente este text
         }, 300);
       }
 
-      // En mobile NO hacemos focus automático para evitar que el teclado
-      // se abra solo y tape el chat. El usuario toca el input cuando quiere escribir.
-      const esMobile = window.innerWidth <= 480;
+      // En mobile NO hacemos focus automático
       if (!esMobile) {
         setTimeout(
           () => document.getElementById("aurea-chat-input").focus(),
@@ -538,8 +549,11 @@ Cuando el paciente quiera ser derivado a WhatsApp, incluí exactamente este text
         );
       }
     } else {
-      // Al cerrar en mobile: asegurarse que el teclado baje
+      // Al cerrar: bajar teclado y restaurar botón del chat
       document.getElementById("aurea-chat-input").blur();
+      if (esMobile && chatBtn) {
+        chatBtn.style.display = "";
+      }
     }
   };
 
