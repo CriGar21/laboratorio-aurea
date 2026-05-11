@@ -411,15 +411,28 @@ Cuando el paciente quiera ser derivado a WhatsApp, incluí exactamente este text
     /* Mobile */
     @media (max-width: 480px) {
       #aurea-chat-window {
-        bottom: 0;
-        right: 0;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
         width: 100%;
-        max-height: 85vh;
-        border-radius: 20px 20px 0 0;
+        height: 100dvh;
+        max-height: 100%;
+        border-radius: 0;
       }
       #aurea-chat-btn {
         bottom: 1.2rem;
         right: 1.2rem;
+      }
+      /* Ocultar WA flotante cuando chat está abierto */
+      body.aurea-chat-abierto .wa-flotante {
+        display: none !important;
+      }
+      /* Evitar zoom automático en iOS */
+      #aurea-chat-input {
+        font-size: 16px;
+      }
+      #aurea-chat-enviar {
+        width: 42px;
+        height: 42px;
       }
     }
   `;
@@ -473,8 +486,8 @@ Cuando el paciente quiera ser derivado a WhatsApp, incluí exactamente este text
           rows="1"
           onkeydown="aureaKeyDown(event)"
           oninput="aureaAutoResize(this)"></textarea>
-        <button id="aurea-chat-enviar" onclick="aureaEnviar()" title="Enviar">
-          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        <button id="aurea-chat-enviar" onclick="aureaEnviar()" title="Enviar mensaje">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
     </div>
@@ -498,31 +511,42 @@ Cuando el paciente quiera ser derivado a WhatsApp, incluí exactamente este text
     const ventana = document.getElementById("aurea-chat-window");
     ventana.classList.toggle("abierto", chatAbierto);
 
-    // Ocultar badge
+    // En mobile: agregar clase al body para ocultar el WA flotante
+    document.body.classList.toggle("aurea-chat-abierto", chatAbierto);
+
     if (chatAbierto) {
+      // Ocultar badge
       document.getElementById("aurea-chat-badge").style.display = "none";
 
       if (primerApertura) {
         primerApertura = false;
-        // Mensaje de bienvenida
         setTimeout(() => {
           agregarMensajeBot(
             "¡Hola! 👋 Soy el asistente de <strong>Áurea Laboratorio Bioquímico</strong>. Podés preguntarme sobre horarios, preparación de estudios, extracción a domicilio y más.",
-            true, // mostrar chips
+            true,
           );
         }, 300);
       }
 
-      // Focus en el input
-      setTimeout(
-        () => document.getElementById("aurea-chat-input").focus(),
-        350,
-      );
+      // En mobile NO hacemos focus automático para evitar que el teclado
+      // se abra solo y tape el chat. El usuario toca el input cuando quiere escribir.
+      const esMobile = window.innerWidth <= 480;
+      if (!esMobile) {
+        setTimeout(
+          () => document.getElementById("aurea-chat-input").focus(),
+          350,
+        );
+      }
+    } else {
+      // Al cerrar en mobile: asegurarse que el teclado baje
+      document.getElementById("aurea-chat-input").blur();
     }
   };
 
   window.aureaKeyDown = function (e) {
-    if (e.key === "Enter" && !e.shiftKey) {
+    // En desktop: Enter envía. En mobile: Enter hace salto de línea (comportamiento normal)
+    const esMobile = window.innerWidth <= 480;
+    if (e.key === "Enter" && !e.shiftKey && !esMobile) {
       e.preventDefault();
       aureaEnviar();
     }
@@ -723,7 +747,7 @@ Cuando el paciente quiera ser derivado a WhatsApp, incluí exactamente este text
       t.includes("abierto") ||
       t.includes("atienden")
     ) {
-      return `📅 Nuestros horarios son:\n${CONFIG.horarios}\n\n. No necesitás turno previo para atención presencial.`;
+      return `📅 Nuestros horarios son:\n${CONFIG.horarios}\n\nNo necesitás turno previo para atención presencial.`;
     }
     if (t.includes("ayuno") || t.includes("ayunar") || t.includes("comer")) {
       return `⏱ Depende del análisis:\n• Hemograma: sin ayuno\n• Glucosa, colesterol, triglicéridos: <strong>8 a 12 horas</strong>\n• Cortisol: extracción entre 7:00 y 9:00 hs\n\nPara saber la preparación exacta de tu estudio, consultá la sección "Estudios" del sitio.`;
