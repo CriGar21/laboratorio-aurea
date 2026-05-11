@@ -409,7 +409,7 @@ Cuando el paciente quiera ser derivado a WhatsApp, incluí exactamente este text
     #aurea-chat-enviar svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; }
 
     /* Mobile */
-    @media (max-width: 480px) {
+    @media (max-width: 600px) {
       #aurea-chat-window {
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
@@ -417,19 +417,44 @@ Cuando el paciente quiera ser derivado a WhatsApp, incluí exactamente este text
         height: 100dvh;
         max-height: 100%;
         border-radius: 0;
+        display: flex;
+        flex-direction: column;
       }
-      #aurea-chat-btn {
-        bottom: 1.2rem;
-        right: 1.2rem;
+
+      /* Mensajes ocupan todo el espacio disponible */
+      #aurea-chat-mensajes {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
       }
-      /* WA flotante ocultado via JS cuando chat está abierto */
-      /* Evitar zoom automático en iOS */
+
+      /* Input area pegada al fondo, respeta teclado virtual */
+      #aurea-chat-input-area {
+        padding: 0.85rem 1rem;
+        padding-bottom: max(0.85rem, env(safe-area-inset-bottom));
+        border-top: 1px solid #eee8d8;
+        background: white;
+        flex-shrink: 0;
+      }
+
+      /* Evitar zoom automático en iOS (necesita 16px mínimo) */
       #aurea-chat-input {
         font-size: 16px;
       }
+
+      /* Botón enviar más grande y fácil de tocar */
       #aurea-chat-enviar {
-        width: 42px;
-        height: 42px;
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+      }
+
+      /* Botón de chat (burbuja) en mobile */
+      #aurea-chat-btn {
+        bottom: 1.4rem;
+        right: 1.4rem;
+        width: 52px;
+        height: 52px;
       }
     }
   `;
