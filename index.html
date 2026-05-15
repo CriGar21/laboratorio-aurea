@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Áurea Laboratorio Bioquímico — Junín</title>
+    <title>Áurea Laboratorio Bioquímico — San Miguel de Tucumán</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
@@ -30,6 +30,8 @@
         --blanco: #ffffff;
         --texto: #2a2a2a;
         --texto-suave: #6b6b6b;
+        --borde: #e8e4d8;
+        --sombra-suave: 0 18px 45px rgba(35, 45, 22, 0.12);
         --nav-h: 80px;
       }
 
@@ -51,6 +53,13 @@
       a {
         text-decoration: none;
         color: inherit;
+      }
+
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible {
+        outline: 2px solid var(--arena);
+        outline-offset: 4px;
       }
 
       /* ---- NAVBAR ---- */
@@ -80,6 +89,38 @@
         gap: 0.8rem;
         text-decoration: none;
         flex-shrink: 0;
+      }
+
+      .nav-logo-wrap {
+        position: relative;
+        display: block;
+        width: 190px;
+        height: 58px;
+        overflow: hidden;
+      }
+
+      .nav-logo-wrap img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 270px;
+        height: 270px;
+        max-width: none;
+        object-fit: contain;
+        transform: translate(-41px, -105px);
+        transition: opacity 0.35s ease;
+      }
+
+      .logo-verde {
+        opacity: 0 !important;
+      }
+
+      .navbar.scrolled .logo-blanco {
+        opacity: 0 !important;
+      }
+
+      .navbar.scrolled .logo-verde {
+        opacity: 1 !important;
       }
 
       .nav-logo-circulo {
@@ -302,8 +343,8 @@
       /* ---- HERO ---- */
       .hero {
         position: relative;
+        min-height: 680px;
         height: 100vh;
-        min-height: 600px;
         display: flex;
         align-items: center;
         overflow: hidden;
@@ -315,13 +356,11 @@
         background:
           linear-gradient(
             135deg,
-            rgba(68, 89, 37, 0.85) 0%,
-            rgba(68, 89, 37, 0.55) 50%,
-            rgba(77, 48, 31, 0.35) 100%
+            rgba(35, 47, 20, 0.9) 0%,
+            rgba(68, 89, 37, 0.68) 48%,
+            rgba(77, 48, 31, 0.28) 100%
           ),
           url("img/hero.jpg") center/cover no-repeat;
-        /* Cuando tengas tu foto: guardala como img/hero.jpg */
-        /* Sin foto: se ve el degradé verde como fondo */
       }
 
       .hero-bg::after {
@@ -335,29 +374,23 @@
         );
       }
 
-      /* Texto de ayuda placeholder (solo se ve si no hay foto) */
       .hero-img-hint {
-        position: absolute;
-        bottom: 6rem;
-        right: 2rem;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px dashed rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        padding: 0.7rem 1rem;
-        font-size: 0.7rem;
-        color: rgba(255, 255, 255, 0.4);
-        text-align: center;
-        line-height: 1.5;
-        z-index: 1;
+        display: none;
       }
 
       .hero-content {
         position: relative;
         z-index: 1;
-        max-width: 1200px;
+        max-width: 980px;
+        width: 100%;
         margin: 0 auto;
         padding: 0 3rem;
         padding-top: var(--nav-h);
+      }
+
+      .hero-main {
+        max-width: 720px;
+        min-width: 0;
       }
 
       .hero-tag {
@@ -403,7 +436,7 @@
       .hero p {
         font-size: 1.05rem;
         color: rgba(255, 255, 255, 0.76);
-        max-width: 500px;
+        max-width: 560px;
         margin-bottom: 2.5rem;
         line-height: 1.7;
       }
@@ -453,6 +486,10 @@
       .btn-hero-sec:hover {
         border-color: var(--blanco);
         background: rgba(255, 255, 255, 0.1);
+      }
+
+      .solo-mobile {
+        display: none;
       }
 
       .hero-scroll {
@@ -597,8 +634,19 @@
         min-height: 420px;
       }
 
-      /* Placeholder imagen — cuando pongas la foto, agregá dentro:
-       <img src="img/tu-foto.jpg" alt="..." style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"> */
+      .split-img > img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .split-img:hover > img {
+        transform: scale(1.035);
+      }
+
       .img-ph {
         position: absolute;
         inset: 0;
@@ -607,7 +655,13 @@
         align-items: center;
         justify-content: center;
         gap: 0.8rem;
-        background: var(--arena-med);
+        background:
+          radial-gradient(
+            circle at 20% 20%,
+            rgba(242, 222, 162, 0.48),
+            transparent 32%
+          ),
+          linear-gradient(135deg, var(--verde-claro), var(--arena-med));
         color: var(--verde-med);
         text-align: center;
         padding: 2rem;
@@ -628,11 +682,7 @@
       }
 
       .img-ph code {
-        background: rgba(68, 89, 37, 0.1);
-        color: var(--verde);
-        padding: 0.15rem 0.4rem;
-        border-radius: 4px;
-        font-size: 0.72rem;
+        display: none;
       }
 
       .split-texto {
@@ -766,44 +816,6 @@
         border-color: var(--arena);
       }
 
-      /* ---- STATS ---- */
-      .stats-section {
-        background: var(--verde);
-        padding: 5rem 2rem;
-      }
-
-      .stats-inner {
-        max-width: 1000px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
-        gap: 0;
-        align-items: center;
-        text-align: center;
-      }
-
-      .stat-sep-v {
-        background: rgba(255, 255, 255, 0.15);
-        height: 60px;
-      }
-
-      .stat-item {
-        padding: 0 2rem;
-      }
-      .stat-num {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 3.5rem;
-        font-weight: 600;
-        color: var(--arena);
-        line-height: 1;
-        margin-bottom: 0.4rem;
-      }
-      .stat-lbl {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.6);
-        letter-spacing: 0.04em;
-      }
-
       /* ---- SERVICIOS ---- */
       .servicios-section {
         background: var(--crema);
@@ -843,9 +855,9 @@
 
       .serv-card {
         background: var(--blanco);
-        border-radius: 18px;
+        border-radius: 8px;
         overflow: hidden;
-        border: 1px solid #e8e4d8;
+        border: 1px solid var(--borde);
         transition:
           transform 0.3s,
           box-shadow 0.3s;
@@ -876,9 +888,21 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
+        overflow: hidden;
+      }
+
+      .img-ph-serv::before {
+        content: "";
+        position: absolute;
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.32);
+        transform: translate(42%, -34%);
       }
 
       .img-ph-serv svg {
+        position: relative;
         width: 34px;
         height: 34px;
         stroke: var(--verde-med);
@@ -886,8 +910,7 @@
         stroke-width: 1.4;
       }
       .img-ph-serv span {
-        font-size: 0.7rem;
-        color: var(--verde-med);
+        display: none;
       }
 
       .serv-body {
@@ -1003,9 +1026,10 @@
 
       .buscador-card {
         background: var(--crema);
-        border-radius: 20px;
+        border-radius: 8px;
         border: 1px solid #e4e0d6;
         overflow: hidden;
+        box-shadow: var(--sombra-suave);
       }
       .buscador-head {
         background: var(--verde);
@@ -1143,7 +1167,7 @@
       .detalle-card {
         margin-top: 0.8rem;
         background: var(--blanco);
-        border-radius: 12px;
+        border-radius: 8px;
         border: 1px solid #e4e0d6;
         padding: 1.2rem;
         display: none;
@@ -1219,7 +1243,7 @@
             rgba(68, 89, 37, 0.92) 40%,
             rgba(68, 89, 37, 0.5) 100%
           ),
-          url("img/domicilio.jpg") center/cover no-repeat;
+          url("img/hero.jpg") center/cover no-repeat;
       }
 
       .domicilio-cta-content {
@@ -1326,7 +1350,7 @@
 
       .faq-item {
         background: var(--blanco);
-        border-radius: 12px;
+        border-radius: 8px;
         border: 1px solid #ddd8c8;
         overflow: hidden;
       }
@@ -1468,6 +1492,27 @@
         stroke-width: 1.8;
       }
 
+      .footer-logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 270px;
+        height: 270px;
+        max-width: none;
+        object-fit: contain;
+        transform: translate(-41px, -105px);
+      }
+
+      .footer-logo-wrap {
+        position: relative;
+        display: block;
+        width: 190px;
+        height: 58px;
+        overflow: hidden;
+        opacity: 0.85;
+        margin-bottom: 0.8rem;
+      }
+
       /* ---- WHATSAPP FLOTANTE ---- */
       .wa-flotante {
         position: fixed;
@@ -1511,13 +1556,6 @@
         .servicios-grid {
           grid-template-columns: 1fr 1fr;
         }
-        .stats-inner {
-          grid-template-columns: 1fr 1fr;
-          gap: 2.5rem;
-        }
-        .stat-sep-v {
-          display: none;
-        }
         .estudios-prev-inner {
           grid-template-columns: 1fr;
         }
@@ -1537,8 +1575,20 @@
       }
 
       @media (max-width: 768px) {
+        :root {
+          --nav-h: 72px;
+        }
         .navbar {
-          padding: 0 1.5rem;
+          padding: 0 1rem;
+        }
+        .nav-logo-wrap {
+          width: 158px;
+          height: 48px;
+        }
+        .nav-logo-wrap img {
+          width: 223px;
+          height: 223px;
+          transform: translate(-34px, -87px);
         }
         .nav-links {
           display: none;
@@ -1547,7 +1597,40 @@
           display: flex;
         }
         .hero-content {
-          padding: 0 1.5rem;
+          width: calc(100vw - 48px);
+          padding: 0;
+          margin: 0 1.5rem;
+          max-width: 100%;
+        }
+        .hero-main,
+        .hero-btns {
+          width: 100%;
+        }
+        .hero {
+          min-height: 720px;
+        }
+        .hero-tag {
+          max-width: 100%;
+          white-space: normal;
+          flex-wrap: wrap;
+          line-height: 1.35;
+        }
+        .solo-mobile {
+          display: block;
+        }
+        .hero h1 {
+          font-size: clamp(2.25rem, 10.5vw, 3rem);
+          line-height: 1.06;
+        }
+        .hero p {
+          font-size: 0.98rem;
+        }
+        .hero-btns a {
+          width: 100%;
+          justify-content: center;
+        }
+        .accesos-bar-inner {
+          grid-template-columns: 1fr 1fr;
         }
         .split-texto {
           padding: 2.5rem 1.5rem;
@@ -1579,58 +1662,10 @@
     <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
       <a href="index.html" class="nav-logo">
-        <div class="nav-logo-circulo">
-          <svg viewBox="0 0 100 100" fill="none">
-            <path
-              d="M 15 78 L 15 42 A 38 38 0 0 1 53 4 L 85 4 L 85 78 Z"
-              stroke="white"
-              stroke-width="4.5"
-              fill="none"
-              stroke-linejoin="round"
-            />
-            <rect
-              x="53"
-              y="42"
-              width="32"
-              height="36"
-              stroke="white"
-              stroke-width="4"
-              fill="none"
-            />
-            <rect
-              x="53"
-              y="61"
-              width="17"
-              height="17"
-              stroke="white"
-              stroke-width="3.5"
-              fill="none"
-            />
-            <path
-              d="M 53 78 A 36 36 0 0 0 15 42"
-              stroke="white"
-              stroke-width="4"
-              fill="none"
-            />
-            <path
-              d="M 53 61 A 19 19 0 0 0 85 42"
-              stroke="white"
-              stroke-width="3.5"
-              fill="none"
-            />
-            <path
-              d="M 70 61 A 9 9 0 0 0 70 78"
-              stroke="rgba(255,255,255,0.55)"
-              stroke-width="3"
-              fill="none"
-            />
-            <circle cx="70" cy="69" r="3" fill="rgba(255,255,255,0.55)" />
-          </svg>
-        </div>
-        <div class="nav-logo-texto">
-          <span class="nav-logo-nombre">ÁUREA</span>
-          <span class="nav-logo-sub">Laboratorio Bioquímico</span>
-        </div>
+        <span class="nav-logo-wrap">
+          <img src="img/logo-blanco.png" alt="Áurea" class="logo-blanco" />
+          <img src="img/logo-verde.png" alt="Áurea" class="logo-verde" />
+        </span>
       </a>
 
       <div class="nav-links">
@@ -1737,50 +1772,51 @@
     <div class="hero">
       <div class="hero-bg"></div>
 
-      <div class="hero-img-hint">
-        📸 Tu foto aquí<br />
-        Guardá como<br /><code>img/hero.jpg</code>
-      </div>
-
       <div class="hero-content">
-        <div class="hero-tag reveal d1">
-          Laboratorio Bioquímico · Junín, Buenos Aires
-        </div>
-        <h1 class="reveal d2">
-          Tu salud merece<br /><strong>precisión y cuidado.</strong>
-        </h1>
-        <p class="reveal d3">
-          Análisis clínicos de alta complejidad. Atención directa sin turno
-          previo.
-        </p>
-        <div class="hero-btns reveal d4">
-          <a href="resultados.html" class="btn-hero-prim">
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
+        <div class="hero-main">
+          <div class="hero-tag reveal d1">
+            Laboratorio Bioquímico · San Miguel de Tucumán, Tucumán.
+          </div>
+          <h1 class="reveal d2">
+            Tu salud merece<br /><strong
+              >precisión y<span class="solo-mobile"></span> cuidado.</strong
             >
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-              <polyline points="14 2 14 8 20 8" />
-            </svg>
-            Ver mis resultados
-          </a>
-          <a href="domicilio.html" class="btn-hero-sec">
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-            </svg>
-            Extracción a domicilio
-          </a>
+          </h1>
+          <p class="reveal d3">
+            Análisis clínicos, toma de muestras y resultados online con una
+            atención cercana, clara y confidencial.
+          </p>
+          <div class="hero-btns reveal d4">
+            <a href="resultados.html" class="btn-hero-prim">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              Ver mis resultados
+            </a>
+            <a href="domicilio.html" class="btn-hero-sec">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+              </svg>
+              Extracción a domicilio
+            </a>
+          </div>
         </div>
       </div>
 
@@ -1830,28 +1866,7 @@
     <section>
       <div class="split-section">
         <div class="split-img reveal-left">
-          <!--
-        ╔══════════════════════════════════════╗
-        ║  CÓMO PONER TU FOTO AQUÍ:            ║
-        ║  1. Guardá tu foto en img/           ║
-        ║     con nombre nosotros.jpg          ║
-        ║  2. Reemplazá el div.img-ph con:     ║
-        ║  <img src="img/nosotros.jpg"         ║
-        ║       alt="Laboratorio Áurea"        ║
-        ║       style="position:absolute;      ║
-        ║       inset:0;width:100%;            ║
-        ║       height:100%;                   ║
-        ║       object-fit:cover;">            ║
-        ╚══════════════════════════════════════╝
-      -->
-          <div class="img-ph">
-            <svg viewBox="0 0 24 24">
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <circle cx="8.5" cy="8.5" r="1.5" />
-              <polyline points="21 15 16 10 5 21" />
-            </svg>
-            <p>Tu foto del laboratorio<br /><code>img/nosotros.jpg</code></p>
-          </div>
+          <img src="img/nosotros.jpg" alt="Interior del laboratorio Áurea" />
         </div>
         <div class="split-texto reveal-right">
           <span class="etiqueta">Sobre nosotros</span>
@@ -1921,31 +1936,6 @@
       </div>
     </section>
 
-    <!-- STATS -->
-    <div class="stats-section">
-      <div class="stats-inner">
-        <div class="stat-item reveal d1">
-          <div class="stat-num">+10</div>
-          <div class="stat-lbl">Años de experiencia</div>
-        </div>
-        <div class="stat-sep-v reveal"></div>
-        <div class="stat-item reveal d2">
-          <div class="stat-num">+200</div>
-          <div class="stat-lbl">Estudios disponibles</div>
-        </div>
-        <div class="stat-sep-v reveal"></div>
-        <div class="stat-item reveal d3">
-          <div class="stat-num">+5K</div>
-          <div class="stat-lbl">Pacientes atendidos</div>
-        </div>
-        <div class="stat-sep-v reveal"></div>
-        <div class="stat-item reveal d4">
-          <div class="stat-num">100%</div>
-          <div class="stat-lbl">Confidencialidad</div>
-        </div>
-      </div>
-    </div>
-
     <!-- SERVICIOS -->
     <section class="servicios-section">
       <div class="section-header reveal">
@@ -1959,18 +1949,7 @@
       <div class="servicios-grid">
         <div class="serv-card reveal d1">
           <div class="serv-img">
-            <!--
-          FOTO: guardá como img/hematologia.jpg
-          y reemplazá el div.img-ph-serv con:
-          <img src="img/hematologia.jpg" alt="Hematología">
-        -->
-            <div class="img-ph-serv">
-              <svg viewBox="0 0 24 24">
-                <path d="M18 8h1a4 4 0 010 8h-1" />
-                <path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" />
-              </svg>
-              <span>img/hematologia.jpg</span>
-            </div>
+            <img src="img/hematologia.jpg" alt="Hematología" />
           </div>
           <div class="serv-body">
             <h3>Hematología</h3>
@@ -1987,12 +1966,7 @@
 
         <div class="serv-card reveal d2">
           <div class="serv-img">
-            <div class="img-ph-serv">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87" />
-              </svg>
-              <span>img/bioquimica.jpg</span>
-            </div>
+            <img src="img/bioquimica.jpg" alt="BIoquimica General" />
           </div>
           <div class="serv-body">
             <h3>Bioquímica general</h3>
@@ -2009,10 +1983,7 @@
 
         <div class="serv-card reveal d3">
           <div class="serv-img">
-            <div class="img-ph-serv">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></svg>
-              <span>img/hormonas.jpg</span>
-            </div>
+            <img src="img/hormonas.jpg" alt="Hormonas y tiroides" />
           </div>
           <div class="serv-body">
             <h3>Hormonas y tiroides</h3>
@@ -2029,12 +2000,7 @@
 
         <div class="serv-card reveal d1">
           <div class="serv-img">
-            <div class="img-ph-serv">
-              <svg viewBox="0 0 24 24">
-                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-              </svg>
-              <span>img/serologia.jpg</span>
-            </div>
+            <img src="img/serologia.jpg" alt="Inmunología y serología" />
           </div>
           <div class="serv-body">
             <h3>Inmunología y serología</h3>
@@ -2051,14 +2017,7 @@
 
         <div class="serv-card reveal d2">
           <div class="serv-img">
-            <div class="img-ph-serv">
-              <svg viewBox="0 0 24 24">
-                <path
-                  d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
-                />
-              </svg>
-              <span>img/microbiologia.jpg</span>
-            </div>
+            <img src="img/microbiologia.jpg" alt="Microbiologia" />
           </div>
           <div class="serv-body">
             <h3>Microbiología</h3>
@@ -2079,12 +2038,7 @@
           onclick="window.location = 'domicilio.html'"
         >
           <div class="serv-img">
-            <div class="img-ph-serv">
-              <svg viewBox="0 0 24 24">
-                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-              </svg>
-              <span>img/domicilio.jpg</span>
-            </div>
+            <img src="img/domicilio.jpg" alt="Extraccion a Domicilio" />
           </div>
           <div class="serv-body">
             <h3>Extracción a domicilio</h3>
@@ -2105,16 +2059,7 @@
     <section>
       <div class="split-section invertido">
         <div class="split-img reveal-right">
-          <!--
-        FOTO: img/calidad.jpg
-      -->
-          <div class="img-ph">
-            <svg viewBox="0 0 24 24">
-              <path d="M9 12l2 2 4-4" />
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            </svg>
-            <p>Foto de calidad / equipo<br /><code>img/calidad.jpg</code></p>
-          </div>
+          <img src="img/calidad.jpg" alt="Calidad y confianza" />
         </div>
         <div class="split-texto bg-crema reveal-left">
           <span class="etiqueta">Calidad y confianza</span>
@@ -2414,11 +2359,16 @@
     <footer>
       <div class="footer-top">
         <div>
-          <div class="footer-marca-nombre">ÁUREA</div>
-          <div class="footer-marca-sub">Laboratorio Bioquímico</div>
+          <span class="footer-logo-wrap">
+            <img
+              src="img/logo-blanco.png"
+              alt="Áurea Laboratorio Bioquímico"
+              class="footer-logo"
+            />
+          </span>
           <p class="footer-desc">
             Análisis clínicos de alta complejidad con atención personalizada.
-            Junín, Buenos Aires, Argentina.
+            San Miguel de Tucumán, Tucumán.
           </p>
           <div class="redes">
             <a href="#" class="red-ico" title="Instagram"
@@ -2462,8 +2412,8 @@
         </div>
         <div class="footer-col">
           <h5>Contacto</h5>
-          <a href="#">Av. [Tu dirección]</a>
-          <a href="#">Junín, Buenos Aires</a>
+          <a href="#">Av. Belgrano 1973</a>
+          <a href="#">San Miguel de Tucumán, Tucumán</a>
           <a href="tel:+54XXXXXXXXX">(xxx) xxx-xxxx</a>
           <a href="mailto:contacto@aurea.com.ar">contacto@aurea.com.ar</a>
           <a
@@ -2483,7 +2433,7 @@
           >© 2025 Áurea Laboratorio Bioquímico. Todos los derechos
           reservados.</span
         >
-        <span>Junín, Buenos Aires, Argentina</span>
+        <span>San Miguel de Tucumán, Tucumán.</span>
       </div>
     </footer>
 

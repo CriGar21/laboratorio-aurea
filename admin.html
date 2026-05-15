@@ -49,7 +49,7 @@
       }
       .login-card {
         background: var(--blanco);
-        border-radius: 20px;
+        border-radius: 8px;
         border: 1px solid #e4e0d6;
         padding: 2.5rem;
         width: 100%;
@@ -67,6 +67,28 @@
         font-size: 0.84rem;
         color: var(--texto-suave);
         margin-bottom: 1.8rem;
+      }
+      .admin-logo-wrap {
+        position: relative;
+        display: block;
+        width: 190px;
+        height: 58px;
+        overflow: hidden;
+        margin-bottom: 1.2rem;
+      }
+      .admin-logo-wrap.center {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .admin-logo-wrap img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 270px;
+        height: 270px;
+        max-width: none;
+        object-fit: contain;
+        transform: translate(-41px, -105px);
       }
       .login-error {
         background: #fdf0ef;
@@ -99,7 +121,7 @@
       .campo select,
       .campo textarea {
         border: 1.5px solid #ddd8c8;
-        border-radius: 10px;
+        border-radius: 8px;
         padding: 0.65rem 0.9rem;
         font-family: "DM Sans", sans-serif;
         font-size: 0.9rem;
@@ -128,7 +150,7 @@
         background: var(--verde);
         color: var(--blanco);
         border: none;
-        border-radius: 10px;
+        border-radius: 8px;
         padding: 0.75rem 1.4rem;
         font-family: "DM Sans", sans-serif;
         font-size: 0.9rem;
@@ -212,7 +234,7 @@
         background: transparent;
         color: var(--verde);
         border: 1.5px solid var(--verde);
-        border-radius: 10px;
+        border-radius: 8px;
         padding: 0.65rem 1.2rem;
         font-family: "DM Sans", sans-serif;
         font-size: 0.88rem;
@@ -260,6 +282,16 @@
       .sidebar-logo {
         padding: 1.5rem 1.5rem 1rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .sidebar-logo .admin-logo-wrap {
+        width: 164px;
+        height: 50px;
+        margin-bottom: 0.55rem;
+      }
+      .sidebar-logo .admin-logo-wrap img {
+        width: 233px;
+        height: 233px;
+        transform: translate(-36px, -91px);
       }
       .sidebar-logo-nombre {
         font-family: "Cormorant Garamond", serif;
@@ -392,7 +424,7 @@
       }
       .stat-card {
         background: var(--blanco);
-        border-radius: 14px;
+        border-radius: 8px;
         border: 1px solid #e4e0d6;
         padding: 1.2rem 1.4rem;
       }
@@ -412,7 +444,7 @@
       /* TABLA DE PACIENTES */
       .tabla-wrap {
         background: var(--blanco);
-        border-radius: 16px;
+        border-radius: 8px;
         border: 1px solid #e4e0d6;
         overflow: hidden;
       }
@@ -507,7 +539,7 @@
       /* FORMULARIO AGREGAR/EDITAR PACIENTE */
       .form-card {
         background: var(--blanco);
-        border-radius: 16px;
+        border-radius: 8px;
         border: 1px solid #e4e0d6;
         padding: 2rem;
         margin-bottom: 1.5rem;
@@ -538,7 +570,7 @@
       /* Resultado individual dentro del formulario */
       .res-item {
         background: var(--crema);
-        border-radius: 12px;
+        border-radius: 8px;
         border: 1px solid #ddd8c8;
         padding: 1.2rem;
         margin-bottom: 0.8rem;
@@ -578,6 +610,18 @@
         color: var(--texto-suave);
         text-align: center;
       }
+      .pdf-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        margin-top: 0.7rem;
+      }
+      .pdf-help {
+        font-size: 0.72rem;
+        color: var(--texto-suave);
+        line-height: 1.5;
+      }
 
       /* Toast de éxito */
       .toast {
@@ -588,7 +632,7 @@
         background: var(--verde);
         color: var(--blanco);
         padding: 0.9rem 1.8rem;
-        border-radius: 10px;
+        border-radius: 8px;
         font-size: 0.88rem;
         font-weight: 500;
         display: none;
@@ -638,6 +682,9 @@
 ==================================================== -->
     <div class="login-admin" id="loginAdmin">
       <div class="login-card">
+        <span class="admin-logo-wrap center">
+          <img src="img/logo-verde.png" alt="Áurea Laboratorio Bioquímico" />
+        </span>
         <h2>Panel Áurea</h2>
         <p>Acceso exclusivo para el equipo del laboratorio.</p>
 
@@ -685,7 +732,9 @@
       <!-- SIDEBAR -->
       <div class="sidebar">
         <div class="sidebar-logo">
-          <div class="sidebar-logo-nombre">ÁUREA</div>
+          <span class="admin-logo-wrap">
+            <img src="img/logo-blanco.png" alt="Áurea Laboratorio Bioquímico" />
+          </span>
           <div class="sidebar-logo-sub">Panel de administración</div>
         </div>
 
@@ -1155,6 +1204,11 @@
       <td>${ults ? `<span class="badge-small ${ults.estado}">${ults.estado === "listo" ? "Disponible" : "En proceso"}</span>` : "—"}</td>
       <td class="acciones-td">
         <button class="btn-gris" onclick="editarPaciente('${p.dni}')"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Editar</button>
+        ${
+          ults
+            ? `<button class="btn-gris" onclick="generarPDFPaciente('${p.dni}', ${(p.resultados || []).length - 1})"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button>`
+            : ""
+        }
       </td>
     </tr>`;
         });
@@ -1204,6 +1258,11 @@
       <td>${badge}</td>
       <td class="acciones-td">
         <button class="btn-gris" onclick="editarPaciente('${p.dni}')"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Editar</button>
+        ${
+          ults
+            ? `<button class="btn-gris" onclick="generarPDFPaciente('${p.dni}', ${(p.resultados || []).length - 1})"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button>`
+            : ""
+        }
         <button class="btn-rojo" onclick="eliminarPaciente('${p.dni}')"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Eliminar</button>
       </td>
     </tr>`;
@@ -1265,11 +1324,13 @@
         <input type="url" class="res-pdf"
           placeholder="Link de Google Drive, Dropbox o URL directa"
           value="${datos?.pdfUrl || ""}"/>
-        <span style="font-size:0.69rem;color:var(--texto-suave);line-height:1.55;margin-top:0.25rem;display:block;">
-          📂 <strong>Google Drive:</strong> clic derecho en el archivo → Compartir → "Cualquier persona con el link puede ver" → Copiar link<br/>
-          📦 <strong>Dropbox:</strong> "Copiar link" y pegalo acá directamente<br/>
-          🔗 También podés pegar la URL directa de un PDF online
-        </span>
+        <div class="pdf-actions">
+          <button class="btn-outline" type="button" onclick="generarPDFDesdeFormulario(${id})">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Generar PDF
+          </button>
+          <span class="pdf-help">Genera una hoja lista para imprimir o guardar como PDF.</span>
+        </div>
       </div>
     </div>
     <div class="campo">
@@ -1316,6 +1377,182 @@
     </button>
   `;
         wrap.appendChild(row);
+      }
+
+      function obtenerPacienteDesdeFormulario() {
+        return {
+          nombre: document.getElementById("fNombre").value.trim(),
+          dni: document.getElementById("fDNI").value.trim().replace(/\D/g, ""),
+          tel: document.getElementById("fTel").value.trim(),
+          fechaNac: document.getElementById("fFechaNac").value,
+        };
+      }
+
+      function obtenerResultadoDesdeItem(item) {
+        if (!item) return null;
+        const valores = [];
+        item.querySelectorAll(".valor-row").forEach((row) => {
+          const nombre = row.querySelector(".vNombre").value.trim();
+          const valor = row.querySelector(".vValor").value.trim();
+          if (!nombre && !valor) return;
+          valores.push({
+            nombre,
+            valor,
+            unidad: row.querySelector(".vUnidad").value.trim(),
+            referencia: row.querySelector(".vRef").value.trim(),
+            estado: row.querySelector(".vEstado").value,
+          });
+        });
+        return {
+          nombre: item.querySelector(".res-nombre").value.trim(),
+          fecha: item.querySelector(".res-fecha").value,
+          estado: item.querySelector(".res-estado").value,
+          pdfUrl: item.querySelector(".res-pdf").value.trim(),
+          nota: item.querySelector(".res-nota").value.trim(),
+          valores,
+        };
+      }
+
+      function generarPDFDesdeFormulario(resId) {
+        const paciente = obtenerPacienteDesdeFormulario();
+        const item = document.getElementById("res-" + resId);
+        const resultado = obtenerResultadoDesdeItem(item);
+        if (!paciente.nombre || !paciente.dni) {
+          toast("Completá nombre y DNI antes de generar el PDF", "error");
+          return;
+        }
+        if (!resultado?.nombre || !resultado.fecha) {
+          toast("Completá estudio y fecha antes de generar el PDF", "error");
+          return;
+        }
+        abrirResultadoPDF(paciente, resultado);
+      }
+
+      function generarPDFPaciente(dni, index = 0) {
+        const paciente = getPacientes()[dni];
+        const resultado = paciente?.resultados?.[index];
+        if (!paciente || !resultado) {
+          toast("No se encontró el resultado para generar PDF", "error");
+          return;
+        }
+        abrirResultadoPDF(paciente, resultado);
+      }
+
+      function textoSeguro(valor) {
+        return String(valor || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function formatearFecha(fecha) {
+        if (!fecha) return "—";
+        return new Date(fecha + "T12:00:00").toLocaleDateString("es-AR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        });
+      }
+
+      function abrirResultadoPDF(paciente, resultado) {
+        const fechaEmision = new Date().toLocaleDateString("es-AR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        });
+        const filas = (resultado.valores || [])
+          .map(
+            (v) => `
+              <tr>
+                <td>${textoSeguro(v.nombre)}</td>
+                <td><strong>${textoSeguro(v.valor)}</strong></td>
+                <td>${textoSeguro(v.unidad)}</td>
+                <td>${textoSeguro(v.referencia)}</td>
+                <td><span class="estado ${textoSeguro(v.estado)}">${textoSeguro(v.estado)}</span></td>
+              </tr>`,
+          )
+          .join("");
+        const html = `<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Resultado ${textoSeguro(paciente.dni)} - ${textoSeguro(resultado.nombre)}</title>
+  <style>
+    @page { size: A4; margin: 18mm; }
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; color: #2a2a2a; margin: 0; }
+    .hoja { max-width: 760px; margin: 0 auto; }
+    header { display: flex; justify-content: space-between; gap: 24px; border-bottom: 2px solid #445925; padding-bottom: 18px; margin-bottom: 22px; }
+    .marca { color: #445925; }
+    .marca h1 { font-family: Georgia, serif; font-size: 34px; letter-spacing: 1px; margin: 0; font-weight: 600; }
+    .marca p, .meta p { margin: 3px 0; font-size: 12px; color: #6b6b6b; }
+    .meta { text-align: right; font-size: 12px; color: #6b6b6b; }
+    h2 { font-family: Georgia, serif; color: #445925; font-size: 26px; margin: 0 0 14px; }
+    .datos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; background: #f2f2f2; border: 1px solid #e4e0d6; padding: 16px; margin-bottom: 22px; }
+    .dato span { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #9bab8f; margin-bottom: 3px; }
+    .dato strong { font-size: 14px; color: #2a2a2a; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th { text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #445925; background: #dee8d2; padding: 9px; border: 1px solid #d9ddcf; }
+    td { font-size: 12px; padding: 10px 9px; border: 1px solid #e4e0d6; }
+    .estado { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10px; text-transform: uppercase; }
+    .estado.normal { background: #eaf7ef; color: #1a6e3a; }
+    .estado.alto { background: #fff0e8; color: #9b421f; }
+    .estado.bajo { background: #eef3ff; color: #315c99; }
+    .nota { margin-top: 18px; padding: 12px 14px; background: #fff8e8; border-left: 4px solid #f2dea2; font-size: 12px; line-height: 1.55; }
+    .firma { margin-top: 44px; display: flex; justify-content: flex-end; }
+    .firma div { width: 240px; text-align: center; border-top: 1px solid #445925; padding-top: 8px; color: #6b6b6b; font-size: 12px; }
+    footer { margin-top: 34px; padding-top: 12px; border-top: 1px solid #e4e0d6; font-size: 10px; color: #6b6b6b; line-height: 1.5; }
+    .acciones { position: fixed; top: 12px; right: 12px; display: flex; gap: 8px; }
+    .acciones button { border: 0; background: #445925; color: white; padding: 9px 14px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+    @media print { .acciones { display: none; } body { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+  <div class="acciones"><button onclick="window.print()">Guardar / imprimir PDF</button></div>
+  <main class="hoja">
+    <header>
+      <div class="marca">
+        <h1>ÁUREA</h1>
+        <p>Laboratorio Bioquímico</p>
+        <p>Junín, Buenos Aires, Argentina</p>
+      </div>
+      <div class="meta">
+        <p><strong>Informe de resultado</strong></p>
+        <p>Emitido: ${fechaEmision}</p>
+      </div>
+    </header>
+    <h2>${textoSeguro(resultado.nombre)}</h2>
+    <section class="datos">
+      <div class="dato"><span>Paciente</span><strong>${textoSeguro(paciente.nombre)}</strong></div>
+      <div class="dato"><span>DNI</span><strong>${textoSeguro(paciente.dni)}</strong></div>
+      <div class="dato"><span>Fecha del análisis</span><strong>${formatearFecha(resultado.fecha)}</strong></div>
+      <div class="dato"><span>Estado</span><strong>${resultado.estado === "listo" ? "Disponible" : "En proceso"}</strong></div>
+      <div class="dato"><span>Teléfono</span><strong>${textoSeguro(paciente.tel || "—")}</strong></div>
+      <div class="dato"><span>Fecha de nacimiento</span><strong>${formatearFecha(paciente.fechaNac)}</strong></div>
+    </section>
+    ${
+      filas
+        ? `<table><thead><tr><th>Parámetro</th><th>Valor</th><th>Unidad</th><th>Referencia</th><th>Estado</th></tr></thead><tbody>${filas}</tbody></table>`
+        : `<p style="color:#6b6b6b;font-size:13px;">Resultado sin valores cargados.</p>`
+    }
+    ${resultado.nota ? `<div class="nota"><strong>Nota:</strong> ${textoSeguro(resultado.nota)}</div>` : ""}
+    <div class="firma"><div>Firma y sello profesional</div></div>
+    <footer>
+      Este informe es confidencial y debe ser interpretado por un profesional de la salud. Los valores de referencia pueden variar según metodología, edad, sexo y criterio médico.
+    </footer>
+  </main>
+  <script>setTimeout(() => window.print(), 350);<\/script>
+</body>
+</html>`;
+        const win = window.open("", "_blank");
+        if (!win) {
+          toast("El navegador bloqueó la ventana del PDF", "error");
+          return;
+        }
+        win.document.open();
+        win.document.write(html);
+        win.document.close();
       }
 
       // =====================================================

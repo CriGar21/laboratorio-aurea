@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -68,6 +68,8 @@
         text-decoration: none;
         flex-shrink: 0;
       }
+    .nav-logo-wrap { position:relative; display:block; width:190px; height:58px; overflow:hidden; }
+    .nav-logo-wrap img { position:absolute; top:0; left:0; width:270px; height:270px; max-width:none; object-fit:contain; transform:translate(-41px,-105px); }
       .nav-logo-circulo {
         width: 50px;
         height: 50px;
@@ -252,7 +254,7 @@
             rgba(68, 89, 37, 0.55) 0%,
             rgba(68, 89, 37, 0.88) 100%
           ),
-          url("img/contacto-hero.jpg") center/cover no-repeat;
+          url("img/hero.jpg") center/cover no-repeat;
       }
       .page-hero-content {
         position: relative;
@@ -728,7 +730,9 @@
         color: rgba(255, 255, 255, 0.28);
         margin-bottom: 1rem;
       }
-      .footer-desc {
+      .footer-logo-wrap { position:relative; display:block; width:190px; height:58px; overflow:hidden; opacity:0.85; margin-bottom:0.8rem; }
+    .footer-logo { position:absolute; top:0; left:0; width:270px; height:270px; max-width:none; object-fit:contain; transform:translate(-41px,-105px); }
+    .footer-desc {
         font-size: 0.82rem;
         line-height: 1.65;
         max-width: 280px;
@@ -825,59 +829,10 @@
     <!-- NAVBAR -->
     <nav class="navbar">
       <a href="index.html" class="nav-logo">
-        <div class="nav-logo-circulo">
-          <svg viewBox="0 0 100 100" fill="none">
-            <path
-              d="M 15 78 L 15 42 A 38 38 0 0 1 53 4 L 85 4 L 85 78 Z"
-              stroke="#445925"
-              stroke-width="4.5"
-              fill="none"
-              stroke-linejoin="round"
-            />
-            <rect
-              x="53"
-              y="42"
-              width="32"
-              height="36"
-              stroke="#445925"
-              stroke-width="4"
-              fill="none"
-            />
-            <rect
-              x="53"
-              y="61"
-              width="17"
-              height="17"
-              stroke="#445925"
-              stroke-width="3.5"
-              fill="none"
-            />
-            <path
-              d="M 53 78 A 36 36 0 0 0 15 42"
-              stroke="#445925"
-              stroke-width="4"
-              fill="none"
-            />
-            <path
-              d="M 53 61 A 19 19 0 0 0 85 42"
-              stroke="#445925"
-              stroke-width="3.5"
-              fill="none"
-            />
-            <path
-              d="M 70 61 A 9 9 0 0 0 70 78"
-              stroke="#9BAB8F"
-              stroke-width="3"
-              fill="none"
-            />
-            <circle cx="70" cy="69" r="3" fill="#9BAB8F" />
-          </svg>
-        </div>
-        <div class="nav-logo-texto">
-          <span class="nav-logo-nombre">ÁUREA</span>
-          <span class="nav-logo-sub">Laboratorio Bioquímico</span>
-        </div>
-      </a>
+  <span class="nav-logo-wrap">
+    <img src="img/logo-verde.png" alt="Áurea Laboratorio Bioquímico" />
+  </span>
+</a>
       <div class="nav-links">
         <a href="nosotros.html">Nosotros</a>
         <div class="nav-drop">
@@ -963,7 +918,7 @@
     <!-- PAGE HERO -->
     <div class="page-hero">
       <div class="page-hero-bg"></div>
-      <!-- FOTO: img/contacto-hero.jpg -->
+
       <div class="page-hero-content">
         <p class="breadcrumb">
           <a href="index.html">Inicio</a> &nbsp;/&nbsp; Contacto
@@ -1279,8 +1234,9 @@
     <footer>
       <div class="footer-top">
         <div>
-          <div class="footer-marca-nombre">ÁUREA</div>
-          <div class="footer-marca-sub">Laboratorio Bioquímico</div>
+          <span class="footer-logo-wrap">
+  <img src="img/logo-blanco.png" alt="Áurea Laboratorio Bioquímico" class="footer-logo" />
+</span>
           <p class="footer-desc">
             Análisis clínicos de alta complejidad con atención personalizada.
             Junín, Buenos Aires, Argentina.

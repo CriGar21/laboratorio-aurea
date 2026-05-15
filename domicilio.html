@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -70,6 +70,8 @@
         gap: 0.75rem;
         text-decoration: none;
       }
+      .logo-img-wrap { position:relative; display:block; width:190px; height:58px; overflow:hidden; }
+      .logo-img-wrap img { position:absolute; top:0; left:0; width:270px; height:270px; max-width:none; object-fit:contain; transform:translate(-41px,-105px); }
 
       .logo-circulo {
         width: 46px;
@@ -777,59 +779,10 @@
     <!-- HEADER -->
     <header>
       <a href="index.html" class="logo-area">
-        <div class="logo-circulo">
-          <svg viewBox="0 0 100 100" fill="none">
-            <path
-              d="M 15 78 L 15 42 A 38 38 0 0 1 53 4 L 85 4 L 85 78 Z"
-              stroke="#445925"
-              stroke-width="4"
-              fill="none"
-              stroke-linejoin="round"
-            />
-            <rect
-              x="53"
-              y="42"
-              width="32"
-              height="36"
-              stroke="#445925"
-              stroke-width="3.5"
-              fill="none"
-            />
-            <rect
-              x="53"
-              y="61"
-              width="17"
-              height="17"
-              stroke="#445925"
-              stroke-width="3"
-              fill="none"
-            />
-            <path
-              d="M 53 78 A 36 36 0 0 0 15 42"
-              stroke="#445925"
-              stroke-width="3.5"
-              fill="none"
-            />
-            <path
-              d="M 53 61 A 19 19 0 0 0 85 42"
-              stroke="#445925"
-              stroke-width="3"
-              fill="none"
-            />
-            <path
-              d="M 70 61 A 9 9 0 0 0 70 78"
-              stroke="#9BAB8F"
-              stroke-width="2.5"
-              fill="none"
-            />
-            <circle cx="70" cy="69" r="2.5" fill="#9BAB8F" />
-          </svg>
-        </div>
-        <div>
-          <span class="logo-nombre">ÁUREA</span>
-          <span class="logo-sub">Laboratorio Bioquímico</span>
-        </div>
-      </a>
+  <span class="logo-img-wrap">
+    <img src="img/logo-verde.png" alt="Áurea Laboratorio Bioquímico" />
+  </span>
+</a>
       <a href="index.html" class="nav-volver">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" /></svg>
         Volver al inicio
