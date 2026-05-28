@@ -827,55 +827,6 @@
     <div class="pagina">
       <!-- LOGIN -->
       <div class="panel-login">
-        <div class="login-ico">
-          <svg viewBox="0 0 100 100" fill="none">
-            <path
-              d="M 15 78 L 15 42 A 38 38 0 0 1 53 4 L 85 4 L 85 78 Z"
-              stroke="#445925"
-              stroke-width="4.5"
-              fill="none"
-              stroke-linejoin="round"
-            />
-            <rect
-              x="53"
-              y="42"
-              width="32"
-              height="36"
-              stroke="#445925"
-              stroke-width="4"
-              fill="none"
-            />
-            <rect
-              x="53"
-              y="61"
-              width="17"
-              height="17"
-              stroke="#445925"
-              stroke-width="3.5"
-              fill="none"
-            />
-            <path
-              d="M 53 78 A 36 36 0 0 0 15 42"
-              stroke="#445925"
-              stroke-width="4"
-              fill="none"
-            />
-            <path
-              d="M 53 61 A 19 19 0 0 0 85 42"
-              stroke="#445925"
-              stroke-width="3.5"
-              fill="none"
-            />
-            <path
-              d="M 70 61 A 9 9 0 0 0 70 78"
-              stroke="#9BAB8F"
-              stroke-width="3"
-              fill="none"
-            />
-            <circle cx="70" cy="69" r="3" fill="#9BAB8F" />
-          </svg>
-        </div>
-
         <h2 class="login-titulo">Ver mis<br />resultados</h2>
         <p class="login-sub">
           Ingresá tu DNI para acceder a tus análisis clínicos de forma segura.
@@ -1139,7 +1090,7 @@
         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         <p style="font-weight:500; margin-bottom:0.3rem; color:var(--texto);">Sin resultados disponibles aún</p>
         <p>Si te hiciste un análisis recientemente puede estar en proceso. Escribinos.</p>
-        <a href="https://wa.me/5491100000000" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.2rem;background:#25D366;color:white;padding:0.6rem 1.3rem;border-radius:8px;font-size:0.83rem;font-weight:500;text-decoration:none;">${WA_SVG} Consultar por WhatsApp</a>
+        <a href="https://wa.me/5493813579613" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.2rem;background:#25D366;color:white;padding:0.6rem 1.3rem;border-radius:8px;font-size:0.83rem;font-weight:500;text-decoration:none;">${WA_SVG} Consultar por WhatsApp</a>
       </div>`;
           return;
         }
@@ -1205,7 +1156,7 @@
         if (res.estado === "proceso") {
           accionesHTML = `<div class="res-acciones">
       <span class="btn-gris"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>En proceso</span>
-      <a href="https://wa.me/5491100000000?text=Hola%2C+consulto+por+el+estado+de+mi+análisis+${encodeURIComponent(res.nombre)}" target="_blank" class="btn-wa-res">${WA_SVG} Consultar estado</a>
+      <a href="https://wa.me/5493813579613?text=Hola%2C+consulto+por+el+estado+de+mi+análisis+${encodeURIComponent(res.nombre)}" target="_blank" class="btn-wa-res">${WA_SVG} Consultar estado</a>
     </div>`;
         } else {
           const pdfBtn = res.pdfUrl
@@ -1213,7 +1164,7 @@
             : `<button class="btn-pdf" onclick='generarPDFResultado(${JSON.stringify(res).replace(/'/g, "&apos;")})'><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Generar PDF</button>`;
           accionesHTML = `<div class="res-acciones">
       ${pdfBtn}
-      <a href="https://wa.me/5491100000000?text=Hola%2C+tengo+una+consulta+sobre+mi+análisis+${encodeURIComponent(res.nombre)}+del+${encodeURIComponent(fechaStr)}" target="_blank" class="btn-wa-res">${WA_SVG} Consultar</a>
+      <a href="https://wa.me/5493813579613?text=Hola%2C+tengo+una+consulta+sobre+mi+análisis+${encodeURIComponent(res.nombre)}+del+${encodeURIComponent(fechaStr)}" target="_blank" class="btn-wa-res">${WA_SVG} Consultar</a>
     </div>`;
         }
 
