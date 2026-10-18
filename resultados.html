@@ -807,6 +807,45 @@
           display: none;
         }
       }
+
+      /* ── Portal: segundo campo, lista de estudios, avisos ── */
+      .campo-ayuda {
+        font-size: 0.73rem;
+        color: var(--texto-suave);
+        line-height: 1.45;
+      }
+      .btn-ingresar:disabled {
+        opacity: 0.7;
+        cursor: wait;
+      }
+      .estudios-lista {
+        list-style: none;
+        margin: 0 0 1.2rem;
+        padding: 0;
+      }
+      .estudio-fila {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #eee;
+        font-size: 0.9rem;
+        color: var(--texto);
+      }
+      .estudio-fila:last-child {
+        border-bottom: none;
+      }
+      .badge.derivado {
+        background: #eef3fa;
+        color: #2c5f75;
+      }
+      .pdf-msg {
+        font-size: 0.8rem;
+        color: var(--error);
+        margin-top: 0.8rem;
+        min-height: 1em;
+      }
     </style>
   </head>
   <body>
@@ -829,19 +868,22 @@
       <div class="panel-login">
         <h2 class="login-titulo">Ver mis<br />resultados</h2>
         <p class="login-sub">
-          Ingresá tu DNI para acceder a tus análisis clínicos de forma segura.
+          Ingresá tu DNI y el número de orden de tu comprobante para ver el
+          estado de tus análisis y descargar el informe en PDF.
         </p>
 
-        <div class="login-error" id="loginError">
-          No encontramos resultados para ese DNI.<br />
-          <small
+        <div class="login-error" id="loginError" role="alert">
+          <span id="loginErrorMsg"
+            >No encontramos resultados con esos datos.</span
+          >
+          <small id="loginErrorAyuda" style="display: block; margin-top: 0.3rem"
             >Si te acabás de hacer el análisis, puede estar en proceso.
             Escribinos por WhatsApp.</small
           >
         </div>
 
         <div class="campo" id="campoDNI">
-          <label>Número de DNI (sin puntos)</label>
+          <label for="inputDNI">Número de DNI (sin puntos)</label>
           <div class="input-wrap">
             <svg viewBox="0 0 24 24">
               <rect x="2" y="5" width="20" height="14" rx="2" />
@@ -854,8 +896,9 @@
               placeholder="Ej: 35678901"
               maxlength="8"
               inputmode="numeric"
-              oninput="this.value = this.value.replace(/\D/, '')"
-              onkeydown="if (event.key === 'Enter') intentarLogin();"
+              autocomplete="off"
+              oninput="this.value = this.value.replace(/\D/g, '')"
+              onkeydown="if (event.key === 'Enter') document.getElementById('inputOrden').focus();"
             />
           </div>
           <span class="err-msg"
@@ -863,19 +906,48 @@
           >
         </div>
 
-        <button class="btn-ingresar" onclick="intentarLogin()">
+        <div class="campo" id="campoOrden">
+          <label for="inputOrden">Número de orden</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
+              />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            <input
+              type="text"
+              class="dni-input"
+              id="inputOrden"
+              placeholder="Ej: 20260630-0001"
+              maxlength="13"
+              inputmode="numeric"
+              autocomplete="off"
+              oninput="formatearOrden(this)"
+              onkeydown="if (event.key === 'Enter') consultar();"
+            />
+          </div>
+          <span class="campo-ayuda"
+            >Figura como “N° Orden” en el comprobante que te entregamos en el
+            laboratorio.</span
+          >
+          <span class="err-msg"
+            >Ingresá el número de orden completo (ej: 20260630-0001).</span
+          >
+        </div>
+
+        <button class="btn-ingresar" id="btnConsultar" onclick="consultar()">
           <svg viewBox="0 0 24 24">
-            <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
-            <polyline points="10 17 15 12 10 7" />
-            <line x1="15" y1="12" x2="3" y2="12" />
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.5" y2="16.5" />
           </svg>
-          Ingresar
+          <span id="btnConsultarTxt">Consultar</span>
         </button>
 
         <div class="o-sep">o</div>
 
         <a
-          href="https://wa.me/5491100000000?text=Hola%2C+quiero+consultar+mis+resultados."
+          href="https://wa.me/5493813579613?text=Hola%2C+quiero+consultar+mis+resultados."
           target="_blank"
           class="btn-wa"
         >
@@ -892,8 +964,8 @@
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
           <p>
-            Tus resultados son estrictamente confidenciales. Solo vos podés
-            acceder con tu DNI.
+            Tus resultados son estrictamente confidenciales. Solo se pueden ver
+            con tu DNI y el número de tu orden.
           </p>
         </div>
       </div>
@@ -905,7 +977,8 @@
         <div class="bienvenida" id="bienvenida">
           <p class="bienvenida-h">Resultados online</p>
           <p class="bienvenida-p">
-            Ingresá tu DNI a la izquierda para acceder a tus análisis clínicos.
+            Ingresá tu DNI y el número de orden de tu comprobante para ver tus
+            análisis clínicos.
           </p>
           <div class="info-cards">
             <div class="info-card">
@@ -935,8 +1008,8 @@
               <div class="ic-txt">
                 <h4>Descarga en PDF</h4>
                 <p>
-                  Cuando el resultado lo permite, podés descargarlo en PDF para
-                  compartirlo con tu médico.
+                  Cuando tus estudios estén validados, podés descargar el informe
+                  en PDF para compartirlo con tu médico.
                 </p>
               </div>
             </div>
@@ -948,10 +1021,10 @@
                 </svg>
               </div>
               <div class="ic-txt">
-                <h4>Valores con referencia</h4>
+                <h4>Valores de referencia</h4>
                 <p>
-                  Cada valor muestra si está dentro del rango normal, elevado o
-                  bajo para tu orientación.
+                  El informe incluye los valores de referencia de cada estudio
+                  para tu orientación.
                 </p>
               </div>
             </div>
@@ -978,29 +1051,14 @@
               <div class="pac-nombre" id="pacNombre">—</div>
               <div class="pac-meta" id="pacMeta">—</div>
             </div>
-            <button class="btn-salir" onclick="cerrarSesion()">
+            <button class="btn-salir" onclick="nuevaConsulta()">
               <svg viewBox="0 0 24 24">
                 <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
                 <polyline points="16 17 21 12 16 7" />
                 <line x1="21" y1="12" x2="9" y2="12" />
               </svg>
-              Cerrar sesión
+              Nueva consulta
             </button>
-          </div>
-
-          <div class="leyenda">
-            <div class="ley-item">
-              <div class="ley-punto" style="background: var(--ok)"></div>
-              Valor normal
-            </div>
-            <div class="ley-item">
-              <div class="ley-punto" style="background: #c0392b"></div>
-              Valor elevado
-            </div>
-            <div class="ley-item">
-              <div class="ley-punto" style="background: #2980b9"></div>
-              Valor bajo
-            </div>
           </div>
 
           <div id="listaRes"></div>
@@ -1011,7 +1069,7 @@
     <!-- /pagina -->
 
     <!-- WhatsApp flotante -->
-    <a href="https://wa.me/5491100000000" target="_blank" class="wa-flotante">
+    <a href="https://wa.me/5493813579613" target="_blank" class="wa-flotante">
       <svg viewBox="0 0 24 24">
         <path
           d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
@@ -1022,203 +1080,13 @@
     <script>
       // Ícono WhatsApp SVG inline para botones
       const WA_SVG = `<svg viewBox="0 0 24 24" width="14" height="14"><path fill="white" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
-      let pacienteActivo = null;
+      const API_BASE =
+        "https://laboratorio-aurea-backend-production.up.railway.app";
+      const WA_NUM = "5493813579613";
+      let consultaActual = null; // solo en memoria: no se guarda nada en el navegador
 
-      // ── Obtener pacientes desde localStorage (cargados por admin.html)
-      function getPacientes() {
-        try {
-          return JSON.parse(localStorage.getItem("aurea_pacientes") || "{}");
-        } catch {
-          return {};
-        }
-      }
-
-      // ── LOGIN
-      function intentarLogin() {
-        const raw = document.getElementById("inputDNI").value.trim();
-        const dni = raw.replace(/\D/g, "");
-        const errLogin = document.getElementById("loginError");
-        const campo = document.getElementById("campoDNI");
-
-        if (dni.length < 6 || dni.length > 8) {
-          campo.classList.add("con-error");
-          document.getElementById("inputDNI").classList.add("invalido");
-          errLogin.classList.remove("visible");
-          return;
-        }
-
-        campo.classList.remove("con-error");
-        document.getElementById("inputDNI").classList.remove("invalido");
-
-        const pacientes = getPacientes();
-        const pac = pacientes[dni];
-
-        if (!pac) {
-          errLogin.classList.add("visible");
-          return;
-        }
-
-        errLogin.classList.remove("visible");
-        mostrarResultados(pac, dni);
-      }
-
-      // ── MOSTRAR RESULTADOS
-      function mostrarResultados(pac, dni) {
-        pacienteActivo = { ...pac, dni };
-        document.getElementById("pacNombre").textContent = pac.nombre;
-        document.getElementById("pacMeta").textContent =
-          "DNI " +
-          dni +
-          " · Consulta: " +
-          new Date().toLocaleDateString("es-AR", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-          });
-
-        document.getElementById("bienvenida").classList.add("oculto");
-        document.getElementById("resPanel").classList.add("visible");
-
-        const lista = document.getElementById("listaRes");
-        lista.innerHTML = "";
-
-        const resultados = pac.resultados || [];
-
-        if (!resultados.length) {
-          lista.innerHTML = `
-      <div class="sin-res">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        <p style="font-weight:500; margin-bottom:0.3rem; color:var(--texto);">Sin resultados disponibles aún</p>
-        <p>Si te hiciste un análisis recientemente puede estar en proceso. Escribinos.</p>
-        <a href="https://wa.me/5493813579613" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.2rem;background:#25D366;color:white;padding:0.6rem 1.3rem;border-radius:8px;font-size:0.83rem;font-weight:500;text-decoration:none;">${WA_SVG} Consultar por WhatsApp</a>
-      </div>`;
-          return;
-        }
-
-        // Ordenar más recientes primero
-        [...resultados]
-          .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
-          .forEach((res) => lista.appendChild(crearCard(res)));
-      }
-
-      // ── CREAR CARD de resultado
-      function crearCard(res) {
-        const card = document.createElement("div");
-        card.className = "res-card";
-
-        const fechaStr = new Date(res.fecha + "T12:00:00").toLocaleDateString(
-          "es-AR",
-          { day: "2-digit", month: "long", year: "numeric" },
-        );
-
-        // Badge estado
-        const badge =
-          res.estado === "proceso"
-            ? `<span class="badge proceso"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>En proceso</span>`
-            : `<span class="badge listo"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>Disponible</span>`;
-
-        // Valores
-        let valoresHTML = "";
-        if (res.estado === "proceso") {
-          valoresHTML = `<div class="en-proceso-msg">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      Tu resultado está siendo procesado. Te avisamos cuando esté listo.
-    </div>`;
-        } else if (res.valores && res.valores.length) {
-          valoresHTML = `<div class="valores-tabla">`;
-          res.valores.forEach((v) => {
-            const cls =
-              v.estado === "alto"
-                ? "alto"
-                : v.estado === "bajo"
-                  ? "bajo"
-                  : "normal";
-            valoresHTML += `
-        <div class="val-fila">
-          <span class="val-nombre">${v.nombre}</span>
-          <span class="val-valor ${cls}">
-            ${v.valor} ${v.unidad || ""}
-            <span class="ind ${cls}"></span>
-          </span>
-          <span class="val-ref">${v.referencia || ""}</span>
-        </div>`;
-          });
-          valoresHTML += `</div>`;
-        }
-
-        // Nota médica
-        const notaHTML = res.nota
-          ? `<div class="res-nota">📋 ${res.nota}</div>`
-          : "";
-
-        // Acciones
-        let accionesHTML = "";
-        if (res.estado === "proceso") {
-          accionesHTML = `<div class="res-acciones">
-      <span class="btn-gris"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>En proceso</span>
-      <a href="https://wa.me/5493813579613?text=Hola%2C+consulto+por+el+estado+de+mi+análisis+${encodeURIComponent(res.nombre)}" target="_blank" class="btn-wa-res">${WA_SVG} Consultar estado</a>
-    </div>`;
-        } else {
-          const pdfBtn = res.pdfUrl
-            ? `<a href="${convertirUrlPDF(res.pdfUrl)}" target="_blank" class="btn-pdf"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Descargar PDF</a>`
-            : `<button class="btn-pdf" onclick='generarPDFResultado(${JSON.stringify(res).replace(/'/g, "&apos;")})'><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Generar PDF</button>`;
-          accionesHTML = `<div class="res-acciones">
-      ${pdfBtn}
-      <a href="https://wa.me/5493813579613?text=Hola%2C+tengo+una+consulta+sobre+mi+análisis+${encodeURIComponent(res.nombre)}+del+${encodeURIComponent(fechaStr)}" target="_blank" class="btn-wa-res">${WA_SVG} Consultar</a>
-    </div>`;
-        }
-
-        card.innerHTML = `
-    <div class="res-top">
-      <div>
-        <div class="res-nombre">${res.nombre}</div>
-        <div class="res-fecha">${fechaStr}</div>
-      </div>
-      ${badge}
-    </div>
-    ${valoresHTML}
-    ${notaHTML}
-    ${accionesHTML}
-  `;
-
-        return card;
-      }
-
-      // ── CONVERTIR URL DE PDF PARA DESCARGA DIRECTA
-      // Soporta: Google Drive, Dropbox, y links directos
-      function convertirUrlPDF(url) {
-        if (!url) return "#";
-
-        // Google Drive — formatos posibles:
-        // https://drive.google.com/file/d/ID/view?usp=sharing
-        // https://drive.google.com/open?id=ID
-        // https://docs.google.com/...
-        const driveMatch =
-          url.match(/drive\.google\.com\/file\/d\/([^\/\?]+)/) ||
-          url.match(/drive\.google\.com\/open\?id=([^&]+)/) ||
-          url.match(/id=([^&]+)/);
-
-        if (driveMatch) {
-          const id = driveMatch[1];
-          // Forzar descarga directa de Google Drive
-          return `https://drive.google.com/uc?export=download&id=${id}`;
-        }
-
-        // Dropbox — cambiar dl=0 por dl=1
-        if (url.includes("dropbox.com")) {
-          return url
-            .replace("dl=0", "dl=1")
-            .replace("www.dropbox.com", "dl.dropboxusercontent.com");
-        }
-
-        // OneDrive — convertir link de vista a descarga
-        if (url.includes("1drv.ms") || url.includes("onedrive.live.com")) {
-          // OneDrive no admite descarga directa fácil, abrimos en nueva pestaña
-          return url;
-        }
-
-        // Link directo (ya es un .pdf o similar) — devolver tal cual
-        return url;
+      function soloDigitos(v) {
+        return String(v || "").replace(/\D/g, "");
       }
 
       function textoSeguro(valor) {
@@ -1229,46 +1097,190 @@
           .replace(/"/g, "&quot;");
       }
 
-      function fechaCorta(fecha) {
-        if (!fecha) return "—";
-        return new Date(fecha + "T12:00:00").toLocaleDateString("es-AR", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        });
+      // Escribe el N° de orden como AAAAMMDD-NNNN mientras el cliente tipea
+      function formatearOrden(input) {
+        const d = soloDigitos(input.value).slice(0, 12);
+        input.value = d.length > 8 ? d.slice(0, 8) + "-" + d.slice(8) : d;
       }
 
-      function generarPDFResultado(resultado) {
-        if (!pacienteActivo || !resultado) return;
-        const filas = (resultado.valores || [])
-          .map(
-            (v) => `<tr><td>${textoSeguro(v.nombre)}</td><td><strong>${textoSeguro(v.valor)}</strong></td><td>${textoSeguro(v.unidad)}</td><td>${textoSeguro(v.referencia)}</td><td>${textoSeguro(v.estado)}</td></tr>`,
-          )
+      function marcarError(idCampo, idInput, hayError) {
+        document.getElementById(idCampo).classList.toggle("con-error", hayError);
+        document.getElementById(idInput).classList.toggle("invalido", hayError);
+      }
+
+      function mostrarError(mensaje, conAyuda) {
+        document.getElementById("loginErrorMsg").textContent = mensaje;
+        document.getElementById("loginErrorAyuda").style.display = conAyuda
+          ? "block"
+          : "none";
+        document.getElementById("loginError").classList.add("visible");
+      }
+
+      function ocultarError() {
+        document.getElementById("loginError").classList.remove("visible");
+      }
+
+      function setCargando(cargando) {
+        document.getElementById("btnConsultar").disabled = cargando;
+        document.getElementById("btnConsultarTxt").textContent = cargando
+          ? "Consultando..."
+          : "Consultar";
+      }
+
+      // ── CONSULTAR (DNI + N° de orden)
+      async function consultar() {
+        ocultarError();
+        const dni = soloDigitos(document.getElementById("inputDNI").value);
+        const orden = soloDigitos(document.getElementById("inputOrden").value);
+
+        const dniMal = dni.length < 6 || dni.length > 8;
+        const ordenMal = orden.length < 9 || orden.length > 12;
+        marcarError("campoDNI", "inputDNI", dniMal);
+        marcarError("campoOrden", "inputOrden", ordenMal);
+        if (dniMal || ordenMal) return;
+
+        const nro = orden.slice(0, 8) + "-" + orden.slice(8);
+        setCargando(true);
+        try {
+          const res = await fetch(API_BASE + "/portal/consultar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ dni: dni, nro_orden: nro }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            const msg =
+              typeof data.detail === "string"
+                ? data.detail
+                : "No pudimos procesar la consulta. Intentá de nuevo.";
+            mostrarError(msg, res.status === 404);
+            return;
+          }
+          consultaActual = { dni: dni, nro_orden: data.nro_orden || nro };
+          mostrarResultado(data);
+        } catch (e) {
+          mostrarError(
+            "No pudimos conectarnos con el laboratorio. Revisá tu conexión e intentá de nuevo.",
+            false,
+          );
+        } finally {
+          setCargando(false);
+        }
+      }
+
+      // ── MOSTRAR LA ORDEN Y SUS ESTUDIOS
+      function mostrarResultado(data) {
+        document.getElementById("pacNombre").textContent = data.paciente || "—";
+        document.getElementById("pacMeta").textContent =
+          "Orden " + data.nro_orden + " · " + data.fecha;
+        document.getElementById("bienvenida").classList.add("oculto");
+        document.getElementById("resPanel").classList.add("visible");
+
+        const etiquetas = {
+          listo: ["listo", "Disponible"],
+          en_proceso: ["proceso", "En proceso"],
+          derivado: ["derivado", "Derivado a otro laboratorio"],
+        };
+        const filas = (data.estudios || [])
+          .map((e) => {
+            const et = etiquetas[e.estado] || etiquetas.en_proceso;
+            return `<li class="estudio-fila"><span>${textoSeguro(e.nombre)}</span><span class="badge ${et[0]}">${et[1]}</span></li>`;
+          })
           .join("");
-        const html = `<!doctype html><html lang="es"><head><meta charset="UTF-8"/><title>Resultado ${textoSeguro(resultado.nombre)}</title><style>
-          @page{size:A4;margin:18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#2a2a2a;margin:0}.hoja{max-width:760px;margin:0 auto}header{display:flex;justify-content:space-between;border-bottom:2px solid #445925;padding-bottom:18px;margin-bottom:22px}.marca h1{font-family:Georgia,serif;font-size:34px;color:#445925;margin:0}.marca p,.meta p{margin:3px 0;font-size:12px;color:#6b6b6b}.meta{text-align:right}h2{font-family:Georgia,serif;color:#445925;font-size:26px;margin:0 0 14px}.datos{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;background:#f2f2f2;border:1px solid #e4e0d6;padding:16px;margin-bottom:22px}.dato span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9bab8f;margin-bottom:3px}.dato strong{font-size:14px}table{width:100%;border-collapse:collapse;margin-top:10px}th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#445925;background:#dee8d2;padding:9px;border:1px solid #d9ddcf}td{font-size:12px;padding:10px 9px;border:1px solid #e4e0d6}.nota{margin-top:18px;padding:12px 14px;background:#fff8e8;border-left:4px solid #f2dea2;font-size:12px;line-height:1.55}.firma{margin-top:44px;display:flex;justify-content:flex-end}.firma div{width:240px;text-align:center;border-top:1px solid #445925;padding-top:8px;color:#6b6b6b;font-size:12px}footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e0d6;font-size:10px;color:#6b6b6b;line-height:1.5}.acciones{position:fixed;top:12px;right:12px}.acciones button{border:0;background:#445925;color:white;padding:9px 14px;border-radius:8px;cursor:pointer;font-weight:600}@media print{.acciones{display:none}body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
-        </style></head><body><div class="acciones"><button onclick="window.print()">Guardar / imprimir PDF</button></div><main class="hoja">
-          <header><div class="marca"><h1>ÁUREA</h1><p>Laboratorio Bioquímico</p><p>Junín, Buenos Aires, Argentina</p></div><div class="meta"><p><strong>Informe de resultado</strong></p><p>Emitido: ${new Date().toLocaleDateString("es-AR")}</p></div></header>
-          <h2>${textoSeguro(resultado.nombre)}</h2>
-          <section class="datos"><div class="dato"><span>Paciente</span><strong>${textoSeguro(pacienteActivo.nombre)}</strong></div><div class="dato"><span>DNI</span><strong>${textoSeguro(pacienteActivo.dni)}</strong></div><div class="dato"><span>Fecha del análisis</span><strong>${fechaCorta(resultado.fecha)}</strong></div><div class="dato"><span>Estado</span><strong>${resultado.estado === "listo" ? "Disponible" : "En proceso"}</strong></div></section>
-          ${filas ? `<table><thead><tr><th>Parámetro</th><th>Valor</th><th>Unidad</th><th>Referencia</th><th>Estado</th></tr></thead><tbody>${filas}</tbody></table>` : `<p style="color:#6b6b6b;font-size:13px;">Resultado sin valores cargados.</p>`}
-          ${resultado.nota ? `<div class="nota"><strong>Nota:</strong> ${textoSeguro(resultado.nota)}</div>` : ""}
-          <div class="firma"><div>Firma y sello profesional</div></div><footer>Este informe es confidencial y debe ser interpretado por un profesional de la salud.</footer>
-        </main><script>setTimeout(()=>window.print(),350);<\/script></body></html>`;
-        const win = window.open("", "_blank");
-        if (!win) return alert("El navegador bloqueó la ventana del PDF.");
-        win.document.open();
-        win.document.write(html);
-        win.document.close();
+
+        const ICO_RELOJ = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+        const ICO_PDF = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+
+        let badgeGeneral, aviso, accion;
+        if (data.completo) {
+          badgeGeneral = `<span class="badge listo">Disponible</span>`;
+          aviso = "";
+          accion = `<button class="btn-pdf" id="btnPdf" onclick="descargarPDF()">${ICO_PDF}Descargar PDF</button>`;
+        } else if (data.pdf_disponible) {
+          badgeGeneral = `<span class="badge proceso">Parcial</span>`;
+          aviso = `<div class="res-nota">📋 Tu informe incluye solo los estudios que ya están validados. Cuando estén listos los demás, volvé a consultar con los mismos datos para descargar el informe completo.</div>`;
+          accion = `<button class="btn-pdf" id="btnPdf" onclick="descargarPDF()">${ICO_PDF}Descargar informe parcial</button>`;
+        } else {
+          badgeGeneral = `<span class="badge proceso">En proceso</span>`;
+          aviso = `<div class="en-proceso-msg">Tus resultados están siendo procesados. Volvé a consultar más tarde con los mismos datos.</div>`;
+          accion = `<span class="btn-gris">${ICO_RELOJ}En proceso</span>`;
+        }
+
+        const textoWA = encodeURIComponent(
+          "Hola, consulto por mi orden " + data.nro_orden,
+        );
+        document.getElementById("listaRes").innerHTML = `
+          <div class="res-card">
+            <div class="res-top">
+              <div>
+                <div class="res-nombre">Orden ${textoSeguro(data.nro_orden)}</div>
+                <div class="res-fecha">${textoSeguro(data.fecha)}</div>
+              </div>
+              ${badgeGeneral}
+            </div>
+            <ul class="estudios-lista">${filas}</ul>
+            ${aviso}
+            <div class="res-acciones">
+              ${accion}
+              <a href="https://wa.me/${WA_NUM}?text=${textoWA}" target="_blank" rel="noopener" class="btn-wa-res">${WA_SVG} Consultar</a>
+            </div>
+            <div class="pdf-msg" id="pdfMsg" role="alert"></div>
+          </div>`;
       }
 
-      // ── CERRAR SESIÓN
-      function cerrarSesion() {
+      // ── DESCARGAR EL PDF
+      async function descargarPDF() {
+        if (!consultaActual) return;
+        const btn = document.getElementById("btnPdf");
+        const msg = document.getElementById("pdfMsg");
+        const htmlOriginal = btn.innerHTML;
+        msg.textContent = "";
+        btn.disabled = true;
+        btn.textContent = "Generando PDF...";
+        try {
+          const res = await fetch(API_BASE + "/portal/pdf", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(consultaActual),
+          });
+          if (!res.ok) {
+            const d = await res.json().catch(() => ({}));
+            msg.textContent =
+              typeof d.detail === "string"
+                ? d.detail
+                : "No pudimos generar el PDF. Intentá de nuevo.";
+            return;
+          }
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "resultados_" + consultaActual.nro_orden + ".pdf";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 10000);
+        } catch (e) {
+          msg.textContent =
+            "No pudimos conectarnos con el laboratorio. Intentá de nuevo.";
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = htmlOriginal;
+        }
+      }
+
+      // ── NUEVA CONSULTA (limpia todo)
+      function nuevaConsulta() {
+        consultaActual = null;
         document.getElementById("bienvenida").classList.remove("oculto");
         document.getElementById("resPanel").classList.remove("visible");
-        document.getElementById("loginError").classList.remove("visible");
-        document.getElementById("inputDNI").value = "";
         document.getElementById("listaRes").innerHTML = "";
+        document.getElementById("inputDNI").value = "";
+        document.getElementById("inputOrden").value = "";
+        marcarError("campoDNI", "inputDNI", false);
+        marcarError("campoOrden", "inputOrden", false);
+        ocultarError();
+        document.getElementById("inputDNI").focus();
       }
     </script>
   </body>

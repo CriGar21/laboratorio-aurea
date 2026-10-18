@@ -7,13 +7,13 @@
      CONFIGURACIÓN — editá estos datos
   ============================================================ */
   const CFG = {
-    whatsapp: "5491100000000",
+    whatsapp: "5493813579613",
     nombre: "Áurea Laboratorio Bioquímico",
     horarios: "Lunes a viernes 7:00–12:00 hs · Sábados 7:00–10:00 hs",
-    direccion: "Av. [Tu dirección], Junín, Buenos Aires",
-    telefono: "(xxx) xxx-xxxx",
+    direccion: "Av. Belgrano 1973, San Miguel de Tucumán, Tucumán",
+    telefono: "(381) 357-9613",
     obrasSociales:
-      "IOMA, OSDE, Swiss Medical, Galeno, PAMI, Medifé, OSECAC, OSPEDYC, SANCOR Salud y más.",
+      "Subsidio, OSDE, Swiss Medical, Galeno, PAMI, Medifé, OSECAC, OSPEDYC, SANCOR Salud y más.",
   };
 
   /* ============================================================
