@@ -1156,7 +1156,11 @@
             mostrarError(msg, res.status === 404);
             return;
           }
-          consultaActual = { dni: dni, nro_orden: data.nro_orden || nro };
+          consultaActual = {
+            dni: dni,
+            nro_orden: data.nro_orden || nro,
+            archivo: data.archivo || "",
+          };
           mostrarResultado(data);
         } catch (e) {
           mostrarError(
@@ -1241,7 +1245,10 @@
           const res = await fetch(API_BASE + "/portal/pdf", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(consultaActual),
+            body: JSON.stringify({
+              dni: consultaActual.dni,
+              nro_orden: consultaActual.nro_orden,
+            }),
           });
           if (!res.ok) {
             const d = await res.json().catch(() => ({}));
@@ -1255,7 +1262,9 @@
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = "resultados_" + consultaActual.nro_orden + ".pdf";
+          a.download =
+            consultaActual.archivo ||
+            "resultados_" + consultaActual.nro_orden + ".pdf";
           document.body.appendChild(a);
           a.click();
           a.remove();
